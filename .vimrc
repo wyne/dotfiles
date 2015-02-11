@@ -66,7 +66,8 @@ set number        " always show line numbers
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
-set cursorline    " highlight screen line of the cursor
+set cursorline
+:hi CursorLine cterm=none ctermbg=black ctermfg=none
 set expandtab
 set tabstop=4     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop

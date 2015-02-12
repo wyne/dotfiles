@@ -111,6 +111,10 @@ set noswapfile
 set nobackup
 set noswapfile
 
+" change cursor shape in different modes
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
 " remaps
 let mapleader=","
 
@@ -118,7 +122,7 @@ nnoremap <C-j> :bn<CR>
 nnoremap <C-k> :bN<CR>
 
 nnoremap <leader>v      :e ~/personal/dotfiles/.vimrc<CR>
-nnoremap <leader>V      :tabnew ~/personal/dotfiles/.vimrc<CR>
+nnoremap <leader>V      :so $MYVIMRC<CR>
 nnoremap <leader>ps     :PluginSearch<CR>
 nnoremap <leader>PS     :PluginSearch!<CR>
 nnoremap <leader>pr     :BundleInstall<CR>
@@ -131,7 +135,9 @@ nnoremap <leader>ss     :SaveSession
 nnoremap <leader>sd     :DeleteSession<CR>
 nnoremap <leader>sc     :CloseSession<CR>
 
-nnoremap <C-a> :NERDTreeToggle<CR>
+" allow copying selection in visual mode
+vnoremap <C-x> :w !pbcopy<cr>
+nnoremap <C-a> :nerdtreetoggle<cr>
 
 nnoremap ; :
 nnoremap : ;

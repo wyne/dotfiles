@@ -118,9 +118,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " remaps
 let mapleader=","
 
-nnoremap <C-j> :bn<CR>
-nnoremap <C-k> :bN<CR>
-
 nnoremap <leader>v      :e ~/personal/dotfiles/.vimrc<CR>
 nnoremap <leader>V      :so $MYVIMRC<CR>
 nnoremap <leader>ps     :PluginSearch<CR>
@@ -137,7 +134,14 @@ nnoremap <leader>sc     :CloseSession<CR>
 
 " allow copying selection in visual mode
 vnoremap <C-x> :w !pbcopy<cr>
-nnoremap <C-a> :nerdtreetoggle<cr>
+nnoremap <C-a> :NERDTreeToggle<cr>
+nnoremap <S-C-l> :5winc ><cr>
+nnoremap <S-C-h> :5winc <<cr>
+nnoremap <S-C-j> :5winc +<cr>
+nnoremap <S-C-k> :5winc -<cr>
+nnoremap <C-j> :bn<CR>
+nnoremap <C-k> :bN<CR>
+nnoremap <C-g> :Ag <cword><CR>
 
 nnoremap ; :
 nnoremap : ;

@@ -133,15 +133,16 @@ nnoremap <leader>sd     :DeleteSession<CR>
 nnoremap <leader>sc     :CloseSession<CR>
 
 " allow copying selection in visual mode
-vnoremap <C-x> :w !pbcopy<cr>
-nnoremap <C-a> :NERDTreeToggle<cr>
-nnoremap <S-C-l> :5winc ><cr>
-nnoremap <S-C-h> :5winc <<cr>
-nnoremap <S-C-j> :5winc +<cr>
-nnoremap <S-C-k> :5winc -<cr>
+vnoremap <C-x> :w !pbcopy<CR>
+nnoremap <Bslash> :NERDTreeToggle<cr>
+nnoremap <S-C-l> :5winc ><CR>
+nnoremap <S-C-h> :5winc <<CR>
+nnoremap <S-C-j> :5winc +<CR>
+nnoremap <S-C-k> :5winc -<CR>
 nnoremap <C-j> :bn<CR>
 nnoremap <C-k> :bN<CR>
 nnoremap <C-g> :Ag <cword><CR>
+nnoremap <C-a> :Ag 
 
 nnoremap ; :
 nnoremap : ;

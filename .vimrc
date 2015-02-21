@@ -5,6 +5,7 @@
 "
 " 2. prepare directory for backups
 "   mkdir -p ~/.vim/tmp/swap ~/.vim/tmp/backup ~/.vim/tmp/undo
+"
 " 3. Install silver searcher
 "   https://github.com/rking/ag.vim
 
@@ -116,33 +117,39 @@ let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " remaps
-let mapleader=","
+let mapleader=" "
 
-nnoremap <leader>v      :e ~/personal/dotfiles/.vimrc<CR>
-nnoremap <leader>V      :so $MYVIMRC<CR>
-nnoremap <leader>ps     :PluginSearch<CR>
-nnoremap <leader>PS     :PluginSearch!<CR>
-nnoremap <leader>pr     :BundleInstall<CR>
-nnoremap <leader>gundo  :GundoToggle<CR>
-nnoremap <leader>f      :CtrlP<Space>.<CR>
-nnoremap <leader>b      :CtrlPBuffer<CR>
-nnoremap <leader>gs     :Gstatus<CR>
-nnoremap <leader>so     :OpenSession 
-nnoremap <leader>ss     :SaveSession 
-nnoremap <leader>sd     :DeleteSession<CR>
-nnoremap <leader>sc     :CloseSession<CR>
+nnoremap <leader>v        :e ~/personal/dotfiles/.vimrc<CR>
+nnoremap <leader>V        :so $MYVIMRC<CR>
+nnoremap <leader>ps       :PluginSearch<CR>
+nnoremap <leader>PS       :PluginSearch!<CR>
+nnoremap <leader>pr       :BundleInstall<CR>
+nnoremap <leader>gundo    :GundoToggle<CR>
+nnoremap <leader>o        :CtrlP<Space>.<CR>
+nnoremap <leader>h        :noh<CR>
+nnoremap <leader>b        :CtrlPBuffer<CR>
+nnoremap <leader>gs       :Gstatus<CR>
+nnoremap <leader>so       :OpenSession 
+nnoremap <leader>ss       :SaveSession 
+nnoremap <leader>sd       :DeleteSession<CR>
+nnoremap <leader>sc       :CloseSession<CR>
+nnoremap <leader>w        :w<CR>
+nnoremap <leader>q        :qa<CR>
+nnoremap <leader><leader> <C-w><C-w><CR>
+nnoremap <leader>k        :E<CR>
+nnoremap <leader>x        :bp\|bd #<CR>
 
 " allow copying selection in visual mode
-vnoremap <C-x> :w !pbcopy<CR>
+vnoremap <C-x>    :w !pbcopy<CR>
 nnoremap <Bslash> :NERDTreeToggle<cr>
-nnoremap <S-C-l> :5winc ><CR>
-nnoremap <S-C-h> :5winc <<CR>
-nnoremap <S-C-j> :5winc +<CR>
-nnoremap <S-C-k> :5winc -<CR>
-nnoremap <C-j> :bn<CR>
-nnoremap <C-k> :bN<CR>
-nnoremap <C-g> :Ag <cword><CR>
-nnoremap <C-a> :Ag 
+nnoremap <Tab>    :bn<CR>
+nnoremap <S-Tab>  :bN<CR>
+nnoremap <C-l>    :5winc ><CR>
+nnoremap <C-h>    :5winc <<CR>
+nnoremap <C-J>    :5winc +<CR>
+nnoremap <C-K>    :5winc -<CR>
+nnoremap <C-g>    :Ag <cword><CR>
+nnoremap <C-a>    :Ag 
 
 nnoremap ; :
 nnoremap : ;

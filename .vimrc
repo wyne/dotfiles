@@ -1,4 +1,4 @@
-" ========== Fresh Start Steps ==========
+" ========== Fresh Start Steps =========={{{
 "
 " 1. Setup vundle
 "   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
@@ -41,8 +41,10 @@ Plugin 'xolox/vim-misc'                 " Requirement for session management
 Plugin 'xolox/vim-session'              " Session management
 Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
 Plugin 'rking/ag.vim'                   " Searching
+Plugin 'mustache/vim-mustache-handlebars' " Mustache
+Plugin 'solarnz/thrift.vim'             " Thrift syntax
 
-" end vundler
+"  end vundler
 call vundle#end()
 filetype plugin indent on
 
@@ -61,7 +63,8 @@ let g:airline#extensions#tabline#tab_nr_type   =  1   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 
-" ========== GENERAL CONFIGS ==========
+" }}}
+" ========== GENERAL CONFIGS =========="{{{
 
 syntax on
 set number        " always show line numbers
@@ -70,6 +73,11 @@ set ruler         " show cursor line and column in status bar
 set hidden
 set cursorline    " highlight current line
 :hi CursorLine cterm=none ctermbg=black ctermfg=none
+:hi Folded ctermbg=white
+:hi Pmenu ctermfg=white ctermbg=4
+:hi PmenuSel ctermfg=white ctermbg=1
+set foldmethod=indent
+set foldlevel=15
 set expandtab     " use spaces intead of tabs
 set tabstop=4     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
@@ -85,6 +93,14 @@ set incsearch     " show search matches as you type
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
+set scrolloff=2     " start scrolling when 2 lines from edge
+set sidescroll=1    " scroll horizontally by 3 columns
+set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+
+" other auto syntax
+au BufRead,BufNewFile *.mustache setfiletype mustache
+au BufRead,BufNewFile *.thrift set syntax=thrift
+au BufRead,BufNewFile *.aurora set syntax=ruby
 
 " show trailing whitespaces
 set list
@@ -94,34 +110,39 @@ augroup FileTypes
   autocmd filetype html,xml set listchars-=tab:▸\ 
 augroup END
 
-" ========== SESSION MANAGEMENT ==========
+" }}}
+" ========== SESSION MANAGEMENT =========={{{
 
 let g:session_directory = "~/.vim/session"
 let g:session_autoload = "no"
 let g:session_autosave = "yes"
 let g:session_command_aliases = 1
 
-" ========== BACKUP SETTINGS ==========
+" }}}
+" ========== BACKUP SETTINGS =========={{{
 
 set history=1000
 set undolevels=1000
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
-set directory=~/.vim/tmp/swap//
-set backupskip=/tmp/*,/private/tmp/*"
+set undodir=~/.vim/tmp/undo/
+set undofile
+set backupdir=~/.vim/tmp/backup/
+set directory=~/.vim/tmp/swap/
+set backupskip=/tmp/*,/private/tmp/*
 set backup
 set writebackup
 set noswapfile
 set nobackup
 set noswapfile
 
-" ========== CURSOR ==========
+" }}}
+" ========== CURSOR =========={{{
 
 " change cursor shape in different modes
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
-" ========== LEADER ==========
+" }}}
+" ========== LEADER =========={{{
 
 " Set <space> to leader key
 let mapleader=" "
@@ -165,13 +186,19 @@ nnoremap <leader><leader> <C-w><C-w>
 nnoremap <leader>k        :E<CR>
 "                         Close current buffer and maintain window arrangement
 nnoremap <leader>x        :bp\|bd #<CR>
+"                         Search working directory
+nnoremap <leader>f        :Ag 
+nnoremap <leader>t        :AgFile 
+"                         Reveal file in NerdTree
+nnoremap <leader>r        :NERDTreeFind<CR>
 
-" ========== OTHER MAPPINGS ==========
+" }}}
+" ========== OTHER MAPPINGS =========={{{
 
 "                 Copy selection in visual mode
 vnoremap <C-x>    :w !pbcopy<CR>
 "                 Open NERDTree File Browser
-nnoremap <Bslash> :NERDTreeToggle<cr>
+nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Next buffer
 nnoremap <Tab>    :bn<CR>
 "                 Previous buffer
@@ -188,9 +215,15 @@ nnoremap <C-K>    :5winc -<CR>
 nnoremap <C-g>    :Ag <cword><CR>
 "                 Search working directory
 nnoremap <C-a>    :Ag 
+"                 Open and close folds
+nnoremap ,        za
 
 " Swap ; and : for easier type of commands
 nnoremap ; :
 nnoremap : ;
 vnoremap ; :
 vnoremap : ;
+
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

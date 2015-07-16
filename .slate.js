@@ -52,7 +52,7 @@ var laptopLayout = slate.layout("laptopLayout", {
 var threeMonitorsLayout = slate.layout("threeMonitors", {
   //"_before_" : { "operations" : hideSpotify }, // before the layout is activated, hide Spotify
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
-  "iTerm" : {
+  "iTerm2" : {
     "operations" : rightMain,
     "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
                          // Sorting by title ensures that my iTerm windows always end up in the same place.

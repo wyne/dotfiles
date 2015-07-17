@@ -46,15 +46,17 @@ Plugin 'tpope/vim-commentary'           " vim-commentary
 
 " other plugins
 Plugin 'sjl/gundo.vim'                  " Undo Tree
-Plugin 'Shougo/neocomplcache'           " Autocompletion
+Plugin 'Shougo/neocomplete'             " Autocompletion
 Plugin 'terryma/vim-multiple-cursors'   " Sublime style repeat word select
 Plugin 'bling/vim-airline'              " Status bar
 Plugin 'xolox/vim-misc'                 " Requirement for session management
 Plugin 'xolox/vim-session'              " Session management
 Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
 Plugin 'rking/ag.vim'                   " Searching
+Plugin 'mustache/vim-mustache-handlebars' " Mustache
+Plugin 'solarnz/thrift.vim'             " Thrift syntax
 
-" end vundler
+"  end vundler
 call vundle#end()
 filetype plugin indent on
 
@@ -82,12 +84,14 @@ set ruler         " show cursor line and column in status bar
 set hidden
 set cursorline    " highlight current line
 :hi CursorLine cterm=none ctermbg=black ctermfg=none
+:hi Pmenu ctermfg=white ctermbg=4
+:hi PmenuSel ctermfg=white ctermbg=1
 set expandtab     " use spaces intead of tabs
-set tabstop=4     " a tab is four spaces
+set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 set autoindent    " always set autoindenting on
 set copyindent    " copy the previous indentation on autoindenting
-set shiftwidth=4  " number of spaces to use forautoindenting
+set shiftwidth=2  " number of spaces to use forautoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set showmatch     " set show matching parenthesis
 set ignorecase    " ignore case when searching
@@ -97,6 +101,14 @@ set incsearch     " show search matches as you type
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
+set scrolloff=2     " start scrolling when 2 lines from edge
+set sidescroll=1    " scroll horizontally by 1 column
+set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+
+" other auto syntax
+au BufRead,BufNewFile *.mustache setfiletype mustache
+au BufRead,BufNewFile *.thrift set syntax=thrift
+au BufRead,BufNewFile *.aurora set syntax=ruby
 
 " show trailing whitespaces
 set list
@@ -117,10 +129,11 @@ let g:session_command_aliases = 1
 
 set history=1000
 set undolevels=1000
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
-set directory=~/.vim/tmp/swap//
-set backupskip=/tmp/*,/private/tmp/*"
+set undodir=~/.vim/tmp/undo/
+set undofile
+set backupdir=~/.vim/tmp/backup/
+set directory=~/.vim/tmp/swap/
+set backupskip=/tmp/*,/private/tmp/*
 set backup
 set writebackup
 set noswapfile
@@ -177,13 +190,18 @@ nnoremap <leader><leader> <C-w><C-w>
 nnoremap <leader>k        :E<CR>
 "                         Close current buffer and maintain window arrangement
 nnoremap <leader>x        :bp\|bd #<CR>
+"                         Search working directory
+nnoremap <leader>f        :Ag 
+nnoremap <leader>t        :AgFile 
+"                         Reveal file in NerdTree
+nnoremap <leader>r        :NERDTreeFind<CR>
 
 " ========== OTHER MAPPINGS ==========
 
 "                 Copy selection in visual mode
 vnoremap <C-x>    :w !pbcopy<CR>
 "                 Open NERDTree File Browser
-nnoremap <Bslash> :NERDTreeToggle<cr>
+nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Next buffer
 nnoremap <Tab>    :bn<CR>
 "                 Previous buffer
@@ -200,9 +218,77 @@ nnoremap <C-K>    :5winc -<CR>
 nnoremap <C-g>    :Ag <cword><CR>
 "                 Search working directory
 nnoremap <C-a>    :Ag 
+"                 Open and close folds
+nnoremap ,        za
 
 " Swap ; and : for easier type of commands
 nnoremap ; :
 nnoremap : ;
 vnoremap ; :
 vnoremap : ;
+
+" ========== NEOCOMPLETE ==========
+
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'

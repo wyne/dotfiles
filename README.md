@@ -20,7 +20,12 @@
   * **\<Ctrl-r\>** - Toggle regex searching
 *  **\<Ctrl-n\>** - Select next occurence of word
   * Use normal mode operations like **c**, **d**, etc
+* **\<space\> u** - Open undo tree (Gundo)
 
 #### Sessions
 * **\<space\> ss {name}** - save your current session to preserve open files, etc.
 * **\<space\> so** - restore a session you saved with _ss_. Use \<tab\> to iterate through options.
+
+#### Vimrc
+* **\<space\> v** - Edit .vimrc
+* **\<space\> V** - Reload .vimrc

@@ -82,7 +82,6 @@ let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 " ========== GENERAL CONFIGS ==========
 
 syntax on
-set number        " always show line numbers
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
@@ -133,7 +132,8 @@ augroup END
 " ========== SESSION MANAGEMENT ==========
 
 let g:session_directory = "~/.vim/session"
-let g:session_autoload = "no"
+let g:session_autoload = "yes"
+let g:session_default_to_last = 1
 let g:session_autosave = "yes"
 let g:session_command_aliases = 1
 
@@ -168,12 +168,14 @@ nnoremap <leader>n        :set rnu! rnu?<CR>
 nnoremap <leader>v        :e $MYVIMRC<CR>
 "                         Reload .vimrc
 nnoremap <leader>V        :so $MYVIMRC<CR>
+
 "                         Seach vundle plugins
 nnoremap <leader>ps       :PluginSearch<CR>
 "                         Search vundle plugins and force refresh
 nnoremap <leader>PS       :PluginSearch!<CR>
 "                         Update plugins to latest version
 nnoremap <leader>pr       :BundleInstall<CR>
+
 "                         Open Gundo (Undo Tree)
 nnoremap <leader>u        :GundoToggle<CR>
 "                         Search by file name
@@ -184,6 +186,7 @@ nnoremap <leader>b        :CtrlPBuffer<CR>
 nnoremap <leader>gs       :Gstatus<CR>
 "                         Git commit
 nnoremap <leader>gc       :Gcommit<CR>
+
 "                         Open vim session (press tab for completion)
 nnoremap <leader>so       :OpenSession 
 "                         Save vim session (press tab for completion)
@@ -192,6 +195,7 @@ nnoremap <leader>ss       :SaveSession
 nnoremap <leader>sd       :DeleteSession<CR>
 "                         Close vim session
 nnoremap <leader>sc       :CloseSession<CR>
+
 "                         Save current file
 nnoremap <leader>w        :w<CR>
 "                         Quit while maintaining window arrangement for session
@@ -214,11 +218,14 @@ nnoremap <leader>2        2<C-w><C-w>
 nnoremap <leader>3        3<C-w><C-w>
 "                         Close current buffer and maintain window arrangement
 nnoremap <leader>x        :bp\|bd #<CR>
+
 "                         Search working directory
 nnoremap <leader>f        :Ag 
 nnoremap <leader>t        :AgFile 
 "                         Reveal file in NerdTree
 nnoremap <leader>r        :NERDTreeFind<CR>
+"                         Clear highlighing (such as search)
+nnoremap <leader>i        :noh<CR>
 
 " ========== OTHER MAPPINGS ==========
 "                 Next buffer
@@ -246,8 +253,6 @@ nnoremap <C-a>    :Ag
 "                 Repeat f, F, t, or T
 nnoremap ,        ;
 vnoremap ,        ;
-"                 Hide highlighing (such as after a search)
-nnoremap <silent> <Esc> :noh<return><esc>
 
 " Swap ; and : for easier type of commands
 nnoremap ; :

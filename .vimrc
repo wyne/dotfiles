@@ -96,7 +96,6 @@ set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set showmatch     " set show matching parenthesis
 set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase
-set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
@@ -149,8 +148,6 @@ set directory=~/.vim/tmp/swap/
 set backupskip=/tmp/*,/private/tmp/*
 set backup
 set writebackup
-set noswapfile
-set nobackup
 set noswapfile
 
 " ========== CURSOR ==========

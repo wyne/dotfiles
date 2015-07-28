@@ -1,13 +1,25 @@
 " ========== Fresh Start Steps ==========
+" Make sure to use vim 7.4+ with lua support
+"   brew install vim --with-lua
 "
 " 1. Setup vundle
-"   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+"   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "
 " 2. Prepare directory for backups
 "   mkdir -p ~/.vim/tmp/swap ~/.vim/tmp/backup ~/.vim/tmp/undo
 "
 " 3. Install silver searcher
 "   https://github.com/rking/ag.vim
+"
+" 4. Install Packages
+"   vim +PluginInstall +qall
+"
+" 5. Edit dotfiles dir
+"
+" 6. Install patched fonts
+" http://powerline.readthedocs.org/en/latest/installation/osx.html
+" https://github.com/powerline/fonts.git
+" ./install.sh
 
 set nocompatible
 set encoding=utf-8
@@ -31,6 +43,8 @@ Plugin 'kien/ctrlp.vim'                 " File search
 Plugin 'scrooloose/nerdtree'            " Directory browsing
 Plugin 'tpope/vim-sensible'             " Sensible defaults
 Plugin 'tpope/vim-fugitive'             " Git commands
+Plugin 'tpope/vim-surround'             " vim-surround
+Plugin 'tpope/vim-commentary'           " vim-commentary
 
 " other plugins
 Plugin 'sjl/gundo.vim'                  " Undo Tree
@@ -98,6 +112,10 @@ hi PmenuSel ctermfg=white ctermbg=1
 hi VertSplit ctermbg=none ctermfg=black
 set fillchars=vert:\ 
 
+" Automatically switch relative line numbers on normal vs insert mode
+au InsertEnter * silent! :set number
+au InsertLeave * silent! :set relativenumber
+
 " other auto syntax
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
@@ -143,8 +161,10 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Set <space> to leader key
 let mapleader=" "
+"                         Toggle line number
+nnoremap <leader>n        :set rnu! rnu?<CR>
 "                         Edit .vimrc
-nnoremap <leader>v        :e ~/personal/dotfiles/.vimrc<CR>
+nnoremap <leader>v        :e ~/workspace/dotfiles/.vimrc<CR>
 "                         Reload .vimrc
 nnoremap <leader>V        :so $MYVIMRC<CR>
 "                         Seach vundle plugins
@@ -155,8 +175,6 @@ nnoremap <leader>PS       :PluginSearch!<CR>
 nnoremap <leader>pr       :BundleInstall<CR>
 "                         Open Gundo (Undo Tree)
 nnoremap <leader>u        :GundoToggle<CR>
-"                         Hide highlighing (such as after a search)
-nnoremap <leader>i        :noh<CR>
 "                         Search by file name
 nnoremap <leader>o        :CtrlP<Space>.<CR>
 "                         Seach by open buffers
@@ -225,6 +243,10 @@ nnoremap <C-g>    :Ag <cword><CR>
 nnoremap <C-a>    :Ag 
 "                 Open and close folds
 nnoremap ,        za
+"                 Back jump with Backspace
+nnoremap <BS>     <C-o>
+"                 Hide highlighing (such as after a search)
+nnoremap <silent> <Esc> :noh<return><esc>
 
 " Swap ; and : for easier type of commands
 nnoremap ; :

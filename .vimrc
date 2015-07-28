@@ -225,8 +225,8 @@ nnoremap <leader>f        :Ag
 nnoremap <leader>t        :AgFile 
 "                         Reveal file in NerdTree
 nnoremap <leader>r        :NERDTreeFind<CR>
-"                         Clear highlighing (such as search)
-nnoremap <leader>i        :noh<CR>
+"                         Toggle search highlighing
+nnoremap <silent><leader>i        :set hls!<CR>
 
 " ========== OTHER MAPPINGS ==========
 "                 Next buffer

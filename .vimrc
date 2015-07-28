@@ -1,4 +1,6 @@
 " ========== Fresh Start Steps ==========
+" Make sure to use vim 7.4+ with lua support
+"   brew install vim --with-lua
 "
 " 1. Setup vundle
 "   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -105,6 +107,10 @@ set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 
+" Automatically switch relative line numbers on normal vs insert mode
+au InsertEnter * silent! :set number
+au InsertLeave * silent! :set relativenumber
+
 " other auto syntax
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
@@ -150,6 +156,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Set <space> to leader key
 let mapleader=" "
+"                         Toggle line number
+nnoremap <leader>n        :set rnu! rnu?<CR>
 "                         Edit .vimrc
 nnoremap <leader>v        :e ~/workspace/dotfiles/.vimrc<CR>
 "                         Reload .vimrc
@@ -162,8 +170,6 @@ nnoremap <leader>PS       :PluginSearch!<CR>
 nnoremap <leader>pr       :BundleInstall<CR>
 "                         Open Gundo (Undo Tree)
 nnoremap <leader>u        :GundoToggle<CR>
-"                         Hide highlighing (such as after a search)
-nnoremap <leader>h        :noh<CR>
 "                         Search by file name
 nnoremap <leader>o        :CtrlP<Space>.<CR>
 "                         Seach by open buffers
@@ -220,6 +226,10 @@ nnoremap <C-g>    :Ag <cword><CR>
 nnoremap <C-a>    :Ag 
 "                 Open and close folds
 nnoremap ,        za
+"                 Back jump with Backspace
+nnoremap <BS>     <C-o>
+"                 Hide highlighing (such as after a search)
+nnoremap <silent> <Esc> :noh<return><esc>
 
 " Swap ; and : for easier type of commands
 nnoremap ; :

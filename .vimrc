@@ -112,6 +112,7 @@ hi VertSplit ctermbg=none ctermfg=black
 set fillchars=vert:\ 
 
 " Automatically switch relative line numbers on normal vs insert mode
+set number
 set relativenumber
 autocmd InsertEnter * :set relativenumber!
 autocmd InsertLeave * :set relativenumber
@@ -216,8 +217,8 @@ nnoremap <leader>1        1<C-w><C-w>
 nnoremap <leader>2        2<C-w><C-w>
 "                         Go to window 3
 nnoremap <leader>3        3<C-w><C-w>
-"                         Close current buffer and maintain window arrangement
-nnoremap <leader>x        :bp\|bd #<CR>
+"                         Force close current buffer and maintain window arrangement
+nnoremap <leader>x        :bp\|bd! #<CR>
 
 "                         Search working directory
 nnoremap <leader>f        :Ag 
@@ -232,10 +233,14 @@ nnoremap <leader>i        :noh<CR>
 nnoremap <Tab>    :bn<CR>
 "                 Previous buffer
 nnoremap <S-Tab>  :bN<CR>
+"                 New empty buffer
+nnoremap +        :enew<CR>
+"                 Close current buffer
+nnoremap -        :bp\|bd #<CR>
 "                 Go to previous (older) jump location
 nnoremap <BS>     <C-o>
 "                 Go to next (newer) jump location
-nnoremap <CR>     <C-i>
+nnoremap =        <C-i>
 "                 Open NERDTree File Browser
 nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Grow pane horizontally

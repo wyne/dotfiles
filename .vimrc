@@ -57,8 +57,8 @@ Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
 Plugin 'rking/ag.vim'                   " Searching
 Plugin 'mustache/vim-mustache-handlebars' " Mustache
 Plugin 'solarnz/thrift.vim'             " Thrift syntax
-Plugin 'edma2/vim-pants'
-Plugin 'tpope/vim-dispatch'
+Plugin 'edma2/vim-pants'                " Pants plugin
+Plugin 'tpope/vim-dispatch'             " Tmux integration
 
 "  end vundler
 call vundle#end()
@@ -113,8 +113,9 @@ hi VertSplit ctermbg=none ctermfg=black
 set fillchars=vert:\ 
 
 " Automatically switch relative line numbers on normal vs insert mode
-au InsertEnter * silent! :set number
-au InsertLeave * silent! :set relativenumber
+set relativenumber
+autocmd InsertEnter * :set relativenumber!
+autocmd InsertLeave * :set relativenumber
 
 " other auto syntax
 au BufRead,BufNewFile *.mustache setfiletype mustache
@@ -164,7 +165,7 @@ let mapleader=" "
 "                         Toggle line number
 nnoremap <leader>n        :set rnu! rnu?<CR>
 "                         Edit .vimrc
-nnoremap <leader>v        :e ~/workspace/dotfiles/.vimrc<CR>
+nnoremap <leader>v        :e $MYVIMRC<CR>
 "                         Reload .vimrc
 nnoremap <leader>V        :so $MYVIMRC<CR>
 "                         Seach vundle plugins
@@ -220,15 +221,16 @@ nnoremap <leader>t        :AgFile
 nnoremap <leader>r        :NERDTreeFind<CR>
 
 " ========== OTHER MAPPINGS ==========
-
-"                 Copy selection in visual mode
-"vnoremap <C-x>    :w !pbcopy<CR>
-"                 Open NERDTree File Browser
-nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Next buffer
 nnoremap <Tab>    :bn<CR>
 "                 Previous buffer
 nnoremap <S-Tab>  :bN<CR>
+"                 Go to previous (older) jump location
+nnoremap <BS>     <C-o>
+"                 Go to next (newer) jump location
+nnoremap <CR>     <C-i>
+"                 Open NERDTree File Browser
+nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Grow pane horizontally
 nnoremap <C-l>    :5winc ><CR>
 "                 Shrink pane horizontally
@@ -241,18 +243,15 @@ nnoremap <C-K>    :5winc -<CR>
 nnoremap <C-g>    :Ag <cword><CR>
 "                 Search working directory
 nnoremap <C-a>    :Ag 
-"                 Open and close folds
-nnoremap ,        za
-"                 Back jump with Backspace
-nnoremap <BS>     <C-o>
+"                 Repeat f, F, t, or T
+nnoremap ,        ;
+vnoremap ,        ;
 "                 Hide highlighing (such as after a search)
 nnoremap <silent> <Esc> :noh<return><esc>
 
 " Swap ; and : for easier type of commands
 nnoremap ; :
-nnoremap : ;
 vnoremap ; :
-vnoremap : ;
 
 " ========== NEOCOMPLETE ==========
 

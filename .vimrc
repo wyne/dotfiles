@@ -78,6 +78,8 @@ let g:airline#extensions#tabline#enabled       =  1
 let g:airline#extensions#tabline#tab_nr_type   =  1   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
+" Prefix mode with current time
+let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
 
 " ========== GENERAL CONFIGS ==========
 

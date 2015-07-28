@@ -43,6 +43,8 @@ Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
 Plugin 'rking/ag.vim'                   " Searching
 Plugin 'mustache/vim-mustache-handlebars' " Mustache
 Plugin 'solarnz/thrift.vim'             " Thrift syntax
+Plugin 'edma2/vim-pants'
+Plugin 'tpope/vim-dispatch'
 
 "  end vundler
 call vundle#end()
@@ -71,9 +73,6 @@ set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
 set cursorline    " highlight current line
-:hi CursorLine cterm=none ctermbg=black ctermfg=none
-:hi Pmenu ctermfg=white ctermbg=4
-:hi PmenuSel ctermfg=white ctermbg=1
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
@@ -92,6 +91,12 @@ set pastetoggle=<f2>
 set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+
+hi CursorLine cterm=none ctermbg=black ctermfg=none
+hi Pmenu ctermfg=white ctermbg=4
+hi PmenuSel ctermfg=white ctermbg=1
+hi VertSplit ctermbg=none ctermfg=black
+set fillchars=vert:\ 
 
 " other auto syntax
 au BufRead,BufNewFile *.mustache setfiletype mustache
@@ -151,7 +156,7 @@ nnoremap <leader>pr       :BundleInstall<CR>
 "                         Open Gundo (Undo Tree)
 nnoremap <leader>u        :GundoToggle<CR>
 "                         Hide highlighing (such as after a search)
-nnoremap <leader>h        :noh<CR>
+nnoremap <leader>i        :noh<CR>
 "                         Search by file name
 nnoremap <leader>o        :CtrlP<Space>.<CR>
 "                         Seach by open buffers
@@ -172,10 +177,22 @@ nnoremap <leader>sc       :CloseSession<CR>
 nnoremap <leader>w        :w<CR>
 "                         Quit while maintaining window arrangement for session
 nnoremap <leader>q        :qa<CR>
-"                         Next window
-nnoremap <leader><leader> <C-w><C-w>
-"                         Open native file browser
-nnoremap <leader>k        :E<CR>
+"                         Left window
+nnoremap <leader>h        <C-w>h
+"                         Right window
+nnoremap <leader>l        <C-w>l
+"                         Up window
+nnoremap <leader>k        <C-w>k
+"                         Down window
+nnoremap <leader>j        <C-w>j
+"                         Previous window
+nnoremap <leader><leader> <C-w><C-p>
+"                         Go to window 1
+nnoremap <leader>1        1<C-w><C-w>
+"                         Go to window 2
+nnoremap <leader>2        2<C-w><C-w>
+"                         Go to window 3
+nnoremap <leader>3        3<C-w><C-w>
 "                         Close current buffer and maintain window arrangement
 nnoremap <leader>x        :bp\|bd #<CR>
 "                         Search working directory
@@ -187,7 +204,7 @@ nnoremap <leader>r        :NERDTreeFind<CR>
 " ========== OTHER MAPPINGS ==========
 
 "                 Copy selection in visual mode
-vnoremap <C-x>    :w !pbcopy<CR>
+"vnoremap <C-x>    :w !pbcopy<CR>
 "                 Open NERDTree File Browser
 nnoremap <Bslash> :NERDTreeToggle<CR>
 "                 Next buffer
@@ -257,6 +274,8 @@ function! s:my_cr_function()
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <expr><CR>  pumvisible() ? neocomplete#close_popup() : "\<CR>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"

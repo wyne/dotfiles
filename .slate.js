@@ -50,7 +50,6 @@ var laptopLayout = slate.layout("laptopLayout", {
 
 // Create the layout itself
 var threeMonitorsLayout = slate.layout("threeMonitors", {
-  //"_before_" : { "operations" : hideSpotify }, // before the layout is activated, hide Spotify
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
     "operations" : rightMain,
@@ -84,8 +83,12 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
   },
   "HipChat" : {
     "operations" : middleCenter,
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
+    "ignore-fail" : true,
+    "main-first" : true
+  },
+  "Sunrise Calendar" : {
+    "operations" : middleCenter,
+    "ignore-fail" : true,
     "main-first" : true
   }
 });

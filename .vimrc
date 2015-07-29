@@ -1,26 +1,25 @@
 " ========== Fresh Start Steps ==========
-" Make sure to use vim 7.4+ with lua support
+" 1. Make sure to use vim 7.4+ with lua support
 "   brew install vim --with-lua
 "
-" 1. Setup vundle
+" 2. Setup vundle
 "   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "
-" 2. Prepare directory for backups
+" 3. Prepare directory for backups
 "   mkdir -p ~/.vim/tmp/swap ~/.vim/tmp/backup ~/.vim/tmp/undo
 "
-" 3. Install silver searcher
+" 4. Install silver searcher
 "   https://github.com/rking/ag.vim
 "
-" 4. Install Packages
+" 5. Install Packages
 "   vim +PluginInstall +qall
 "
-" 5. Edit dotfiles dir
-"
 " 6. Install patched fonts
-" http://powerline.readthedocs.org/en/latest/installation/osx.html
-" https://github.com/powerline/fonts.git
-" ./install.sh
+"   http://powerline.readthedocs.org/en/latest/installation/osx.html
+"   https://github.com/powerline/fonts.git
+"   ./install.sh
 
+" ========== SETUP ==========
 set nocompatible
 set encoding=utf-8
 " Since Fish isn't POSIX compliant
@@ -59,12 +58,13 @@ Plugin 'mustache/vim-mustache-handlebars' " Mustache
 Plugin 'solarnz/thrift.vim'             " Thrift syntax
 Plugin 'edma2/vim-pants'                " Pants plugin
 Plugin 'tpope/vim-dispatch'             " Tmux integration
+Plugin 'taylor/vim-zoomwin'             " Zoom and unzoom a window
 
-"  end vundler
+" end vundler
 call vundle#end()
 filetype plugin indent on
 
-" airline
+" ========== AIRLINE ==========
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
@@ -81,8 +81,7 @@ let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 " Prefix mode with current time
 let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
 
-" ========== GENERAL CONFIGS ==========
-
+" ========== GENERAL CONFIG ==========
 syntax on
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
@@ -106,11 +105,12 @@ set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 
-hi CursorLine cterm=none ctermbg=black ctermfg=none
-hi Pmenu ctermfg=white ctermbg=4
-hi PmenuSel ctermfg=white ctermbg=1
-hi VertSplit ctermbg=none ctermfg=black
-set fillchars=vert:\ 
+" Swap ; and : for easier type of commands
+nnoremap ; :
+vnoremap ; :
+" Then reassign repeat t/T/f/F
+nnoremap , ;
+vnoremap , ;
 
 " Automatically switch relative line numbers on normal vs insert mode
 set number
@@ -118,12 +118,12 @@ set relativenumber
 autocmd InsertEnter * :set relativenumber!
 autocmd InsertLeave * :set relativenumber
 
-" other auto syntax
+" Set file types
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
 
-" show trailing whitespaces
+" Show trailing whitespaces
 set list
 set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
 augroup FileTypes
@@ -131,8 +131,14 @@ augroup FileTypes
   autocmd filetype html,xml set listchars-=tab:▸\ 
 augroup END
 
-" ========== SESSION MANAGEMENT ==========
+" ========== COLORS ==========
+hi CursorLine cterm=none ctermbg=black ctermfg=none
+hi Pmenu ctermfg=white ctermbg=4
+hi PmenuSel ctermfg=white ctermbg=1
+hi VertSplit ctermbg=none ctermfg=black
+set fillchars=vert:\ 
 
+" ========== SESSION MANAGEMENT ==========
 let g:session_directory = "~/.vim/session"
 let g:session_autoload = "yes"
 let g:session_default_to_last = 1
@@ -140,7 +146,6 @@ let g:session_autosave = "yes"
 let g:session_command_aliases = 1
 
 " ========== BACKUP SETTINGS ==========
-
 set history=1000
 set undolevels=1000
 set undodir=~/.vim/tmp/undo/
@@ -153,117 +158,114 @@ set writebackup
 set noswapfile
 
 " ========== CURSOR ==========
-
 " change cursor shape in different modes
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " ========== LEADER ==========
-
 " Set <space> to leader key
 let mapleader=" "
-"                         Toggle line number
-nnoremap <leader>n        :set rnu! rnu?<CR>
-"                         Edit .vimrc
-nnoremap <leader>v        :e $MYVIMRC<CR>
-"                         Reload .vimrc
-nnoremap <leader>V        :so $MYVIMRC<CR>
 
-"                         Seach vundle plugins
-nnoremap <leader>ps       :PluginSearch<CR>
-"                         Search vundle plugins and force refresh
-nnoremap <leader>PS       :PluginSearch!<CR>
-"                         Update plugins to latest version
-nnoremap <leader>pr       :BundleInstall<CR>
+" ========== EDITING ==========
+"                           Toggle line number
+nnoremap <leader>n          :set rnu! rnu?<CR>
+"                           Edit .vimrc
+nnoremap <leader>v          :e $MYVIMRC<CR>
+"                           Reload .vimrc
+nnoremap <leader>V          :so $MYVIMRC<CR>
+"                           Open Gundo (Undo Tree)
+nnoremap <leader>u          :GundoToggle<CR>
 
-"                         Open Gundo (Undo Tree)
-nnoremap <leader>u        :GundoToggle<CR>
-"                         Search by file name
-nnoremap <leader>o        :CtrlP<Space>.<CR>
-"                         Seach by open buffers
-nnoremap <leader>b        :CtrlPBuffer<CR>
-"                         Git status
-nnoremap <leader>gs       :Gstatus<CR>
-"                         Git commit
-nnoremap <leader>gc       :Gcommit<CR>
+" ========== BUFFERS ==========
+"                           Next buffer
+nnoremap <Tab>              :bn<CR>
+"                           Previous buffer
+nnoremap <S-Tab>            :bN<CR>
+"                           New empty buffer
+nnoremap +                  :enew<CR>
+"                           Close current buffer
+nnoremap -                  :bp\|bd #<CR>
+"                           Force close current buffer and maintain window arrangement
+nnoremap <leader>x          :bp\|bd! #<CR>
 
-"                         Open vim session (press tab for completion)
-nnoremap <leader>so       :OpenSession 
-"                         Save vim session (press tab for completion)
-nnoremap <leader>ss       :SaveSession 
-"                         Delete vim session
-nnoremap <leader>sd       :DeleteSession<CR>
-"                         Close vim session
-nnoremap <leader>sc       :CloseSession<CR>
+" ========== FILES ==========
+"                           Search by file name
+nnoremap <leader>o          :CtrlP<Space>.<CR>
+"                           Seach by open buffers
+nnoremap <leader>b          :CtrlPBuffer<CR>
+"                           Save current file
+nnoremap <leader>w          :w<CR>
+"                           Search working directory
+nnoremap <leader>f          :Ag 
+nnoremap <leader>t          :AgFile 
+"                           Reveal file in NerdTree
+nnoremap <leader>r          :NERDTreeFind<CR>
+"                           Open NERDTree File Browser
+nnoremap <Bslash>           :NERDTreeToggle<CR>
 
-"                         Save current file
-nnoremap <leader>w        :w<CR>
-"                         Quit while maintaining window arrangement for session
-nnoremap <leader>q        :qa<CR>
-"                         Left window
-nnoremap <leader>h        <C-w>h
-"                         Right window
-nnoremap <leader>l        <C-w>l
-"                         Up window
-nnoremap <leader>k        <C-w>k
-"                         Down window
-nnoremap <leader>j        <C-w>j
-"                         Previous window
-nnoremap <leader><leader> <C-w><C-p>
-"                         Go to window 1
-nnoremap <leader>1        1<C-w><C-w>
-"                         Go to window 2
-nnoremap <leader>2        2<C-w><C-w>
-"                         Go to window 3
-nnoremap <leader>3        3<C-w><C-w>
-"                         Force close current buffer and maintain window arrangement
-nnoremap <leader>x        :bp\|bd! #<CR>
+" ========== WINDOWS ==========
+"                           Quit while maintaining window arrangement for session
+nnoremap <leader>q          :qa<CR>
+"                           Left window
+nnoremap <leader>h          <C-w>h
+"                           Right window
+nnoremap <leader>l          <C-w>l
+"                           Up window
+nnoremap <leader>k          <C-w>k
+"                           Down window
+nnoremap <leader>j          <C-w>j
+"                           Previous window
+nnoremap <leader><leader>   <C-w><C-p>
+"                           Zoom or unzoom window
+nnoremap <silent><leader>z  :ZoomWin<CR>
+"                           Grow pane horizontally
+nnoremap <C-l>              :5winc ><CR>
+"                           Shrink pane horizontally
+nnoremap <C-h>              :5winc <<CR>
+"                           Grow pane vertically
+nnoremap <C-J>              :5winc +<CR>
+"                           Shrink pane vertically
+nnoremap <C-K>              :5winc -<CR>
 
-"                         Search working directory
-nnoremap <leader>f        :Ag 
-nnoremap <leader>t        :AgFile 
-"                         Reveal file in NerdTree
-nnoremap <leader>r        :NERDTreeFind<CR>
-"                         Toggle search highlighing
-nnoremap <silent><leader>i        :set hls!<CR>
+" ========== JUMPS ==========
+"                           Go to previous (older) jump location
+nnoremap <BS>               <C-o>
+"                           Go to next (newer) jump location
+nnoremap =                  <C-i>
 
-" ========== OTHER MAPPINGS ==========
-"                 Next buffer
-nnoremap <Tab>    :bn<CR>
-"                 Previous buffer
-nnoremap <S-Tab>  :bN<CR>
-"                 New empty buffer
-nnoremap +        :enew<CR>
-"                 Close current buffer
-nnoremap -        :bp\|bd #<CR>
-"                 Go to previous (older) jump location
-nnoremap <BS>     <C-o>
-"                 Go to next (newer) jump location
-nnoremap =        <C-i>
-"                 Open NERDTree File Browser
-nnoremap <Bslash> :NERDTreeToggle<CR>
-"                 Grow pane horizontally
-nnoremap <C-l>    :5winc ><CR>
-"                 Shrink pane horizontally
-nnoremap <C-h>    :5winc <<CR>
-"                 Grow pane vertically
-nnoremap <C-J>    :5winc +<CR>
-"                 Shrink pane vertically
-nnoremap <C-K>    :5winc -<CR>
-"                 Search working directory for word under cursor
-nnoremap <C-g>    :Ag <cword><CR>
-"                 Search working directory
-nnoremap <C-a>    :Ag 
-"                 Repeat f, F, t, or T
-nnoremap ,        ;
-vnoremap ,        ;
+" ========== SEARCH ==========
+"                           Toggle search highlighing
+nnoremap <silent><leader>i  :set hls!<CR>
+"                           Search working directory for word under cursor
+nnoremap <C-g>              :Ag <cword><CR>
+"                           Search working directory
+nnoremap <C-a>              :Ag 
 
-" Swap ; and : for easier type of commands
-nnoremap ; :
-vnoremap ; :
+" ========== GIT ==========
+"                           Git status
+nnoremap <leader>gs         :Gstatus<CR>
+"                           Git commit
+nnoremap <leader>gc         :Gcommit<CR>
+
+" ========== SESSIONS ==========
+"                           Open vim session (press tab for completion)
+nnoremap <leader>so         :OpenSession 
+"                           Save vim session (press tab for completion)
+nnoremap <leader>ss         :SaveSession 
+"                           Delete vim session
+nnoremap <leader>sd         :DeleteSession<CR>
+"                           Close vim session
+nnoremap <leader>sc         :CloseSession<CR>
+
+" ========== PLUGINS ==========
+"                           Seach vundle plugins
+nnoremap <leader>ps         :PluginSearch<CR>
+"                           Search vundle plugins and force refresh
+nnoremap <leader>PS         :PluginSearch!<CR>
+"                           Update plugins to latest version
+nnoremap <leader>pr         :BundleInstall<CR>
 
 " ========== NEOCOMPLETE ==========
-
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 

@@ -59,6 +59,7 @@ Plugin 'mustache/vim-mustache-handlebars' " Mustache
 Plugin 'solarnz/thrift.vim'             " Thrift syntax
 Plugin 'edma2/vim-pants'                " Pants plugin
 Plugin 'tpope/vim-dispatch'             " Tmux integration
+Plugin 'wesQ3/vim-windowswap'           " Window swapping
 
 "  end vundler
 call vundle#end()
@@ -75,11 +76,14 @@ let g:airline#extensions#branch#empty_message  =  "No SCM"
 let g:airline#extensions#whitespace#enabled    =  0
 let g:airline#extensions#syntastic#enabled     =  1
 let g:airline#extensions#tabline#enabled       =  1
-let g:airline#extensions#tabline#tab_nr_type   =  1   " tab number
+let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
+let g:airline#extensions#windowswap#enabled = 1
+let g:airline#extensions#windowswap#indicator_text = 'WS'
 " Prefix mode with current time
-let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
+"let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
+let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 
 " ========== GENERAL CONFIGS ==========
 
@@ -210,14 +214,13 @@ nnoremap <leader>k        <C-w>k
 nnoremap <leader>j        <C-w>j
 "                         Previous window
 nnoremap <leader><leader> <C-w><C-p>
-"                         Go to window 1
-nnoremap <leader>1        1<C-w><C-w>
-"                         Go to window 2
-nnoremap <leader>2        2<C-w><C-w>
-"                         Go to window 3
-nnoremap <leader>3        3<C-w><C-w>
 "                         Force close current buffer and maintain window arrangement
 nnoremap <leader>x        :bp\|bd! #<CR>
+
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+"nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 "                         Search working directory
 nnoremap <leader>f        :Ag 

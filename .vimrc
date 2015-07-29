@@ -82,7 +82,6 @@ let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 let g:airline#extensions#windowswap#enabled = 1
 let g:airline#extensions#windowswap#indicator_text = 'WS'
 " Prefix mode with current time
-"let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
 let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 
 " ========== GENERAL CONFIG ==========
@@ -230,10 +229,10 @@ nnoremap <C-h>              :5winc <<CR>
 nnoremap <C-J>              :5winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-K>              :5winc -<CR>
-
+"                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
-nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
-nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 "nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 " ========== JUMPS ==========

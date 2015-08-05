@@ -60,6 +60,7 @@ Plugin 'edma2/vim-pants'                " Pants plugin
 Plugin 'tpope/vim-dispatch'             " Tmux integration
 Plugin 'wesQ3/vim-windowswap'           " Window swapping
 Plugin 'taylor/vim-zoomwin'             " Zoom and unzoom a window
+Plugin 'terryma/vim-expand-region'      " Expand visual region
 
 " end vundler
 call vundle#end()
@@ -125,6 +126,9 @@ autocmd InsertLeave * :set relativenumber
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
+function! FormatJSON()
+  :%!python -m json.tool
+endfunction
 
 " Show trailing whitespaces
 set list
@@ -143,7 +147,7 @@ set fillchars=vert:\
 
 " ========== SESSION MANAGEMENT ==========
 let g:session_directory = "~/.vim/session"
-let g:session_autoload = "yes"
+let g:session_autoload = "no"
 let g:session_default_to_last = 1
 let g:session_autosave = "yes"
 let g:session_command_aliases = 1
@@ -223,18 +227,21 @@ nnoremap <leader><leader>   <C-w><C-p>
 nnoremap <silent><leader>z  :ZoomWin<CR>
 "                           Grow pane horizontally
 nnoremap <C-l>              :5winc ><CR>
+nnoremap S-C-L            :winc ><CR>
 "                           Shrink pane horizontally
 nnoremap <C-h>              :5winc <<CR>
+nnoremap S-C-H            :winc <<CR>
 "                           Grow pane vertically
 nnoremap <C-J>              :5winc +<CR>
+nnoremap S-C-J            :winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-K>              :5winc -<CR>
+nnoremap S-C-K            :winc -<CR>
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 "nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
-
 " ========== JUMPS ==========
 "                           Go to previous (older) jump location
 nnoremap <BS>               <C-o>

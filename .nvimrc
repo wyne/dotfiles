@@ -31,39 +31,38 @@ if has("mac")
   let neocomplete_mode = 0
 endif
 
-" start vundler
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+"set rtp+=~/.vim/bundle/Vundle.vim
+filetype plugin indent on
+
+" ==== PLUG ====
+call plug#begin()
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " core plugins
-Plugin 'gmarik/Vundle.vim'              " Required
-Plugin 'flazz/vim-colorschemes'         " Set of color schemes http://bytefluent.com/vivify/
-Plugin 'kien/ctrlp.vim'                 " File search
-Plugin 'scrooloose/nerdtree'            " Directory browsing
-Plugin 'tpope/vim-sensible'             " Sensible defaults
-Plugin 'tpope/vim-fugitive'             " Git commands
-Plugin 'tpope/vim-surround'             " vim-surround
-Plugin 'tpope/vim-commentary'           " vim-commentary
+Plug 'flazz/vim-colorschemes'         " Set of color schemes http://bytefluent.com/vivify/
+Plug 'kien/ctrlp.vim'                 " File search
+Plug 'scrooloose/nerdtree'            " Directory browsing
+Plug 'tpope/vim-sensible'             " Sensible defaults
+Plug 'tpope/vim-fugitive'             " Git commands
+Plug 'tpope/vim-surround'             " vim-surround
+Plug 'tpope/vim-commentary'           " vim-commentary
 
 " other plugins
-Plugin 'sjl/gundo.vim'                  " Undo Tree
-Plugin 'Shougo/neocomplete'             " Autocompletion
-Plugin 'terryma/vim-multiple-cursors'   " Sublime style repeat word select
-Plugin 'bling/vim-airline'              " Status bar
-Plugin 'xolox/vim-misc'                 " Requirement for session management
-Plugin 'xolox/vim-session'              " Session management
-Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
-Plugin 'rking/ag.vim'                   " Searching
-Plugin 'mustache/vim-mustache-handlebars' " Mustache
-Plugin 'solarnz/thrift.vim'             " Thrift syntax
-Plugin 'edma2/vim-pants'                " Pants plugin
-Plugin 'tpope/vim-dispatch'             " Tmux integration
-Plugin 'taylor/vim-zoomwin'             " Zoom and unzoom a window
-Plugin 'wellle/targets.vim'             " Additional text objects
-
-" end vundler
-call vundle#end()
-filetype plugin indent on
+Plug 'sjl/gundo.vim'                  " Undo Tree
+Plug 'Shougo/neocomplete'             " Autocompletion
+Plug 'terryma/vim-multiple-cursors'   " Sublime style repeat word select
+Plug 'bling/vim-airline'              " Status bar
+Plug 'xolox/vim-misc'                 " Requirement for session management
+Plug 'xolox/vim-session'              " Session management
+Plug 'henrik/vim-indexed-search'      " Show N of M matches during search
+Plug 'rking/ag.vim'                   " Searching
+Plug 'mustache/vim-mustache-handlebars' " Mustache
+Plug 'solarnz/thrift.vim'             " Thrift syntax
+Plug 'edma2/vim-pants'                " Pants plugin
+Plug 'tpope/vim-dispatch'             " Tmux integration
+Plug 'taylor/vim-zoomwin'             " Zoom and unzoom a window
+Plug 'wellle/targets.vim'             " Additional text objects
+call plug#end()
 
 " ========== AIRLINE ==========
 if !exists("g:airline_symbols")
@@ -191,9 +190,9 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 
 " ========== FILES ==========
 "                           Search by file name
-nnoremap <leader>o          :CtrlP<Space>.<CR>
+nnoremap <leader>o          :FZF<CR>
 "                           Seach by open buffers
-nnoremap <leader>b          :CtrlPBuffer<CR>
+"nnoremap <leader>b          :CtrlPBuffer<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
 "                           Search working directory
@@ -259,12 +258,8 @@ nnoremap <leader>sd         :DeleteSession<CR>
 nnoremap <leader>sc         :CloseSession<CR>
 
 " ========== PLUGINS ==========
-"                           Seach vundle plugins
-nnoremap <leader>ps         :PluginSearch<CR>
-"                           Search vundle plugins and force refresh
-nnoremap <leader>PS         :PluginSearch!<CR>
 "                           Update plugins to latest version
-nnoremap <leader>pr         :BundleInstall<CR>
+nnoremap <leader>pi         :PlugInstall<CR>
 
 " ========== NEOCOMPLETE ==========
 " Disable AutoComplPop.
@@ -332,3 +327,23 @@ endif
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" === FZF ====
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <silent><leader>b :call fzf#run({
+\  'source':  reverse(<sid>buflist()),
+\  'sink':    function('<sid>bufopen'),
+\  'options': '+m',
+\  'down':    len(<sid>buflist()) + 2
+\})<CR>
+

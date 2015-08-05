@@ -3,7 +3,7 @@ export ZSH=/Users/Justin/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Enable command auto-correction.
 ENABLE_CORRECTION="true"

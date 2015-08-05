@@ -1,5 +1,11 @@
 # Justin's dotfiles
 
+##
+Installation
+
+1. Clone Repo
+2. stow vim, stow zsh, stow slate
+
 ## vim
 
 ![Screenshot](http://i.imgur.com/bY1Mw1S.png)

@@ -48,20 +48,21 @@ Plug 'tpope/vim-surround'             " vim-surround
 Plug 'tpope/vim-commentary'           " vim-commentary
 
 " other plugins
-Plug 'sjl/gundo.vim'                  " Undo Tree
-Plug 'Shougo/neocomplete'             " Autocompletion
-Plug 'terryma/vim-multiple-cursors'   " Sublime style repeat word select
-Plug 'bling/vim-airline'              " Status bar
-Plug 'xolox/vim-misc'                 " Requirement for session management
-Plug 'xolox/vim-session'              " Session management
-Plug 'henrik/vim-indexed-search'      " Show N of M matches during search
-Plug 'rking/ag.vim'                   " Searching
+Plug 'Shougo/neocomplete'               " Autocompletion
+Plug 'bling/vim-airline'                " Status bar
+Plug 'edma2/vim-pants'                  " Pants plugin
+Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plug 'mustache/vim-mustache-handlebars' " Mustache
-Plug 'solarnz/thrift.vim'             " Thrift syntax
-Plug 'edma2/vim-pants'                " Pants plugin
-Plug 'tpope/vim-dispatch'             " Tmux integration
-Plug 'taylor/vim-zoomwin'             " Zoom and unzoom a window
-Plug 'wellle/targets.vim'             " Additional text objects
+Plug 'rking/ag.vim'                     " Searching
+Plug 'sjl/gundo.vim'                    " Undo Tree
+Plug 'solarnz/thrift.vim'               " Thrift syntax
+Plug 'taylor/vim-zoomwin'               " Zoom and unzoom a window
+Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
+Plug 'tpope/vim-dispatch'               " Tmux integration
+Plug 'wellle/targets.vim'               " Additional text objects
+Plug 'wesQ3/vim-windowswap'             " Window swapping
+Plug 'xolox/vim-misc'                   " Requirement for session management
+Plug 'xolox/vim-session'                " Session management
 call plug#end()
 
 " ========== AIRLINE ==========
@@ -104,6 +105,8 @@ set pastetoggle=<f2>
 set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+
+let NERDTreeShowHidden=1
 
 " Swap ; and : for easier type of commands
 nnoremap ; :

@@ -46,22 +46,22 @@ Plugin 'tpope/vim-surround'             " vim-surround
 Plugin 'tpope/vim-commentary'           " vim-commentary
 
 " other plugins
-Plugin 'sjl/gundo.vim'                  " Undo Tree
-Plugin 'Shougo/neocomplete'             " Autocompletion
-Plugin 'terryma/vim-multiple-cursors'   " Sublime style repeat word select
-Plugin 'bling/vim-airline'              " Status bar
-Plugin 'xolox/vim-misc'                 " Requirement for session management
-Plugin 'xolox/vim-session'              " Session management
-Plugin 'henrik/vim-indexed-search'      " Show N of M matches during search
-Plugin 'rking/ag.vim'                   " Searching
+Plugin 'Shougo/neocomplete'               " Autocompletion
+Plugin 'bling/vim-airline'                " Status bar
+Plugin 'edma2/vim-pants'                  " Pants plugin
+Plugin 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plugin 'mustache/vim-mustache-handlebars' " Mustache
-Plugin 'solarnz/thrift.vim'             " Thrift syntax
-Plugin 'edma2/vim-pants'                " Pants plugin
-Plugin 'tpope/vim-dispatch'             " Tmux integration
-Plugin 'wesQ3/vim-windowswap'           " Window swapping
-Plugin 'taylor/vim-zoomwin'             " Zoom and unzoom a window
-Plugin 'wellle/targets.vim'             " Additional text objects
-Plugin 'terryma/vim-expand-region'      " Expand visual region
+Plugin 'rking/ag.vim'                     " Searching
+Plugin 'sjl/gundo.vim'                    " Undo Tree
+Plugin 'solarnz/thrift.vim'               " Thrift syntax
+Plugin 'taylor/vim-zoomwin'               " Zoom and unzoom a window
+Plugin 'terryma/vim-expand-region'        " Expand visual region
+Plugin 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
+Plugin 'tpope/vim-dispatch'               " Tmux integration
+Plugin 'wellle/targets.vim'               " Additional text objects
+Plugin 'wesQ3/vim-windowswap'             " Window swapping
+Plugin 'xolox/vim-misc'                   " Requirement for session management
+Plugin 'xolox/vim-session'                " Session management
 
 " end vundler
 call vundle#end()
@@ -109,6 +109,8 @@ set pastetoggle=<f2>
 set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+
+let NERDTreeShowHidden=1
 
 " Swap ; and : for easier type of commands
 nnoremap ; :

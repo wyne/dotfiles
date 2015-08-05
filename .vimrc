@@ -58,8 +58,10 @@ Plugin 'mustache/vim-mustache-handlebars' " Mustache
 Plugin 'solarnz/thrift.vim'             " Thrift syntax
 Plugin 'edma2/vim-pants'                " Pants plugin
 Plugin 'tpope/vim-dispatch'             " Tmux integration
+Plugin 'wesQ3/vim-windowswap'           " Window swapping
 Plugin 'taylor/vim-zoomwin'             " Zoom and unzoom a window
 Plugin 'wellle/targets.vim'             " Additional text objects
+Plugin 'terryma/vim-expand-region'      " Expand visual region
 
 " end vundler
 call vundle#end()
@@ -76,11 +78,13 @@ let g:airline#extensions#branch#empty_message  =  "No SCM"
 let g:airline#extensions#whitespace#enabled    =  0
 let g:airline#extensions#syntastic#enabled     =  1
 let g:airline#extensions#tabline#enabled       =  1
-let g:airline#extensions#tabline#tab_nr_type   =  1   " tab number
+let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
+let g:airline#extensions#windowswap#enabled = 1
+let g:airline#extensions#windowswap#indicator_text = 'WS'
 " Prefix mode with current time
-let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
+let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 
 " ========== GENERAL CONFIG ==========
 syntax on
@@ -123,6 +127,9 @@ autocmd InsertLeave * :set relativenumber
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
+function! FormatJSON()
+  :%!python -m json.tool
+endfunction
 
 " Show trailing whitespaces
 set list
@@ -141,7 +148,7 @@ set fillchars=vert:\
 
 " ========== SESSION MANAGEMENT ==========
 let g:session_directory = "~/.vim/session"
-let g:session_autoload = "yes"
+let g:session_autoload = "no"
 let g:session_default_to_last = 1
 let g:session_autosave = "yes"
 let g:session_command_aliases = 1
@@ -221,13 +228,21 @@ nnoremap <leader><leader>   <C-w><C-p>
 nnoremap <silent><leader>z  :ZoomWin<CR>
 "                           Grow pane horizontally
 nnoremap <C-l>              :5winc ><CR>
+nnoremap S-C-L            :winc ><CR>
 "                           Shrink pane horizontally
 nnoremap <C-h>              :5winc <<CR>
+nnoremap S-C-H            :winc <<CR>
 "                           Grow pane vertically
 nnoremap <C-J>              :5winc +<CR>
+nnoremap S-C-J            :winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-K>              :5winc -<CR>
-
+nnoremap S-C-K            :winc -<CR>
+"                           Window swapping
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
+"nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 " ========== JUMPS ==========
 "                           Go to previous (older) jump location
 nnoremap <BS>               <C-o>

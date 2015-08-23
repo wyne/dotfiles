@@ -10,14 +10,45 @@ var rightScreenRef = "2";
 var focusITerm = slate.operation("focus", { "app" : "iTerm" });
 var focusChrome = slate.operation("focus", { "app" : "Google Chrome" });
 
+// Margins
+var marginX = "screenSizeX/30";
+var marginY = "screenSizeY/20";
+
+// Full screen
+function fullScreen(screen){
+  var _screen = screen==null?0:screen;
+  return {
+    "screen" : screen,
+    "width" : "screenSizeX-2*" + marginX,
+    "height" : "screenSizeY-2*" + marginY,
+    "x" : "screenOriginX+" + marginX,
+    "y" : "screenOriginY+" + marginY
+  }
+}
+
+// Left Half
+function leftHalf(screen){
+  var s = fullScreen(screen);
+  s.width = "screenSizeX/2-1.5*" + marginX;
+  return s;
+}
+
+// Right Half
+function rightHalf(screen){
+  var s = fullScreen(screen);
+  s.width = "screenSizeX/2-1.5*" + marginX;
+  s.x = "screenSizeX/2+.5*" + marginX;
+  return s;
+}
+
+// OPERATIONS
+var firstFull = slate.operation("move", fullScreen(leftScreenRef));
+var firstLeft = slate.operation("move", leftHalf(leftScreenRef));
+var firstRight = slate.operation("move", rightHalf(leftScreenRef));
+
+
 // LEFT SCREEN
-var leftMain = slate.operation("move", {
-  "screen" : leftScreenRef,
-  "width" : "screenSizeX",
-  "height" : "screenSizeY",
-  "x" : "screenOriginX",
-  "y" : "screenOriginY"
-});
+var leftMain = slate.operation("move", fullScreen(leftScreenRef));
 
 // MIDDLE SCREEN
 var middleMain = slate.operation("move", {
@@ -96,6 +127,10 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("layout", { "name" : threeMonitorsLayout }));
+
+slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
+slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });
+slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);

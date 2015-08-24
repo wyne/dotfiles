@@ -1,9 +1,10 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/Justin/.oh-my-zsh
+#export ZSH=/Users/Justin/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="agnoster"
+#ZSH_THEME="agnoster"
+ZSH_THEME="minimal"
 
 # Enable command auto-correction.
 ENABLE_CORRECTION="true"
@@ -17,7 +18,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(bundler osx rake ruby)
+#plugins=(bundler osx rake ruby)
 
 # FASD
 eval "$(fasd --init auto)"
@@ -27,7 +28,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # ===== Oh my ZSH =====
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 # ===== Aliases =====
 alias zshconfig="nvim ~/.zshrc"
@@ -67,3 +68,9 @@ alias json='python -m json.tool'
 
 # iTerm 2 Shell Integration
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+
+# Disable git
+#function git_prompt_info() {
+#  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+#  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+#}

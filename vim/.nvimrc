@@ -8,8 +8,8 @@
 " 3. Prepare directory for backups
 "   mkdir -p ~/.vim/tmp/swap ~/.vim/tmp/backup ~/.vim/tmp/undo
 "
-" 4. Install silver searcher
-"   https://github.com/rking/ag.vim
+" 4. Install Plug
+"   https://github.com/junegunn/vim-plug
 "
 " 5. Install Packages
 "   vim +PluginInstall +qall
@@ -22,8 +22,6 @@
 " ========== SETUP ==========
 set nocompatible
 set encoding=utf-8
-" Since Fish isn't POSIX compliant
-set shell=/bin/bash
 
 " switch between YCM and NeoComplete
 let neocomplete_mode = 1
@@ -31,11 +29,17 @@ if has("mac")
   let neocomplete_mode = 0
 endif
 
-"set rtp+=~/.vim/bundle/Vundle.vim
-filetype plugin indent on
-
 " ==== PLUG ====
-call plug#begin()
+
+" Auto install
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+
+" Setup
+call plug#begin('~/.vim/bundle')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " core plugins
@@ -76,11 +80,13 @@ let g:airline#extensions#branch#empty_message  =  "No SCM"
 let g:airline#extensions#whitespace#enabled    =  0
 let g:airline#extensions#syntastic#enabled     =  1
 let g:airline#extensions#tabline#enabled       =  1
-let g:airline#extensions#tabline#tab_nr_type   =  1   " tab number
+let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
+let g:airline#extensions#windowswap#enabled = 1
+let g:airline#extensions#windowswap#indicator_text = 'WS'
 " Prefix mode with current time
-let g:airline_section_a = airline#section#create(['%{strftime("%b %d %H:%M")} ', 'mode'])
+let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 
 " ========== GENERAL CONFIG ==========
 syntax on
@@ -125,6 +131,9 @@ autocmd InsertLeave * :set relativenumber
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
+function! FormatJSON()
+  :%!python -m json.tool
+endfunction
 
 " Show trailing whitespaces
 set list
@@ -143,8 +152,8 @@ set fillchars=vert:\
 
 " ========== SESSION MANAGEMENT ==========
 let g:session_directory = "~/.vim/session"
-let g:session_autoload = "yes"
-let g:session_default_to_last = 1
+let g:session_autoload = "no"
+let g:session_default_to_last = 0
 let g:session_autosave = "yes"
 let g:session_command_aliases = 1
 
@@ -229,6 +238,11 @@ nnoremap <C-h>              :5winc <<CR>
 nnoremap <C-J>              :5winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-K>              :5winc -<CR>
+"                           Window swapping
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
+"nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 " ========== JUMPS ==========
 "                           Go to previous (older) jump location

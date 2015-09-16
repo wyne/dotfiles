@@ -2,19 +2,16 @@
 " 1. Make sure to use vim 7.4+ with lua support
 "   brew install vim --with-lua
 "
-" 2. Setup vundle
-"   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-"
-" 3. Prepare directory for backups
+" 2. Prepare directory for backups
 "   mkdir -p ~/.vim/tmp/swap ~/.vim/tmp/backup ~/.vim/tmp/undo
 "
-" 4. Install Plug
+" 3. Install Plug
 "   https://github.com/junegunn/vim-plug
 "
-" 5. Install Packages
+" 4. Install Packages
 "   vim +PluginInstall +qall
 "
-" 6. Install patched fonts
+" 5. Install patched fonts
 "   http://powerline.readthedocs.org/en/latest/installation/osx.html
 "   https://github.com/powerline/fonts.git
 "   ./install.sh
@@ -32,7 +29,7 @@ endif
 " ==== PLUG ====
 
 " Auto install
-if empty(glob('~/.vim/autoload/plug.vim'))
+if empty(glob('~/.nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
@@ -232,12 +229,16 @@ nnoremap <leader><leader>   <C-w><C-p>
 nnoremap <silent><leader>z  :ZoomWin<CR>
 "                           Grow pane horizontally
 nnoremap <C-l>              :5winc ><CR>
+nnoremap S-C-L            :winc ><CR>
 "                           Shrink pane horizontally
 nnoremap <C-h>              :5winc <<CR>
+nnoremap S-C-H            :winc <<CR>
 "                           Grow pane vertically
 nnoremap <C-J>              :5winc +<CR>
+nnoremap S-C-J            :winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-K>              :5winc -<CR>
+nnoremap S-C-K            :winc -<CR>
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>

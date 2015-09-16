@@ -2,9 +2,9 @@
 slate.config("orderScreensLeftToRight", true);
 
 // Set up screen reference variables to avoid typos :)
-var leftScreenRef = "0";
-var middleScreenRef = "1";
-var rightScreenRef = "2";
+var ScreenRefOne = "0";
+var ScreenRefTwo = "1";
+var ScreenRefThree = "2";
 
 // Create the various operations used in the layout
 var focusITerm = slate.operation("focus", { "app" : "iTerm" });
@@ -42,17 +42,24 @@ function rightHalf(screen){
 }
 
 // OPERATIONS
-var firstFull = slate.operation("move", fullScreen(leftScreenRef));
-var firstLeft = slate.operation("move", leftHalf(leftScreenRef));
-var firstRight = slate.operation("move", rightHalf(leftScreenRef));
+var firstFull = slate.operation("move", fullScreen(ScreenRefOne));
+var firstLeft = slate.operation("move", leftHalf(ScreenRefOne));
+var firstRight = slate.operation("move", rightHalf(ScreenRefOne));
 
+var secondFull = slate.operation("move", fullScreen(ScreenRefTwo));
+var secondLeft = slate.operation("move", leftHalf(ScreenRefTwo));
+var secondRight = slate.operation("move", rightHalf(ScreenRefTwo));
+
+var thirdFull = slate.operation("move", fullScreen(ScreenRefThree));
+var thirdLeft = slate.operation("move", leftHalf(ScreenRefThree));
+var thirdRight = slate.operation("move", rightHalf(ScreenRefThree));
 
 // LEFT SCREEN
-var leftMain = slate.operation("move", fullScreen(leftScreenRef));
+var leftMain = slate.operation("move", fullScreen(ScreenRefOne));
 
 // MIDDLE SCREEN
 var middleMain = slate.operation("move", {
-  "screen" : middleScreenRef,
+  "screen" : ScreenRefTwo,
   "width" : "screenSizeX",
   "height" : "screenSizeY",
   "x" : "screenOriginX",
@@ -60,7 +67,7 @@ var middleMain = slate.operation("move", {
 });
 
 var middleCenter = slate.operation("move", {
-  "screen" : middleScreenRef,
+  "screen" : ScreenRefTwo,
   "width" : "screenSizeX*5/6",
   "height" : "screenSizeY*5/6",
   "x" : "screenOriginX+screenSizeX/12",
@@ -69,7 +76,7 @@ var middleCenter = slate.operation("move", {
 
 // RIGHT SCREEN
 var rightMain = slate.operation("move", {
-  "screen" : rightScreenRef,
+  "screen" : ScreenRefThree,
   "width" : "screenSizeX",
   "height" : "screenSizeY",
   "x" : "screenOriginX",
@@ -112,7 +119,7 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
     "main-first" : true,
     "repeat" : true // Keep repeating the function above for all windows in Chrome.
   },
-  "HipChat" : {
+  "Slack" : {
     "operations" : middleCenter,
     "ignore-fail" : true,
     "main-first" : true
@@ -124,8 +131,48 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
   }
 });
 
+var twoMonitorsLayout = slate.layout("twoMonitors", {
+  "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
+  "iTerm2" : {
+    "operations" : rightMain,
+    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
+                         // Sorting by title ensures that my iTerm windows always end up in the same place.
+    "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
+  },
+  "RubyMine" : {
+    "operations" : firstFull,
+    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
+                          // layout if Chrome is being stupid.
+    "main-first" : true,
+    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+  },
+  "Google Chrome" : {
+    // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
+    // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
+    // suffix, *, [Personal Profile]
+    "operations" :[function(windowObject) {
+      windowObject.doOperation(firstFull);
+    }],
+    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
+                          // layout if Chrome is being stupid.
+    "main-first" : true,
+    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+  },
+  "Slack" : {
+    "operations" : middleCenter,
+    "ignore-fail" : true,
+    "main-first" : true
+  },
+  "Sunrise Calendar" : {
+    "operations" : firstFull,
+    "ignore-fail" : true,
+    "main-first" : true
+  }
+});
+
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
+slate.bind("2:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
 slate.bind("3:ctrl", slate.operation("layout", { "name" : threeMonitorsLayout }));
 
 slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
@@ -134,4 +181,5 @@ slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);
+slate.default(["1920x1200","1200x1920"], twoMonitorsLayout);
 slate.default(["1920x1200","1280x800","1200x1920"], threeMonitorsLayout);

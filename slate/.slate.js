@@ -11,8 +11,10 @@ var focusITerm = slate.operation("focus", { "app" : "iTerm" });
 var focusChrome = slate.operation("focus", { "app" : "Google Chrome" });
 
 // Margins
-var marginX = "screenSizeX/30";
-var marginY = "screenSizeY/20";
+var marginX = "0";
+// var marginX = "screenSizeX/30";
+var marginY = "0";
+// var marginY = "screenSizeY/20";
 
 // Full screen
 function fullScreen(screen){
@@ -38,6 +40,21 @@ function rightHalf(screen){
   var s = fullScreen(screen);
   s.width = "screenSizeX/2-1.5*" + marginX;
   s.x = "screenSizeX/2+.5*" + marginX;
+  return s;
+}
+
+// Top Half
+function topHalf(screen){
+  var s = fullScreen(screen);
+  s.height = "screenSizeY/2-1.5*" + marginY;
+  return s;
+}
+
+// Bottom Half
+function bottomHalf(screen){
+  var s = fullScreen(screen);
+  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
   return s;
 }
 
@@ -134,7 +151,7 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
 var twoMonitorsLayout = slate.layout("twoMonitors", {
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
-    "operations" : rightMain,
+    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
     "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
                          // Sorting by title ensures that my iTerm windows always end up in the same place.
     "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
@@ -159,7 +176,7 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     "repeat" : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations" : middleCenter,
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   },

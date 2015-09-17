@@ -39,7 +39,9 @@ alias v="nvim"
 # Git
 alias g='git'
 alias ga='git add -i'
-alias gr='git rm'
+alias gr='git reset -p'
+alias gco='git checkout -p'
+alias grm='git rm'
 
 alias gf='git fetch'
 alias gu='git pull'

@@ -18,7 +18,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git bundler osx rake ruby)
+plugins=(bundler osx rake ruby)
 
 # FASD
 eval "$(fasd --init auto)"
@@ -54,28 +54,26 @@ alias gds='git diff --staged'
 alias gdisc='git discard'
 
 alias gp='git push'
+alias gpn='git push --set-upstream origin `git rev-parse --abbrev-ref HEAD`'
 alias gcl='git clone'
 alias gch='git checkout'
 alias gbr='git branch'
 alias gbrd='git branch -D'
 alias gl='git log --no-merges'
 
-# gc my commit message
-function gc() {
+function gc() { # gc commit message
   args=$@
   git commit -m "$args"
 }
+
+# FASD
+alias jj=zz
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Pretty print json
 alias json='python -m json.tool'
 
 # iTerm 2 Shell Integration
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
-
-# Disable git
-#function git_prompt_info() {
-#  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-#  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
-#}
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -151,7 +151,7 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
 var twoMonitorsLayout = slate.layout("twoMonitors", {
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
-    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
+    "operations" : firstFull,
     "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
                          // Sorting by title ensures that my iTerm windows always end up in the same place.
     "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
@@ -181,7 +181,7 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     "main-first" : true
   },
   "Sunrise Calendar" : {
-    "operations" : firstFull,
+    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   }

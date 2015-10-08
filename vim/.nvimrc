@@ -18,7 +18,7 @@
 
 " ========== SETUP ==========
 set nocompatible
-set encoding=utf-8
+"set encoding=utf-8
 
 " switch between YCM and NeoComplete
 let neocomplete_mode = 1
@@ -64,6 +64,7 @@ Plug 'wellle/targets.vim'               " Additional text objects
 Plug 'wesQ3/vim-windowswap'             " Window swapping
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
+Plug 'junegunn/goyo.vim'                " Markdown
 call plug#end()
 
 " ========== AIRLINE ==========

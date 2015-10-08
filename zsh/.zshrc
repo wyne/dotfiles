@@ -22,6 +22,7 @@ plugins=(git bundler osx rake ruby)
 
 # FASD
 eval "$(fasd --init auto)"
+# defaults: https://github.com/clvv/fasd
 
 # ===== User configuration =====
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
@@ -35,12 +36,12 @@ alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias ll="ls -la"
 alias v="nvim"
+alias vi="nvim"
 
 # Git
 alias g='git'
 alias ga='git add -i'
 alias gr='git reset -p'
-alias gco='git checkout -p'
 alias grm='git rm'
 
 alias gf='git fetch'
@@ -56,6 +57,7 @@ alias gdisc='git discard'
 alias gp='git push'
 alias gcl='git clone'
 alias gch='git checkout'
+alias gco='git checkout -p'
 alias gbr='git branch'
 alias gbrd='git branch -D'
 alias gl='git log --no-merges'

@@ -83,7 +83,14 @@ alias v='f -e vim'
 [ -f ~/.custom-bindings.fzf ] && source ~/.custom-bindings.fzf
 
 alias zz='fz'
-alias j='z'
+# j - same as z, but if no arguments, jump to previous directory
+j() {
+  if [ "$#" -gt 0 ]; then
+    fasd_cd -d $1
+  else
+    cd -
+  fi
+}
 alias jj='fz'
 
 # Pretty print json

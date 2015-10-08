@@ -20,10 +20,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(bundler osx rake ruby)
 
-# FASD
-eval "$(fasd --init auto)"
-# defaults: https://github.com/clvv/fasd
-
 # ===== User configuration =====
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -35,7 +31,6 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias ll="ls -la"
-alias v="nvim"
 alias vi="nvim"
 
 # Git
@@ -68,11 +63,28 @@ function gc() { # gc commit message
   git commit -m "$args"
 }
 
-# FASD
-alias jj=zz
+# ========== FASD
+eval "$(fasd --init auto)"
 
-# FZF
+# Defaults
+# alias a='fasd -a'        # any
+# alias s='fasd -si'       # show / search / select
+# alias d='fasd -d'        # directory
+# alias f='fasd -f'        # file
+# alias sd='fasd -sid'     # interactive directory selection
+# alias sf='fasd -sif'     # interactive file selection
+# alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+# alias zz='fasd_cd -d -i' # cd with interactive selection
+alias v='f -e vim'
+#vv interactive search defined in fzf
+
+# ========== FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.custom-bindings.fzf ] && source ~/.custom-bindings.fzf
+
+alias zz='fz'
+alias j='z'
+alias jj='fz'
 
 # Pretty print json
 alias json='python -m json.tool'

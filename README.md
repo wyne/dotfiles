@@ -1,10 +1,9 @@
 # Justin's dotfiles
 
-##
-Installation
+## Installation
 
-1. Clone Repo
-2. stow vim, stow zsh, stow slate
+1. `~ $ git clone https://github.com/wyne/dotfiles.git`
+2. Stow a config. ex: `stow vim`, `stow zsh`, `stow slate`
 
 ## zsh
 

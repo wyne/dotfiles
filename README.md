@@ -6,6 +6,17 @@ Installation
 1. Clone Repo
 2. stow vim, stow zsh, stow slate
 
+## zsh
+
+* **v \<substr\>** - open recent file containing _substr_ with vim.
+* **vv \<substr\>** - open recent file containing _substr_ with vim. _(interactive selection)_
+* **j** - cd to prev dir. (`cd -`)
+* **j \<substr\>** - cd to recent directory containing _substr_.
+* **jj \<substr\>** - cd to recent directory containing _substr_. _(interactive selection)_
+* **fbr** - git checkout branch (local only). _(interactive selection)_
+* **fbrr** - git checkout branch (include remotes). _(interactive selection)_
+
+
 ## vim
 
 ![Screenshot](http://i.imgur.com/bY1Mw1S.png)

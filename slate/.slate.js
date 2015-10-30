@@ -66,6 +66,7 @@ var firstRight = slate.operation("move", rightHalf(ScreenRefOne));
 var secondFull = slate.operation("move", fullScreen(ScreenRefTwo));
 var secondLeft = slate.operation("move", leftHalf(ScreenRefTwo));
 var secondRight = slate.operation("move", rightHalf(ScreenRefTwo));
+var secondTop = slate.operation("move", topHalf(ScreenRefTwo));
 
 var thirdFull = slate.operation("move", fullScreen(ScreenRefThree));
 var thirdLeft = slate.operation("move", leftHalf(ScreenRefThree));
@@ -151,7 +152,7 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
 var twoMonitorsLayout = slate.layout("twoMonitors", {
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
-    "operations" : firstFull,
+    "operations" : secondTop,
     "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
                          // Sorting by title ensures that my iTerm windows always end up in the same place.
     "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.

@@ -1,13 +1,15 @@
 # Justin's dotfiles
 
-##
-Installation
+## Installation
 
-1. Clone Repo
-2. stow vim, stow zsh, stow slate
+1. `~ $ git clone https://github.com/wyne/dotfiles.git`
+2. Stow a config. ex: `stow vim`, `stow zsh`, `stow slate`
 
 ## zsh
 
+![Screenshot](http://i.imgur.com/GSn5vA7.png)
+
+The following commands rely heavily on [fasd](https://github.com/clvv/fasd) and [fzf](https://github.com/junegunn/fzf).
 * **v \<substr\>** - open recent file containing _substr_ with vim.
 * **vv \<substr\>** - open recent file containing _substr_ with vim. _(interactive selection)_
 * **j** - cd to prev dir. (`cd -`)
@@ -21,9 +23,7 @@ Installation
 
 ![Screenshot](http://i.imgur.com/bY1Mw1S.png)
 
-### Highlights:
-
-#### General Key Bindings
+#### General
 * **;** is remapped to **:** for commands so you don't have to press shift :)
 * **\<space\>** is the leader key
 * **\<space\> w** - save current file

@@ -45,6 +45,7 @@ alias ghu='git pull hy'
 alias ghp='git push hy'
 
 alias gs='git status --short'
+alias gss='git status'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gdisc='git discard'

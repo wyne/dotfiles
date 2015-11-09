@@ -55,7 +55,7 @@ Plug 'edma2/vim-pants'                  " Pants plugin
 Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plug 'mustache/vim-mustache-handlebars' " Mustache
 Plug 'rking/ag.vim'                     " Searching
-Plug 'sjl/gundo.vim'                    " Undo Tree
+Plug 'simnalamburt/vim-mundo'           " Undo Tree
 Plug 'solarnz/thrift.vim'               " Thrift syntax
 Plug 'taylor/vim-zoomwin'               " Zoom and unzoom a window
 Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
@@ -66,6 +66,9 @@ Plug 'xolox/vim-session'                " Session management
 Plug 'tpope/vim-unimpaired'             " Move text
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'junegunn/goyo.vim'                " Markdown
+Plug 'scrooloose/syntastic'             " Syntax checking
+Plug 'osyo-manga/vim-over'              " Search and replace preview
+Plug 'terryma/vim-expand-region'        " Expand regions
 call plug#end()
 
 " ========== AIRLINE ==========
@@ -233,7 +236,9 @@ nnoremap <silent><leader>z  :ZoomWin<CR>
 nnoremap <C-l>              :5winc ><CR>
 nnoremap S-C-L            :winc ><CR>
 "                           Shrink pane horizontally
-nnoremap <C-h>              :5winc <<CR>
+" infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+" tic $TERM.ti
+nnoremap <C-H>              :5winc <<CR>
 nnoremap S-C-H            :winc <<CR>
 "                           Grow pane vertically
 nnoremap <C-J>              :5winc +<CR>
@@ -249,9 +254,9 @@ nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 
 " ========== JUMPS ==========
 "                           Go to previous (older) jump location
-nnoremap <BS>               <C-o>
+"nnoremap <BS>               <C-o>
 "                           Go to next (newer) jump location
-nnoremap =                  <C-i>
+"nnoremap =                  <C-i>
 
 " ========== SEARCH ==========
 "                           Toggle search highlighing
@@ -367,3 +372,15 @@ nnoremap <silent><leader>b :call fzf#run({
 \  'down':    len(<sid>buflist()) + 2
 \})<CR>
 
+
+
+" Syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_javascript_checkers = ['jscs']

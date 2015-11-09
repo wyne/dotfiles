@@ -1,0 +1,27 @@
+" ========== LEADER ==========
+" Set <space> to leader key
+let mapleader=" "
+
+"                           Save current file
+nnoremap <leader>w          :w<CR>
+"                           Close window
+nnoremap <leader>q          :q<CR>
+
+" Swap ; and : for easier type of commands
+nnoremap ; :
+vnoremap ; :
+" Then reassign repeat t/T/f/F
+nnoremap , ;
+vnoremap , ;
+
+set expandtab     " use spaces intead of tabs
+set tabstop=2     " a tab is four spaces
+set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
+set autoindent    " always set autoindenting on
+set copyindent    " copy the previous indentation on autoindenting
+set shiftwidth=2  " number of spaces to use forautoindenting
+set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
+set scrolloff=2     " start scrolling when 2 lines from edge
+set sidescroll=1    " scroll horizontally by 1 column
+set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+set number

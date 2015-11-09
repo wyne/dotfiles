@@ -29,7 +29,7 @@ endif
 " ==== PLUG ====
 
 " Auto install
-if empty(glob('~/.nvim/autoload/plug.vim'))
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
@@ -62,8 +62,9 @@ Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
 Plug 'tpope/vim-dispatch'               " Tmux integration
 Plug 'wellle/targets.vim'               " Additional text objects
 Plug 'wesQ3/vim-windowswap'             " Window swapping
-Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
+Plug 'tpope/vim-unimpaired'             " Move text
+Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'junegunn/goyo.vim'                " Markdown
 call plug#end()
 

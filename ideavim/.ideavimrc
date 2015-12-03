@@ -7,6 +7,9 @@ nnoremap <leader>w          :w<CR>
 "                           Close window
 nnoremap <leader>q          :q<CR>
 
+nnoremap <leader>i          :set hlsearch!<CR>
+nnoremap <leader>n          :set number!<CR>
+
 " Swap ; and : for easier type of commands
 nnoremap ; :
 vnoremap ; :
@@ -28,3 +31,18 @@ set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 set number
+
+" Move current line down one line
+map Ô :m .+1<CR>
+" Move current line down one line
+map  :m .-2<CR><C-y>
+
+" <Option-k> Move up faster
+map ˚ 4k
+" <Option-j> Move down faster
+map ∆ 4j
+
+" Scroll down faster
+noremap <C-e> 2<C-e>
+" Scroll up faster
+noremap <C-y> 2<C-y>

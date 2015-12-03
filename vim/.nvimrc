@@ -85,8 +85,6 @@ let g:airline#extensions#tabline#enabled       =  1
 let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
-let g:airline#extensions#windowswap#enabled = 1
-let g:airline#extensions#windowswap#indicator_text = 'WS'
 " Prefix mode with current time
 let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 
@@ -123,11 +121,7 @@ vnoremap ; :
 nnoremap , ;
 vnoremap , ;
 
-" Automatically switch relative line numbers on normal vs insert mode
 set number
-set relativenumber
-autocmd InsertEnter * :set relativenumber!
-autocmd InsertLeave * :set relativenumber
 
 " Set file types
 au BufRead,BufNewFile *.mustache setfiletype mustache

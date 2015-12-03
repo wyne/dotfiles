@@ -197,6 +197,50 @@ slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
 slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });
 slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
+var resizeUp = slate.operation("resize", {
+  "width" : "+0",
+  "height" : "-100",
+});
+var resizeDown = slate.operation("resize", {
+  "width" : "+0",
+  "height" : "+100",
+});
+var resizeLeft = slate.operation("resize", {
+  "width" : "-100",
+  "height" : "+0",
+});
+var resizeRight = slate.operation("resize", {
+  "width" : "+100",
+  "height" : "+0",
+});
+
+slate.bind("right:shift,alt", resizeRight);
+slate.bind("down:shift,alt", resizeDown);
+slate.bind("up:shift,alt", resizeUp);
+slate.bind("left:shift,alt", resizeLeft);
+
+var nudgeUp = slate.operation("nudge", {
+  "x" : "+0",
+  "y" : "-100",
+});
+var nudgeDown = slate.operation("nudge", {
+  "x" : "+0",
+  "y" : "+100",
+});
+var nudgeLeft = slate.operation("nudge", {
+  "x" : "-100",
+  "y" : "+0",
+});
+var nudgeRight = slate.operation("nudge", {
+  "x" : "+100",
+  "y" : "+0",
+});
+
+slate.bind("right:ctrl,alt", nudgeRight);
+slate.bind("down:ctrl,alt", nudgeDown);
+slate.bind("up:ctrl,alt", nudgeUp);
+slate.bind("left:ctrl,alt", nudgeLeft);
+
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);
 slate.default(["1920x1200","1200x1920"], twoMonitorsLayout);

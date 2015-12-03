@@ -188,6 +188,8 @@ nnoremap <leader>v          :e $MYVIMRC<CR>
 nnoremap <leader>V          :so $MYVIMRC<CR>
 "                           Open Gundo (Undo Tree)
 nnoremap <leader>u          :GundoToggle<CR>
+"                           jj is Esc in insert mode
+inoremap jj                 <Esc>
 
 " ========== BUFFERS ==========
 "                           Next buffer

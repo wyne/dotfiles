@@ -14,6 +14,9 @@ vnoremap ; :
 nnoremap , ;
 vnoremap , ;
 
+" jj is Esc in insert mode
+inoremap jj                 <Esc>
+
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop

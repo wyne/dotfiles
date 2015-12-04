@@ -76,7 +76,7 @@ eval "$(fasd --init auto)"
 # alias sf='fasd -sif'     # interactive file selection
 # alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 # alias zz='fasd_cd -d -i' # cd with interactive selection
-alias v='f -e vim'
+alias v='f -e nvim'
 #vv interactive search defined in fzf
 
 # ========== FZF

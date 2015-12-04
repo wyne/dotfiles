@@ -197,97 +197,113 @@ slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
 slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });
 slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
-var resizeUp = slate.operation("resize", {
-  "width" : "+0",
-  "height" : "-100",
-});
-var resizeDown = slate.operation("resize", {
-  "width" : "+0",
-  "height" : "+100",
-});
-var resizeLeft = slate.operation("resize", {
-  "width" : "-100",
-  "height" : "+0",
-});
-var resizeRight = slate.operation("resize", {
-  "width" : "+100",
-  "height" : "+0",
-});
+// Grid Settings
 
 var gridSizePercentX = 20;
 var gridSizePercentY = 20;
 
+// Grid Resizing
+
+var resizeXdistance = function(win) {
+  var rect = win.rect();
+  var topLeftX = rect.x;
+  var width = rect.width;
+  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var mod = (topLeftX + width) % gridSizeX;
+  return mod + gridSizeX;
+}
+
+var resizeYdistance = function(win) {
+  var rect = win.rect();
+  var topLeftY = rect.y;
+  var height = rect.height;
+  var gridSizeY = win.screen().rect().height / gridSizePercentY;
+  var mod = (topLeftY + height) % gridSizeY;
+  return mod + gridSizeY;
+}
+
 var resizeLeftGrid = function(win) {
-  var rect = win.rect();
-  var topLeftX = rect.x;
-  var width = rect.width;
-  var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = (topLeftX + width) % gridSizeX;
   win.resize({
-    "width": width - mod - gridSizeX,
+    "width": win.size().width - resizeXdistance(win),
     "height": "windowSizeY",
   });
 };
+
 var resizeRightGrid = function(win) {
+  win.resize({
+    "width": win.size().width + resizeXdistance(win),
+    "height": "windowSizeY",
+  });
+};
+
+var resizeUpGrid = function(win) {
+  win.resize({
+    "height": win.size().height - resizeYdistance(win),
+    "width": "windowSizeX",
+  });
+};
+
+var resizeDownGrid = function(win) {
+  win.resize({
+    "height": win.size().height + resizeYdistance(win),
+    "width": "windowSizeX",
+  });
+};
+
+// Grid Nudging
+
+var nudgeXdistance = function(win) {
   var rect = win.rect();
   var topLeftX = rect.x;
-  var width = rect.width;
   var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = (topLeftX + width) % gridSizeX;
-  var success = win.resize({
-    "width": width - mod + gridSizeX,
-    "height": "windowSizeY",
-  });
-  slate.log("resize success? " + success);
-};
+  var mod = topLeftX % gridSizeX;
+  return mod + gridSizeX;
+}
 
-slate.bind("right:shift,alt", resizeRightGrid);
-slate.bind("down:shift,alt", resizeDown);
-slate.bind("up:shift,alt", resizeUp);
-slate.bind("left:shift,alt", resizeLeftGrid);
-
-var nudgeUp = slate.operation("nudge", {
-  "x" : "+0",
-  "y" : "-100",
-});
-var nudgeDown = slate.operation("nudge", {
-  "x" : "+0",
-  "y" : "+100",
-});
-var nudgeLeft = slate.operation("nudge", {
-  "x" : "-100",
-  "y" : "+0",
-});
-var nudgeRight = slate.operation("nudge", {
-  "x" : "+100",
-  "y" : "+0",
-});
-
+var nudgeYdistance = function(win) {
+  var rect = win.rect();
+  var topLeftY = rect.y;
+  var gridSizeY = win.screen().rect().height / gridSizePercentY;
+  var mod = topLeftY % gridSizeY;
+  return mod + gridSizeY;
+}
 
 var nudgeRightGrid = function(win) {
-  var rect = win.rect();
-  var topLeftX = rect.x;
-  var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = topLeftX % gridSizeX;
   win.move({
-    "x": topLeftX - mod + gridSizeX,
-    "y": "windowTopLeftY",
-  });
-};
-var nudgeLeftGrid = function(win) {
-  var rect = win.rect();
-  var topLeftX = rect.x;
-  var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = topLeftX % gridSizeX;
-  win.move({
-    "x": topLeftX - mod - gridSizeX,
+    "x": win.topLeft().x + nudgeXdistance(win),
     "y": "windowTopLeftY",
   });
 };
 
+var nudgeLeftGrid = function(win) {
+  win.move({
+    "x": win.topLeft().x - nudgeXdistance(win),
+    "y": "windowTopLeftY",
+  });
+};
+
+var nudgeUpGrid = function(win) {
+  win.move({
+    "y": win.topLeft().y - nudgeYdistance(win),
+    "x": "windowTopLeftX",
+  });
+};
+
+var nudgeDownGrid = function(win) {
+  win.move({
+    "y": win.topLeft().y + nudgeYdistance(win),
+    "x": "windowTopLeftX",
+  });
+};
+
+slate.bind("right:cmd,ctrl", resizeRightGrid);
+slate.bind("down:cmd,ctrl", resizeDownGrid);
+slate.bind("up:cmd,ctrl", resizeUpGrid);
+slate.bind("left:cmd,ctrl", resizeLeftGrid);
+
 slate.bind("right:ctrl,alt", nudgeRightGrid);
-slate.bind("down:ctrl,alt", nudgeDown);
-slate.bind("up:ctrl,alt", nudgeUp);
+slate.bind("down:ctrl,alt", nudgeDownGrid);
+slate.bind("up:ctrl,alt", nudgeUpGrid);
 slate.bind("left:ctrl,alt", nudgeLeftGrid);
 
 // default the layout so it activates when I plug in my two external monitors.

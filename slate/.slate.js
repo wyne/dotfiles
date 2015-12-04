@@ -214,10 +214,37 @@ var resizeRight = slate.operation("resize", {
   "height" : "+0",
 });
 
-slate.bind("right:shift,alt", resizeRight);
+var gridSizePercentX = 20;
+var gridSizePercentY = 20;
+
+var resizeLeftGrid = function(win) {
+  var rect = win.rect();
+  var topLeftX = rect.x;
+  var width = rect.width;
+  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var mod = (topLeftX + width) % gridSizeX;
+  win.resize({
+    "width": width - mod - gridSizeX,
+    "height": "windowSizeY",
+  });
+};
+var resizeRightGrid = function(win) {
+  var rect = win.rect();
+  var topLeftX = rect.x;
+  var width = rect.width;
+  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var mod = (topLeftX + width) % gridSizeX;
+  var success = win.resize({
+    "width": width - mod + gridSizeX,
+    "height": "windowSizeY",
+  });
+  slate.log("resize success? " + success);
+};
+
+slate.bind("right:shift,alt", resizeRightGrid);
 slate.bind("down:shift,alt", resizeDown);
 slate.bind("up:shift,alt", resizeUp);
-slate.bind("left:shift,alt", resizeLeft);
+slate.bind("left:shift,alt", resizeLeftGrid);
 
 var nudgeUp = slate.operation("nudge", {
   "x" : "+0",
@@ -236,12 +263,38 @@ var nudgeRight = slate.operation("nudge", {
   "y" : "+0",
 });
 
-slate.bind("right:ctrl,alt", nudgeRight);
+
+var nudgeRightGrid = function(win) {
+  var rect = win.rect();
+  var topLeftX = rect.x;
+  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var mod = topLeftX % gridSizeX;
+  win.move({
+    "x": topLeftX - mod + gridSizeX,
+    "y": "windowTopLeftY",
+  });
+};
+var nudgeLeftGrid = function(win) {
+  var rect = win.rect();
+  var topLeftX = rect.x;
+  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var mod = topLeftX % gridSizeX;
+  win.move({
+    "x": topLeftX - mod - gridSizeX,
+    "y": "windowTopLeftY",
+  });
+};
+
+slate.bind("right:ctrl,alt", nudgeRightGrid);
 slate.bind("down:ctrl,alt", nudgeDown);
 slate.bind("up:ctrl,alt", nudgeUp);
-slate.bind("left:ctrl,alt", nudgeLeft);
+slate.bind("left:ctrl,alt", nudgeLeftGrid);
 
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);
 slate.default(["1920x1200","1200x1920"], twoMonitorsLayout);
 slate.default(["1920x1200","1280x800","1200x1920"], threeMonitorsLayout);
+
+var relaunch = slate.operation("relaunch");
+slate.bind("0:ctrl", relaunch);
+slate.bind("5:ctrl", nudgeLeftGrid);

@@ -121,9 +121,6 @@ vnoremap , ;
 
 " Automatically switch relative line numbers on normal vs insert mode
 set number
-set relativenumber
-autocmd InsertEnter * :set relativenumber!
-autocmd InsertLeave * :set relativenumber
 
 " Set file types
 au BufRead,BufNewFile *.mustache setfiletype mustache

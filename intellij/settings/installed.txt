@@ -1,0 +1,5 @@
+IdeaVIM
+com.jacksingleton.tabtonextsplitter
+mobi.hsz.idea.gitignore
+com.wix.jscs
+org.sylfra.idea.plugins.linessorter

@@ -1,0 +1,55 @@
+<keymap version="1" name="wyne" parent="Mac OS X">
+  <!-- Files -->
+  <action id="CloseContent">
+    <keyboard-shortcut first-keystroke="ctrl w" />
+  </action>
+
+  <!-- Navigation -->
+  <action id="FileStructurePopup">
+    <keyboard-shortcut first-keystroke="meta o" />
+  </action>
+
+  <!-- Splits -->
+  <action id="NextSplitter">
+    <keyboard-shortcut first-keystroke="meta close_bracket" />
+  </action>
+  <action id="PrevSplitter">
+    <keyboard-shortcut first-keystroke="meta open_bracket" />
+  </action>
+  <action id="SplitHorizontally">
+    <keyboard-shortcut first-keystroke="meta quote" second-keystroke="meta s" />
+  </action>
+  <action id="SplitVertically">
+    <keyboard-shortcut first-keystroke="meta quote" second-keystroke="meta v" />
+  </action>
+
+  <!-- Tabs -->
+  <action id="NextTab">
+    <keyboard-shortcut first-keystroke="shift meta close_bracket" />
+  </action>
+  <action id="PreviousTab">
+    <keyboard-shortcut first-keystroke="shift meta open_bracket" />
+  </action>
+
+  <!-- Text -->
+  <action id="SelectAllOccurrences">
+    <keyboard-shortcut first-keystroke="ctrl meta g" />
+    <keyboard-shortcut first-keystroke="shift meta d" />
+  </action>
+  <action id="SelectNextOccurrence">
+    <keyboard-shortcut first-keystroke="ctrl g" />
+    <keyboard-shortcut first-keystroke="meta d" />
+  </action>
+
+  <!-- Tools -->
+  <action id="Run">
+    <keyboard-shortcut first-keystroke="shift meta r" />
+  </action>
+  <action id="ActivateTerminalToolWindow">
+    <keyboard-shortcut first-keystroke="shift meta t" />
+  </action>
+  <action id="JscsFixAction">
+    <keyboard-shortcut first-keystroke="shift meta j" />
+  </action>
+
+</keymap>

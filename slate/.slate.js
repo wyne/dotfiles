@@ -264,7 +264,10 @@ var nudgeXdistance = function(win) {
 
 var nudgeYdistance = function(win) {
   var rect = win.rect();
-  var topLeftY = rect.y - MENUBAR_OFFSET;
+  var topLeftY = rect.y;
+  if (win.screen().isMain()){
+    topLeftY = topLeftY - MENUBAR_OFFSET;
+  }
   var gridSizeY = win.screen().rect().height / gridSizePercentY;
   var mod = topLeftY % gridSizeY;
   return gridSizeY + mod;

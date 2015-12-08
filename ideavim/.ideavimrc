@@ -46,3 +46,8 @@ map ∆ 4j
 noremap <C-e> 2<C-e>
 " Scroll up faster
 noremap <C-y> 2<C-y>
+
+" Scroll down faster
+noremap <S-C-e> 5<C-e>
+" Scroll up faster
+noremap <S-C-y> 5<C-y>

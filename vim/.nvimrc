@@ -282,6 +282,26 @@ nnoremap <leader>sc         :CloseSession<CR>
 "                           Update plugins to latest version
 nnoremap <leader>pi         :PlugInstall<CR>
 
+" Move current line down one line
+map Ô :m .+1<CR>
+" Move current line down one line
+map  :m .-2<CR><C-y>
+
+" <Option-k> Move up faster
+map ˚ 4k
+" <Option-j> Move down faster
+map ∆ 4j
+
+" Scroll down faster
+noremap <C-e> 2<C-e>
+" Scroll up faster
+noremap <C-y> 2<C-y>
+
+" Scroll down faster
+noremap <S-C-e> 5<C-e>
+" Scroll up faster
+noremap <S-C-y> 5<C-y>
+
 " ========== NEOCOMPLETE ==========
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0

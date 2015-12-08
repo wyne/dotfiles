@@ -252,6 +252,8 @@ var resizeDownGrid = function(win) {
 
 // Grid Nudging
 
+var MENUBAR_OFFSET = 23;
+
 var nudgeXdistance = function(win) {
   var rect = win.rect();
   var topLeftX = rect.x;
@@ -262,10 +264,10 @@ var nudgeXdistance = function(win) {
 
 var nudgeYdistance = function(win) {
   var rect = win.rect();
-  var topLeftY = rect.y;
+  var topLeftY = rect.y - MENUBAR_OFFSET;
   var gridSizeY = win.screen().rect().height / gridSizePercentY;
   var mod = topLeftY % gridSizeY;
-  return mod + gridSizeY;
+  return gridSizeY + mod;
 }
 
 var nudgeRightGrid = function(win) {

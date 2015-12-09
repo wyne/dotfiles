@@ -202,6 +202,8 @@ slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 var gridSizePercentX = 20;
 var gridSizePercentY = 20;
 
+var MENUBAR_OFFSET = 23;
+
 // Grid Resizing
 
 var resizeXdistance = function(win) {
@@ -215,7 +217,7 @@ var resizeXdistance = function(win) {
 
 var resizeYdistance = function(win) {
   var rect = win.rect();
-  var topLeftY = rect.y;
+  var topLeftY = rect.y - MENUBAR_OFFSET;
   var height = rect.height;
   var gridSizeY = win.screen().rect().height / gridSizePercentY;
   var mod = (topLeftY + height) % gridSizeY;
@@ -251,8 +253,6 @@ var resizeDownGrid = function(win) {
 };
 
 // Grid Nudging
-
-var MENUBAR_OFFSET = 23;
 
 var nudgeXdistance = function(win) {
   var rect = win.rect();

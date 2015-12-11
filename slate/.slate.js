@@ -1,5 +1,10 @@
 // order screens left to right so they are easier to reference
-slate.config("orderScreensLeftToRight", true);
+slate.configAll({
+  "orderScreensLeftToRight": true,
+  "repeatOnHoldOps": "resize,nudge,move",
+  "secondsBeforeRepeat": 0.2,
+  "secondsBetweenRepeat": 0.05
+});
 
 // Set up screen reference variables to avoid typos :)
 var ScreenRefOne = "0";
@@ -301,15 +306,25 @@ var nudgeDownGrid = function(win) {
   });
 };
 
-slate.bind("right:cmd,ctrl", resizeRightGrid);
-slate.bind("down:cmd,ctrl", resizeDownGrid);
-slate.bind("up:cmd,ctrl", resizeUpGrid);
-slate.bind("left:cmd,ctrl", resizeLeftGrid);
+slate.bind("right:cmd,ctrl", resizeRightGrid, true);
+slate.bind("down:cmd,ctrl", resizeDownGrid, true);
+slate.bind("up:cmd,ctrl", resizeUpGrid, true);
+slate.bind("h:cmd,ctrl", resizeLeftGrid, true);
 
-slate.bind("right:ctrl,alt", nudgeRightGrid);
-slate.bind("down:ctrl,alt", nudgeDownGrid);
-slate.bind("up:ctrl,alt", nudgeUpGrid);
-slate.bind("left:ctrl,alt", nudgeLeftGrid);
+slate.bind("k:cmd,ctrl", resizeUpGrid, true);
+slate.bind("l:cmd,ctrl", resizeRightGrid, true);
+slate.bind("j:cmd,ctrl", resizeDownGrid, true);
+slate.bind("left:cmd,ctrl", resizeLeftGrid, true);
+
+slate.bind("right:ctrl,alt", nudgeRightGrid, true);
+slate.bind("down:ctrl,alt", nudgeDownGrid, true);
+slate.bind("up:ctrl,alt", nudgeUpGrid, true);
+slate.bind("left:ctrl,alt", nudgeLeftGrid, true);
+
+slate.bind("l:ctrl,alt", nudgeRightGrid, true);
+slate.bind("j:ctrl,alt", nudgeDownGrid, true);
+slate.bind("k:ctrl,alt", nudgeUpGrid, true);
+slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);

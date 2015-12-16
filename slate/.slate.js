@@ -204,42 +204,52 @@ slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
 // Grid Settings
 
+var MENUBAR_OFFSET = 23;
 var gridSizePercentX = 20;
 var gridSizePercentY = 20;
 
-var MENUBAR_OFFSET = 23;
+// Determine horizontal grid size of a window
+var gridSizeX = function(win){
+  return win.screen().rect().width / gridSizePercentX;
+}
+
+// Determine vertical grid size of a window
+var gridSizeY = function(win){
+  r = Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / gridSizePercentY);
+  return r;
+}
+
 
 // Grid Resizing
 
 var resizeXdistance = function(win, direction) {
-  // Determine grid size of current window
-  var gridSizeX = win.screen().rect().width / gridSizePercentX;
+  var grid = gridSizeX(win);
 
   // Calculate offset from grid
   var left = win.rect().x;
   var width = win.rect().width;
-  var offset = (left + width) % gridSizeX;
+  var offset = (left + width) % grid;
 
   if (direction > 0){
-    return gridSizeX - offset;
+    return grid - offset;
   } else {
-    return offset || gridSizeX;
+    return offset || grid;
   }
 }
 
 var resizeYdistance = function(win, direction) {
   // Determine grid size of current window
-  var gridSizeY = win.screen().rect().height / gridSizePercentY;
+  var grid = gridSizeY(win);
 
   // Calculate offset from grid
   var top = win.rect().y;
   var height = win.rect().height;
-  var offset = (top + height - MENUBAR_OFFSET) % gridSizeY;
+  var offset = (top + height - MENUBAR_OFFSET) % grid;
 
   if (direction > 0){
-    return gridSizeY - offset;
+    return grid - offset;
   } else {
-    return offset || gridSizeY;
+    return offset || grid;
   }
 }
 
@@ -252,6 +262,7 @@ var resizeLeftGrid = function(win) {
 
 var resizeRightGrid = function(win) {
   var width = win.size().width;
+
   win.resize({
     "width": win.size().width + resizeXdistance(win, 1),
     "height": "windowSizeY",
@@ -260,10 +271,9 @@ var resizeRightGrid = function(win) {
   // Work around for windows that don't allow pixel precision resize; i.e. terminals
   if (win.size().width == width) {
     slate.log("Resize right failed. Trying larger increment.");
-    var gridSizeX = win.screen().rect().width / gridSizePercentX;
 
     win.resize({
-      "width": win.size().width + resizeXdistance(win, 1) + gridSizeX,
+      "width": win.size().width + resizeXdistance(win, 1) + gridSizeX(win),
       "height": "windowSizeY",
     });
   }
@@ -278,6 +288,7 @@ var resizeUpGrid = function(win) {
 
 var resizeDownGrid = function(win) {
   var height = win.size().height;
+
   win.resize({
     "height": win.size().height + resizeYdistance(win, 1),
     "width": "windowSizeX"
@@ -286,13 +297,14 @@ var resizeDownGrid = function(win) {
   // Work around for windows that don't allow pixel precision resize; i.e. terminals
   if (win.size().height == height) {
     slate.log("Resize right failed. Trying larger increment.");
-    var gridSizeY = win.screen().rect().height / gridSizePercentY;
 
     win.resize({
-      "height": win.size().height + resizeYdistance(win, 1) + gridSizeY,
+      "height": win.size().height + resizeYdistance(win, 1) + gridSizeY(win),
       "width": "windowSizeX"
     });
   }
+
+  slate.log("offset=" + ( (win.rect().y + win.rect().height - MENUBAR_OFFSET) % gridSizeY(win) ) );
 };
 
 // Grid Nudging
@@ -300,9 +312,10 @@ var resizeDownGrid = function(win) {
 var nudgeXdistance = function(win) {
   var rect = win.rect();
   var topLeftX = rect.x;
-  var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = topLeftX % gridSizeX;
-  return mod + gridSizeX;
+  var grid = gridSizeX(win);
+
+  var mod = topLeftX % grid;
+  return mod + grid;
 }
 
 var nudgeYdistance = function(win) {
@@ -311,9 +324,9 @@ var nudgeYdistance = function(win) {
   if (win.screen().isMain()){
     topLeftY = topLeftY - MENUBAR_OFFSET;
   }
-  var gridSizeY = win.screen().rect().height / gridSizePercentY;
-  var mod = topLeftY % gridSizeY;
-  return gridSizeY + mod;
+  var grid = gridSizeY(win);
+  var mod = topLeftY % grid;
+  return grid + mod;
 }
 
 var nudgeRightGrid = function(win) {

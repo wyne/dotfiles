@@ -318,15 +318,17 @@ var nudgeXdistance = function(win) {
   return mod + grid;
 }
 
-var nudgeYdistance = function(win) {
-  var rect = win.rect();
-  var topLeftY = rect.y;
-  if (win.screen().isMain()){
-    topLeftY = topLeftY - MENUBAR_OFFSET;
-  }
+var nudgeYdistance = function(win, direction) {
   var grid = gridSizeY(win);
-  var mod = topLeftY % grid;
-  return grid + mod;
+
+  var top = win.rect().y;
+  var offset = (top - MENUBAR_OFFSET) % grid;
+
+  if (direction > 0){
+    return grid - offset;
+  } else {
+    return offset || grid;
+  }
 }
 
 var nudgeRightGrid = function(win) {
@@ -345,14 +347,14 @@ var nudgeLeftGrid = function(win) {
 
 var nudgeUpGrid = function(win) {
   win.move({
-    "y": win.topLeft().y - nudgeYdistance(win),
+    "y": win.topLeft().y - nudgeYdistance(win, -1),
     "x": "windowTopLeftX",
   });
 };
 
 var nudgeDownGrid = function(win) {
   win.move({
-    "y": win.topLeft().y + nudgeYdistance(win),
+    "y": win.topLeft().y + nudgeYdistance(win, 1),
     "x": "windowTopLeftX",
   });
 };

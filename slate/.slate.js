@@ -211,50 +211,88 @@ var MENUBAR_OFFSET = 23;
 
 // Grid Resizing
 
-var resizeXdistance = function(win) {
-  var rect = win.rect();
-  var topLeftX = rect.x;
-  var width = rect.width;
+var resizeXdistance = function(win, direction) {
+  // Determine grid size of current window
   var gridSizeX = win.screen().rect().width / gridSizePercentX;
-  var mod = (topLeftX + width) % gridSizeX;
-  return mod + gridSizeX;
+
+  // Calculate offset from grid
+  var left = win.rect().x;
+  var width = win.rect().width;
+  var offset = (left + width) % gridSizeX;
+
+  if (direction > 0){
+    return gridSizeX - offset;
+  } else {
+    return offset || gridSizeX;
+  }
 }
 
-var resizeYdistance = function(win) {
-  var rect = win.rect();
-  var topLeftY = rect.y - MENUBAR_OFFSET;
-  var height = rect.height;
+var resizeYdistance = function(win, direction) {
+  // Determine grid size of current window
   var gridSizeY = win.screen().rect().height / gridSizePercentY;
-  var mod = (topLeftY + height) % gridSizeY;
-  return mod + gridSizeY;
+
+  // Calculate offset from grid
+  var top = win.rect().y;
+  var height = win.rect().height;
+  var offset = (top + height - MENUBAR_OFFSET) % gridSizeY;
+
+  if (direction > 0){
+    return gridSizeY - offset;
+  } else {
+    return offset || gridSizeY;
+  }
 }
 
 var resizeLeftGrid = function(win) {
   win.resize({
-    "width": win.size().width - resizeXdistance(win),
+    "width": win.size().width - resizeXdistance(win, -1),
     "height": "windowSizeY",
   });
 };
 
 var resizeRightGrid = function(win) {
+  var width = win.size().width;
   win.resize({
-    "width": win.size().width + resizeXdistance(win),
+    "width": win.size().width + resizeXdistance(win, 1),
     "height": "windowSizeY",
   });
+
+  // Work around for windows that don't allow pixel precision resize; i.e. terminals
+  if (win.size().width == width) {
+    slate.log("Resize right failed. Trying larger increment.");
+    var gridSizeX = win.screen().rect().width / gridSizePercentX;
+
+    win.resize({
+      "width": win.size().width + resizeXdistance(win, 1) + gridSizeX,
+      "height": "windowSizeY",
+    });
+  }
 };
 
 var resizeUpGrid = function(win) {
   win.resize({
-    "height": win.size().height - resizeYdistance(win),
-    "width": "windowSizeX",
+    "height": win.size().height - resizeYdistance(win, -1),
+    "width": "windowSizeX"
   });
 };
 
 var resizeDownGrid = function(win) {
+  var height = win.size().height;
   win.resize({
-    "height": win.size().height + resizeYdistance(win),
-    "width": "windowSizeX",
+    "height": win.size().height + resizeYdistance(win, 1),
+    "width": "windowSizeX"
   });
+
+  // Work around for windows that don't allow pixel precision resize; i.e. terminals
+  if (win.size().height == height) {
+    slate.log("Resize right failed. Trying larger increment.");
+    var gridSizeY = win.screen().rect().height / gridSizePercentY;
+
+    win.resize({
+      "height": win.size().height + resizeYdistance(win, 1) + gridSizeY,
+      "width": "windowSizeX"
+    });
+  }
 };
 
 // Grid Nudging

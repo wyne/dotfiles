@@ -309,24 +309,31 @@ var resizeDownGrid = function(win) {
 
 // Grid Nudging
 
-var nudgeXdistance = function(win) {
+var nudgeXdistance = function(win, direction) {
   var rect = win.rect();
   var topLeftX = rect.x;
   var grid = gridSizeX(win);
 
-  var mod = topLeftX % grid;
-  return mod + grid;
+  var offset = topLeftX % grid;
+
+  if (direction > 0){
+    return grid - offset;
+  } else {
+    return offset || grid;
+  }
 }
 
-var nudgeYdistance = function(win) {
+var nudgeYdistance = function(win, direction) {
   var rect = win.rect();
-  var topLeftY = rect.y;
-  if (win.screen().isMain()){
-    topLeftY = topLeftY - MENUBAR_OFFSET;
-  }
+  var topLeftY = rect.y - MENUBAR_OFFSET;
   var grid = gridSizeY(win);
-  var mod = topLeftY % grid;
-  return grid + mod;
+  var offset = topLeftY % grid;
+
+  if (direction > 0){
+    return grid - offset;
+  } else {
+    return offset || grid;
+  }
 }
 
 var nudgeRightGrid = function(win) {

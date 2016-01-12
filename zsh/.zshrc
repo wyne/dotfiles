@@ -21,8 +21,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(bundler osx rake ruby)
 
 # ===== User configuration =====
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH="/Applications/RubyMine.app/Contents/MacOS/:$PATH"
 
 # ===== Oh my ZSH =====
 source $ZSH/oh-my-zsh.sh
@@ -100,3 +101,5 @@ alias json='python -m json.tool'
 
 # iTerm 2 Shell Integration
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

@@ -168,6 +168,7 @@ set noswapfile
 " ========== CURSOR ==========
 " change cursor shape in different modes
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " ========== LEADER ==========
@@ -183,8 +184,9 @@ nnoremap <leader>v          :e $MYVIMRC<CR>
 nnoremap <leader>V          :so $MYVIMRC<CR>
 "                           Open Gundo (Undo Tree)
 nnoremap <leader>u          :GundoToggle<CR>
-"                           jj is Esc in insert mode
+"                           jj or jf is Esc in insert mode
 inoremap jj                 <Esc>
+inoremap jf                 <Esc>
 
 " ========== BUFFERS ==========
 "                           Next buffer

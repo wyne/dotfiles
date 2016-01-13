@@ -187,6 +187,8 @@ nnoremap <leader>u          :GundoToggle<CR>
 "                           jj or jf is Esc in insert mode
 inoremap jj                 <Esc>
 inoremap jf                 <Esc>
+"                           Copy to system clipboard with y in visual mode
+vnoremap y                  "+y
 
 " ========== BUFFERS ==========
 "                           Next buffer

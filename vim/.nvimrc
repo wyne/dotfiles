@@ -93,7 +93,7 @@ syntax on
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
-set cursorline    " highlight current line
+set nocursorline    " highlight current line
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop

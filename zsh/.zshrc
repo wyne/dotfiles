@@ -59,7 +59,7 @@ alias gcl='git clone'
 alias gch='git checkout'
 alias gco='git checkout -p'
 alias gbr='git branch'
-alias gbrd='git branch -D'
+alias gbrd='git branch -d'
 alias gl='git log --no-merges'
 
 function gc() { # gc commit message

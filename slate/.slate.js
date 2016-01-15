@@ -254,6 +254,7 @@ var resizeYdistance = function(win, direction) {
 }
 
 var resizeLeftGrid = function(win) {
+  if (win === undefined) return;
   win.resize({
     "width": win.size().width - resizeXdistance(win, -1),
     "height": "windowSizeY",
@@ -337,6 +338,7 @@ var nudgeYdistance = function(win, direction) {
 }
 
 var nudgeRightGrid = function(win) {
+  if (win === undefined) return;
   win.move({
     "x": win.topLeft().x + nudgeXdistance(win),
     "y": "windowTopLeftY",
@@ -344,6 +346,7 @@ var nudgeRightGrid = function(win) {
 };
 
 var nudgeLeftGrid = function(win) {
+  if (win === undefined) return;
   win.move({
     "x": win.topLeft().x - nudgeXdistance(win),
     "y": "windowTopLeftY",
@@ -351,6 +354,7 @@ var nudgeLeftGrid = function(win) {
 };
 
 var nudgeUpGrid = function(win) {
+  if (win === undefined) return;
   win.move({
     "y": win.topLeft().y - nudgeYdistance(win),
     "x": "windowTopLeftX",
@@ -358,6 +362,7 @@ var nudgeUpGrid = function(win) {
 };
 
 var nudgeDownGrid = function(win) {
+  if (win === undefined) return;
   win.move({
     "y": win.topLeft().y + nudgeYdistance(win),
     "x": "windowTopLeftX",

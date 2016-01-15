@@ -23,6 +23,7 @@ plugins=(bundler osx rake ruby)
 # ===== User configuration =====
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH="/Applications/RubyMine.app/Contents/MacOS/:$PATH"
 
 # ===== Oh my ZSH =====
 source $ZSH/oh-my-zsh.sh
@@ -32,6 +33,7 @@ alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias ll="ls -la"
 alias vi="nvim"
+alias gas='git add app/assets/'
 
 # Git
 alias g='git'

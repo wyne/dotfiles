@@ -17,8 +17,9 @@ vnoremap ; :
 nnoremap , ;
 vnoremap , ;
 
-" jj is Esc in insert mode
+" jj or jf is Esc in insert mode
 inoremap jj                 <Esc>
+inoremap jf                 <Esc>
 
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces

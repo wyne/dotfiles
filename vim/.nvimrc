@@ -93,7 +93,7 @@ syntax on
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
-set cursorline    " highlight current line
+set nocursorline    " highlight current line
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
@@ -168,6 +168,7 @@ set noswapfile
 " ========== CURSOR ==========
 " change cursor shape in different modes
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " ========== LEADER ==========
@@ -183,8 +184,11 @@ nnoremap <leader>v          :e $MYVIMRC<CR>
 nnoremap <leader>V          :so $MYVIMRC<CR>
 "                           Open Gundo (Undo Tree)
 nnoremap <leader>u          :GundoToggle<CR>
-"                           jj is Esc in insert mode
+"                           jj or jf is Esc in insert mode
 inoremap jj                 <Esc>
+inoremap jf                 <Esc>
+"                           Copy to system clipboard with y in visual mode
+vnoremap y                  "+y
 
 " ========== BUFFERS ==========
 "                           Next buffer

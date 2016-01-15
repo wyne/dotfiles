@@ -63,8 +63,8 @@ fcoc() {
   git checkout $(echo "$commit" | sed "s/ .*//")
 }
 
-# fshow - git commit browser
-fshow() {
+# fl - git log
+fl() {
   local out sha q
   while out=$(
       git log --decorate=short --graph --oneline --color=always |

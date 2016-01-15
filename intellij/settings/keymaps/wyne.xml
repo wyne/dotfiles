@@ -4,6 +4,16 @@
     <keyboard-shortcut first-keystroke="ctrl w" />
   </action>
 
+  <!-- General -->
+  <action id="GotoAction">
+    <keyboard-shortcut first-keystroke="shift meta a" />
+    <keyboard-shortcut first-keystroke="shift meta p" />
+  </action>
+  <action id="GotoFile">
+    <keyboard-shortcut first-keystroke="shift meta n" />
+    <keyboard-shortcut first-keystroke="shift meta o" />
+  </action>
+
   <!-- Navigation -->
   <action id="FileStructurePopup">
     <keyboard-shortcut first-keystroke="meta o" />
@@ -11,9 +21,11 @@
 
   <!-- Splits -->
   <action id="NextSplitter">
+    <keyboard-shortcut first-keystroke="alt tab" />
     <keyboard-shortcut first-keystroke="meta close_bracket" />
   </action>
   <action id="PrevSplitter">
+    <keyboard-shortcut first-keystroke="shift alt tab" />
     <keyboard-shortcut first-keystroke="meta open_bracket" />
   </action>
   <action id="SplitHorizontally">
@@ -41,8 +53,16 @@
     <keyboard-shortcut first-keystroke="meta d" />
   </action>
 
+  <!-- Code Editing -->
+  <action id="ShowBookmarks">
+    <keyboard-shortcut first-keystroke="meta quote" second-keystroke="shift b" />
+  </action>
+  <action id="ShowErrorDescription">
+    <keyboard-shortcut first-keystroke="meta i" />
+  </action>
+
   <!-- Tools -->
-  <action id="Run">
+  <action id="ChooseRunConfiguration">
     <keyboard-shortcut first-keystroke="shift meta r" />
   </action>
   <action id="ActivateTerminalToolWindow">
@@ -52,4 +72,16 @@
     <keyboard-shortcut first-keystroke="shift meta j" />
   </action>
 
+  <!-- Git -->
+  <action id="Git.Branches">
+    <keyboard-shortcut first-keystroke="meta quote" second-keystroke="meta quote" />
+  </action>
+  <action id="Vcs.Show.Local.Changes">
+    <keyboard-shortcut first-keystroke="meta l" />
+  </action>
+  <action id="Vcs.ShowTabbedFileHistory">
+    <keyboard-shortcut first-keystroke="meta quote" second-keystroke="h" />
+  </action>
+
 </keymap>
+

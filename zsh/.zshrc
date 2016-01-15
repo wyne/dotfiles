@@ -37,7 +37,8 @@ alias gas='git add app/assets/'
 
 # Git
 alias g='git'
-alias ga='git add -i'
+alias ga='git add -p'
+alias gaa='git add -i'
 alias gr='git reset -p'
 alias grm='git rm'
 

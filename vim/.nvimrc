@@ -196,9 +196,9 @@ nnoremap <Tab>              :bn<CR>
 "                           Previous buffer
 nnoremap <S-Tab>            :bN<CR>
 "                           New empty buffer
-nnoremap +                  :enew<CR>
+nnoremap -                  :enew<CR>
 "                           Close current buffer
-nnoremap -                  :bp\|bd #<CR>
+nnoremap _                  :bp\|bd #<CR>
 "                           Force close current buffer and maintain window arrangement
 nnoremap <leader>x          :bp\|bd! #<CR>
 
@@ -285,11 +285,6 @@ nnoremap <leader>sc         :CloseSession<CR>
 " ========== PLUGINS ==========
 "                           Update plugins to latest version
 nnoremap <leader>pi         :PlugInstall<CR>
-
-" Move current line down one line
-map Ô :m .+1<CR>
-" Move current line down one line
-map  :m .-2<CR><C-y>
 
 " <Option-k> Move up faster
 map ˚ 4k

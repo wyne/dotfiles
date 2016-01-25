@@ -4,7 +4,7 @@ export ZSH=/Users/Justin/.oh-my-zsh
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 #ZSH_THEME="agnoster"
-ZSH_THEME="justin"
+ZSH_THEME="pure"
 
 # Enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -104,3 +104,6 @@ alias json='python -m json.tool'
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+export NVM_DIR="/Users/justin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

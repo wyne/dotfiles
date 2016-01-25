@@ -15,6 +15,7 @@
 "   http://powerline.readthedocs.org/en/latest/installation/osx.html
 "   https://github.com/powerline/fonts.git
 "   ./install.sh
+" 6. sudo pip3 install neovim
 
 " ========== SETUP ==========
 set nocompatible
@@ -47,6 +48,7 @@ Plug 'tpope/vim-sensible'             " Sensible defaults
 Plug 'tpope/vim-fugitive'             " Git commands
 Plug 'tpope/vim-surround'             " vim-surround
 Plug 'tpope/vim-commentary'           " vim-commentary
+Plug 'morhetz/gruvbox'                " colorscheme
 
 " other plugins
 Plug 'Shougo/neocomplete'               " Autocompletion
@@ -68,15 +70,21 @@ Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'junegunn/goyo.vim'                " Markdown
 Plug 'scrooloose/syntastic'             " Syntax checking
 Plug 'osyo-manga/vim-over'              " Search and replace preview
-Plug 'terryma/vim-expand-region'        " Expand regions
+Plug 'terryma/vim-expand-region'        " expand regions
+Plug 'Shougo/deoplete.nvim'
 call plug#end()
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+colorscheme gruvbox
+set background=dark
 
 " ========== AIRLINE ==========
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
 
-let g:airline_theme="bubblegum"
 let g:airline_powerline_fonts=1
 let g:airline#extensions#branch#empty_message  =  "No SCM"
 let g:airline#extensions#whitespace#enabled    =  0
@@ -87,13 +95,15 @@ let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 " Prefix mode with current time
 let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
+let g:airline_theme="gruvbox"
 
 " ========== GENERAL CONFIG ==========
 syntax on
 set nowrap        " don't wrap lines
 set ruler         " show cursor line and column in status bar
 set hidden
-set nocursorline    " highlight current line
+set cursorline    " highlight current line
+set re=1          " fixes slow cursorline
 set expandtab     " use spaces intead of tabs
 set tabstop=2     " a tab is four spaces
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
@@ -127,6 +137,8 @@ set number
 au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
+au BufRead,BufNewFile *.json.jbuilder set syntax=ruby
+
 function! FormatJSON()
   :%!python -m json.tool
 endfunction

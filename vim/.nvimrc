@@ -15,17 +15,10 @@
 "   http://powerline.readthedocs.org/en/latest/installation/osx.html
 "   https://github.com/powerline/fonts.git
 "   ./install.sh
-" 6. sudo pip3 install neovim
+" 6. pip install --user neovim
 
 " ========== SETUP ==========
 set nocompatible
-"set encoding=utf-8
-
-" switch between YCM and NeoComplete
-let neocomplete_mode = 1
-if has("mac")
-  let neocomplete_mode = 0
-endif
 
 " ==== PLUG ====
 
@@ -51,15 +44,14 @@ Plug 'tpope/vim-commentary'           " vim-commentary
 Plug 'morhetz/gruvbox'                " colorscheme
 
 " other plugins
-Plug 'Shougo/neocomplete'               " Autocompletion
 Plug 'bling/vim-airline'                " Status bar
 Plug 'edma2/vim-pants'                  " Pants plugin
 Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plug 'mustache/vim-mustache-handlebars' " Mustache
 Plug 'rking/ag.vim'                     " Searching
+Plug 'sjl/gundo.vim'                    " Undo Tree
 Plug 'simnalamburt/vim-mundo'           " Undo Tree
 Plug 'solarnz/thrift.vim'               " Thrift syntax
-Plug 'taylor/vim-zoomwin'               " Zoom and unzoom a window
 Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
 Plug 'tpope/vim-dispatch'               " Tmux integration
 Plug 'wellle/targets.vim'               " Additional text objects
@@ -71,7 +63,8 @@ Plug 'junegunn/goyo.vim'                " Markdown
 Plug 'scrooloose/syntastic'             " Syntax checking
 Plug 'osyo-manga/vim-over'              " Search and replace preview
 Plug 'terryma/vim-expand-region'        " expand regions
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'             " autocomplete for nvim
+Plug 'kchmck/vim-coffee-script'         " coffeescript
 call plug#end()
 
 " Use deoplete.
@@ -190,6 +183,8 @@ let mapleader=" "
 " ========== EDITING ==========
 "                           Toggle line number
 nnoremap <leader>n          :set rnu! rnu?<CR>
+"                           Toggle cursorline
+nnoremap <leader>c          :set cursorline! cursorline?<CR>
 "                           Edit .vimrc
 nnoremap <leader>v          :e $MYVIMRC<CR>
 "                           Reload .vimrc
@@ -243,7 +238,7 @@ nnoremap <leader>j          <C-w>j
 "                           Previous window
 nnoremap <leader><leader>   <C-w><C-p>
 "                           Zoom or unzoom window
-nnoremap <silent><leader>z  :ZoomWin<CR>
+nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
 nnoremap <C-l>              :5winc ><CR>
 nnoremap S-C-L            :winc ><CR>
@@ -313,72 +308,12 @@ noremap <S-C-e> 5<C-e>
 " Scroll up faster
 noremap <S-C-y> 5<C-y>
 
-" ========== NEOCOMPLETE ==========
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <expr><CR>  pumvisible() ? neocomplete#close_popup() : "\<CR>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " === FZF ====
 function! s:buflist()

@@ -19,6 +19,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(bundler osx rake ruby)
+plugins+=(zsh-completions zsh-syntax-highlighting)
+autoload -U compinit && compinit
 
 # ===== User configuration =====
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"

@@ -47,6 +47,7 @@ Plug 'tpope/vim-sensible'             " Sensible defaults
 Plug 'tpope/vim-fugitive'             " Git commands
 Plug 'tpope/vim-surround'             " vim-surround
 Plug 'tpope/vim-commentary'           " vim-commentary
+Plug 'morhetz/gruvbox'                " color scheme
 
 " other plugins
 Plug 'Shougo/neocomplete'               " Autocompletion

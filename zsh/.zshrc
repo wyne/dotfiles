@@ -19,6 +19,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(bundler osx rake ruby)
+plugins+=(zsh-completions zsh-syntax-highlighting)
+autoload -U compinit && compinit
 
 # ===== User configuration =====
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
@@ -104,3 +106,6 @@ alias json='python -m json.tool'
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+export NVM_DIR="/Users/justin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

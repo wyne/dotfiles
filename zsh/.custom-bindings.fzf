@@ -38,6 +38,14 @@ fz() {
 
 # ========== Git
 
+# fbrd - delete merged branches
+fbrd() {
+  local branches branch
+  branches=$(git branch --merged) &&
+  branch=$(echo "$branches" | fzf +m) &&
+    git branch -d $(echo "$branch" | sed "s/.* //") && fbrd
+}
+
 # fbr - checkout git branch
 fbr() {
   local branches branch
@@ -74,6 +82,10 @@ fl() {
       [ -n "$sha" ] && git show --color=always $sha | less -R
     done < <(sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
   done
+}
+
+fdl() {
+  git log --decorate=short --oneline --color=always develop --not prod/master
 }
 
 # fcs - get git commit sha

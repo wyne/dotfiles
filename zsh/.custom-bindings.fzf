@@ -84,10 +84,6 @@ fl() {
   done
 }
 
-fdl() {
-  git log --decorate=short --oneline --color=always develop --not prod/master
-}
-
 # fcs - get git commit sha
 # example usage: git rebase -i `fcs`
 fcs() {

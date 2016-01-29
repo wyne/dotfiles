@@ -64,6 +64,7 @@ alias gco='git checkout -p'
 alias gbr='git branch'
 alias gbrd='git branch -d'
 alias gl='git log --no-merges'
+alias gdl='git log --decorate=short --oneline --color=always develop --not prod/master'
 
 function gc() { # gc commit message
   args=$@

@@ -35,6 +35,7 @@ alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias ll="ls -la"
 alias vi="nvim"
+alias npm-exec='PATH=$(npm bin):$PATH'
 alias gas='git add app/assets/'
 
 # Git
@@ -63,6 +64,7 @@ alias gco='git checkout -p'
 alias gbr='git branch'
 alias gbrd='git branch -d'
 alias gl='git log --no-merges'
+alias gdl='git log --decorate=short --oneline --color=always develop --not prod/master'
 
 function gc() { # gc commit message
   args=$@

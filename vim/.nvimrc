@@ -34,6 +34,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " core plugins
+
 Plug 'flazz/vim-colorschemes'         " Set of color schemes http://bytefluent.com/vivify/
 Plug 'kien/ctrlp.vim'                 " File search
 Plug 'scrooloose/nerdtree'            " Directory browsing
@@ -44,6 +45,7 @@ Plug 'tpope/vim-commentary'           " vim-commentary
 Plug 'morhetz/gruvbox'                " color scheme
 
 " other plugins
+
 Plug 'bling/vim-airline'                " Status bar
 Plug 'edma2/vim-pants'                  " Pants plugin
 Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
@@ -65,6 +67,8 @@ Plug 'osyo-manga/vim-over'              " Search and replace preview
 Plug 'terryma/vim-expand-region'        " expand regions
 Plug 'Shougo/deoplete.nvim'             " autocomplete for nvim
 Plug 'kchmck/vim-coffee-script'         " coffeescript
+Plug 'godlygeek/tabular'                " Alignment
+
 call plug#end()
 
 " Use deoplete.

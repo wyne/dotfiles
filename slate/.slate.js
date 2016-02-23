@@ -406,11 +406,6 @@ var nudgeDownGrid = function(win) {
   });
 };
 
-slate.bind("right:cmd,ctrl", resizeRightGrid, true);
-slate.bind("down:cmd,ctrl", resizeDownGrid, true);
-slate.bind("up:cmd,ctrl", resizeUpGrid, true);
-slate.bind("h:cmd,ctrl", resizeLeftGrid, true);
-
 slate.bind("k:cmd,ctrl", resizeUpGrid, true);
 slate.bind("l:cmd,ctrl", resizeRightGrid, true);
 slate.bind("j:cmd,ctrl", resizeDownGrid, true);

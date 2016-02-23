@@ -37,6 +37,7 @@ alias ll="ls -la"
 alias vi="nvim"
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias gas='git add app/assets/'
+alias clock='~/workspace/tty-clock/tty-clock -tc'
 
 # Git
 alias g='git'

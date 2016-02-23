@@ -51,6 +51,7 @@ Plug 'mustache/vim-mustache-handlebars' " Mustache
 Plug 'rking/ag.vim'                     " Searching
 Plug 'sjl/gundo.vim'                    " Undo Tree
 Plug 'simnalamburt/vim-mundo'           " Undo Tree
+Plug 'mbbill/undotree'                  " Undo Tree
 Plug 'solarnz/thrift.vim'               " Thrift syntax
 Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
 Plug 'tpope/vim-dispatch'               " Tmux integration
@@ -87,7 +88,7 @@ let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
 let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
 " Prefix mode with current time
-let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
+" let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
 let g:airline_theme="gruvbox"
 
 " ========== GENERAL CONFIG ==========

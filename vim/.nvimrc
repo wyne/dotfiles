@@ -201,24 +201,27 @@ inoremap jj                 <Esc>
 inoremap jf                 <Esc>
 "                           Copy to system clipboard with y in visual mode
 vnoremap y                  "+y
+"                           Movement commands in insert mode
+inoremap II                 <Esc>I
+inoremap AA                 <Esc>A
+inoremap OO                 <Esc>O
+"                           Edit commands in insert mode
+inoremap CC                 <Esc>C
+inoremap SS                 <Esc>S
+inoremap DD                 <Esc>dd
+inoremap UU                 <Esc>u
 
 " ========== BUFFERS ==========
 "                           Next buffer
-nnoremap <Tab>              :bn<CR>
+nnoremap ≥                 :bn<CR>
 "                           Previous buffer
-nnoremap <S-Tab>            :bN<CR>
-"                           New empty buffer
-nnoremap -                  :enew<CR>
-"                           Close current buffer
-nnoremap _                  :bp\|bd #<CR>
+nnoremap ≤                 :bN<CR>
 "                           Force close current buffer and maintain window arrangement
 nnoremap <leader>x          :bp\|bd! #<CR>
 
 " ========== FILES ==========
 "                           Search by file name
 nnoremap <leader>o          :FZF<CR>
-"                           Seach by open buffers
-"nnoremap <leader>b          :CtrlPBuffer<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
 "                           Search working directory
@@ -263,12 +266,6 @@ let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 "nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
-
-" ========== JUMPS ==========
-"                           Go to previous (older) jump location
-"nnoremap <BS>               <C-o>
-"                           Go to next (newer) jump location
-"nnoremap =                  <C-i>
 
 " ========== SEARCH ==========
 "                           Toggle search highlighing

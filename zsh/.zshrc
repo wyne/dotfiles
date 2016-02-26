@@ -66,6 +66,7 @@ alias gbr='git branch'
 alias gbrd='git branch -d'
 alias gl='git log --no-merges'
 alias gdl='git log --decorate=short --oneline --color=always develop --not prod/master'
+alias gfix='git diff --name-only | uniq | xargs nvim'
 
 function gc() { # gc commit message
   args=$@

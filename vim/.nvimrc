@@ -69,6 +69,7 @@ Plug 'terryma/vim-expand-region'        " expand regions
 Plug 'Shougo/deoplete.nvim'             " autocomplete for nvim
 Plug 'kchmck/vim-coffee-script'         " coffeescript
 Plug 'godlygeek/tabular'                " Alignment
+Plug 'easymotion/vim-easymotion'        " Fast movement
 
 call plug#end()
 
@@ -122,12 +123,17 @@ set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 
 let NERDTreeShowHidden=1
 
-" Swap ; and : for easier type of commands
+" nnoremap <leader><leader>   <C-w><C-p>
+" Rotate mappings of ; , and :
+" ; to run a command (instead of :)
 nnoremap ; :
 vnoremap ; :
-" Then reassign repeat t/T/f/F
+" , to repeat t or f (instead of ;)
 nnoremap , ;
 vnoremap , ;
+" : to repeat T or F (instead of ,)
+nnoremap : ,
+vnoremap : ,
 
 set number
 
@@ -244,7 +250,7 @@ nnoremap <leader>k          <C-w>k
 "                           Down window
 nnoremap <leader>j          <C-w>j
 "                           Previous window
-nnoremap <leader><leader>   <C-w><C-p>
+nnoremap <leader>;          <C-w><C-p>
 "                           Zoom or unzoom window
 nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
@@ -294,6 +300,10 @@ nnoremap <leader>sc         :CloseSession<CR>
 " ========== PLUGINS ==========
 "                           Update plugins to latest version
 nnoremap <leader>pi         :PlugInstall<CR>
+
+" ========== EASYMOTION ==========
+"                           Jump to anywhere with 2 characters
+nmap s                      <Plug>(easymotion-overwin-f2)
 
 " <Option-k> Move up faster
 map ˚ 4k

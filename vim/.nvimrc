@@ -71,6 +71,7 @@ Plug 'kchmck/vim-coffee-script'         " coffeescript
 Plug 'godlygeek/tabular'                " Alignment
 Plug 'easymotion/vim-easymotion'        " Fast movement
 Plug 'mhinz/vim-signify'                " Git gutter
+Plug 'Valloric/ListToggle'              " Toggle location list
 
 call plug#end()
 
@@ -120,6 +121,7 @@ set pastetoggle=<f2>
 set scrolloff=2     " start scrolling when 2 lines from edge
 set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
+set colorcolumn=80  " Column ruler at 80 characters
 
 let NERDTreeShowHidden=1
 
@@ -236,7 +238,7 @@ nnoremap <Bslash>           :NERDTreeToggle<CR>
 
 " ========== WINDOWS ==========
 "                           Quit while maintaining window arrangement for session
-nnoremap <leader>q          :qa<CR>
+nnoremap <leader>Q          :qa<CR>
 "                           Left window
 nnoremap <leader>h          <C-w>h
 "                           Right window
@@ -345,9 +347,13 @@ nnoremap <silent><leader>b :call fzf#run({
 let g:signify_vcs_list = [ 'git' ]
 
 " ========== NEOMAKE ==========
-let g:neomake_javascript_jshint_maker = {
-    \ 'args': ['--verbose -c ~/.jshintrc'],
-    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-    \ }
-let g:neomake_javascript_enabled_makers = ['jshint']
+" let g:neomake_javascript_jshint_maker = {
+"     \ 'args': ['--verbose -c ~/.jshintrc'],
+"     \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+"     \ }
+let g:neomake_javascript_enabled_makers = ['jscs']
 autocmd! BufWritePost * Neomake
+
+let g:lt_location_list_toggle_map = '<leader>a'
+let g:lt_quickfix_list_toggle_map = '<leader>q'
+let g:lt_height = 5

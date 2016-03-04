@@ -63,13 +63,14 @@ Plug 'xolox/vim-session'                " Session management
 Plug 'tpope/vim-unimpaired'             " Move text
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'junegunn/goyo.vim'                " Markdown
-Plug 'scrooloose/syntastic'             " Syntax checking
+Plug 'benekastah/neomake'               " Syntax checking
 Plug 'osyo-manga/vim-over'              " Search and replace preview
 Plug 'terryma/vim-expand-region'        " expand regions
 Plug 'Shougo/deoplete.nvim'             " autocomplete for nvim
 Plug 'kchmck/vim-coffee-script'         " coffeescript
 Plug 'godlygeek/tabular'                " Alignment
 Plug 'easymotion/vim-easymotion'        " Fast movement
+Plug 'mhinz/vim-signify'                " Git gutter
 
 call plug#end()
 
@@ -87,7 +88,6 @@ endif
 let g:airline_powerline_fonts=1
 let g:airline#extensions#branch#empty_message  =  "No SCM"
 let g:airline#extensions#whitespace#enabled    =  0
-let g:airline#extensions#syntastic#enabled     =  1
 let g:airline#extensions#tabline#enabled       =  1
 let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
 let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
@@ -212,10 +212,6 @@ inoremap II                 <Esc>I
 inoremap AA                 <Esc>A
 inoremap OO                 <Esc>O
 "                           Edit commands in insert mode
-inoremap CC                 <Esc>C
-inoremap SS                 <Esc>S
-inoremap DD                 <Esc>dd
-inoremap UU                 <Esc>u
 
 " ========== BUFFERS ==========
 "                           Next buffer
@@ -277,9 +273,9 @@ nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 "                           Toggle search highlighing
 nnoremap <silent><leader>i  :set hls!<CR>
 "                           Search working directory for word under cursor
-nnoremap <C-g>              :Ag <cword><CR>
+" nnoremap <C-g>              :Ag <cword><CR>
 "                           Search working directory
-nnoremap <C-a>              :Ag 
+" nnoremap <C-a>              :Ag 
 
 " ========== GIT ==========
 "                           Git status
@@ -304,6 +300,11 @@ nnoremap <leader>pi         :PlugInstall<CR>
 " ========== EASYMOTION ==========
 "                           Jump to anywhere with 2 characters
 nmap s                      <Plug>(easymotion-overwin-f2)
+"                           EasyMotion search
+map  <leader><leader>/      <Plug>(easymotion-sn)
+omap <leader><leader>/      <Plug>(easymotion-tn)
+
+" ========== MOVEMENT ==========
 
 " <Option-k> Move up faster
 map ˚ 4k
@@ -320,14 +321,9 @@ noremap <S-C-e> 5<C-e>
 " Scroll up faster
 noremap <S-C-y> 5<C-y>
 
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" ========== FZF ===========
+let g:fzf_height = 10
 
-" === FZF ====
 function! s:buflist()
   redir => ls
   silent ls
@@ -346,15 +342,12 @@ nnoremap <silent><leader>b :call fzf#run({
 \  'down':    len(<sid>buflist()) + 2
 \})<CR>
 
+let g:signify_vcs_list = [ 'git' ]
 
-
-" Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-
-"let g:syntastic_javascript_checkers = ['jscs']
+" ========== NEOMAKE ==========
+let g:neomake_javascript_jshint_maker = {
+    \ 'args': ['--verbose -c ~/.jshintrc'],
+    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+    \ }
+let g:neomake_javascript_enabled_makers = ['jshint']
+autocmd! BufWritePost * Neomake

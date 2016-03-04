@@ -1,0 +1,3 @@
+" ========== TABULAR ===========
+
+AddTabularPattern := /^[^\:]*:\zs

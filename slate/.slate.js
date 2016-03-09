@@ -409,7 +409,7 @@ var nudgeDownGrid = function(win) {
 slate.bind("k:cmd,ctrl", resizeUpGrid, true);
 slate.bind("l:cmd,ctrl", resizeRightGrid, true);
 slate.bind("j:cmd,ctrl", resizeDownGrid, true);
-slate.bind("left:cmd,ctrl", resizeLeftGrid, true);
+slate.bind("h:cmd,ctrl", resizeLeftGrid, true);
 
 slate.bind("l:ctrl,alt", nudgeRightGrid, true);
 slate.bind("j:ctrl,alt", nudgeDownGrid, true);

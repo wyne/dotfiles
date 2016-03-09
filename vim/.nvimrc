@@ -35,43 +35,44 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " core plugins
 
-Plug 'flazz/vim-colorschemes'         " Set of color schemes http://bytefluent.com/vivify/
-Plug 'kien/ctrlp.vim'                 " File search
-Plug 'scrooloose/nerdtree'            " Directory browsing
-Plug 'tpope/vim-sensible'             " Sensible defaults
-Plug 'tpope/vim-fugitive'             " Git commands
-Plug 'tpope/vim-surround'             " vim-surround
-Plug 'tpope/vim-commentary'           " vim-commentary
-Plug 'morhetz/gruvbox'                " color scheme
+Plug 'tpope/vim-sensible'               " Sensible defaults
+Plug 'flazz/vim-colorschemes'           " Set of color schemes
+Plug 'scrooloose/nerdtree'              " Directory browsing
+Plug 'tpope/vim-fugitive'               " Git commands
+Plug 'tpope/vim-surround'               " Vim-surround
+Plug 'tpope/vim-commentary'             " Vim-commentary
+Plug 'morhetz/gruvbox'                  " Color scheme
 
 " other plugins
 
-Plug 'bling/vim-airline'                " Status bar
-Plug 'edma2/vim-pants'                  " Pants plugin
+Plug 'Chiel92/vim-autoformat'           " Code Formatting
+Plug 'Shougo/deoplete.nvim'             " Autocomplete for nvim
+Plug 'Valloric/ListToggle'              " Toggle location list
+Plug 'benekastah/neomake'               " Syntax checking
+Plug 'vim-airline/vim-airline'          " Status bar
+Plug 'easymotion/vim-easymotion'        " Fast movement
+Plug 'godlygeek/tabular'                " Alignment
 Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
-Plug 'mustache/vim-mustache-handlebars' " Mustache
-Plug 'rking/ag.vim'                     " Searching
-Plug 'sjl/gundo.vim'                    " Undo Tree
-Plug 'simnalamburt/vim-mundo'           " Undo Tree
+Plug 'junegunn/goyo.vim'                " Markdown
+Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'mbbill/undotree'                  " Undo Tree
+Plug 'mhinz/vim-signify'                " Git gutter
+Plug 'mustache/vim-mustache-handlebars' " Mustache
+Plug 'osyo-manga/vim-over'              " Search and replace preview
+Plug 'rking/ag.vim'                     " Searching
+Plug 'simnalamburt/vim-mundo'           " Undo Tree
+Plug 'sjl/gundo.vim'                    " Undo Tree
 Plug 'solarnz/thrift.vim'               " Thrift syntax
+Plug 'terryma/vim-expand-region'        " Expand regions
 Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
 Plug 'tpope/vim-dispatch'               " Tmux integration
+Plug 'tpope/vim-unimpaired'             " Move text
 Plug 'wellle/targets.vim'               " Additional text objects
 Plug 'wesQ3/vim-windowswap'             " Window swapping
-Plug 'xolox/vim-session'                " Session management
-Plug 'tpope/vim-unimpaired'             " Move text
 Plug 'xolox/vim-misc'                   " Requirement for session management
-Plug 'junegunn/goyo.vim'                " Markdown
-Plug 'benekastah/neomake'               " Syntax checking
-Plug 'osyo-manga/vim-over'              " Search and replace preview
-Plug 'terryma/vim-expand-region'        " expand regions
-Plug 'Shougo/deoplete.nvim'             " autocomplete for nvim
-Plug 'kchmck/vim-coffee-script'         " coffeescript
-Plug 'godlygeek/tabular'                " Alignment
-Plug 'easymotion/vim-easymotion'        " Fast movement
-Plug 'mhinz/vim-signify'                " Git gutter
-Plug 'Valloric/ListToggle'              " Toggle location list
+Plug 'xolox/vim-session'                " Session management
+Plug 'slim-template/vim-slim'           " Slim syntax
+Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 
 call plug#end()
 
@@ -86,16 +87,41 @@ if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
 
-let g:airline_powerline_fonts=1
-let g:airline#extensions#branch#empty_message  =  "No SCM"
-let g:airline#extensions#whitespace#enabled    =  0
-let g:airline#extensions#tabline#enabled       =  1
-let g:airline#extensions#tabline#tab_nr_type   =  2   " tab number
-let g:airline#extensions#tabline#fnamemod      = ':t' " filename only
-let g:airline#extensions#hunks#non_zero_only   =  1   " git gutter
-" Prefix mode with current time
-" let g:airline_section_b = airline#section#create(['%{strftime("%b %d %H:%M")} '])
-let g:airline_theme="gruvbox"
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '' : 'V',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ '' : 'S',
+    \ }
+
+let g:airline_theme                                      = "gruvbox"
+let g:airline_powerline_fonts                            = 1
+let g:airline#extensions#whitespace#enabled              = 0
+let g:airline#extensions#hunks#non_zero_only             = 1    " git gutter
+let g:airline#extensions#tabline#enabled                 = 1
+let g:airline#extensions#tabline#fnamemod                = ':t' " filename only
+let g:airline#extensions#tabline#show_close_button       = 0
+let g:airline#extensions#tabline#show_buffers            = 1
+let g:airline#extensions#tabline#tab_nr_type             = 2    " splits and tab number
+let g:airline#extensions#tabline#switch_buffers_and_tabs = 0
+let g:airline#extensions#tabline#formatter               = 'unique_tail_improved'
+let g:airline_section_b = ''
+
+call airline#parts#define_accent('file', 'red')
+
+" Go to the last cursor location when a file is opened, unless this is a
+" git commit (in which case it's annoying)
+au BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
+      \ execute("normal `\"") |
+  \ endif
 
 " ========== GENERAL CONFIG ==========
 syntax on
@@ -125,7 +151,6 @@ set colorcolumn=80  " Column ruler at 80 characters
 
 let NERDTreeShowHidden=1
 
-" nnoremap <leader><leader>   <C-w><C-p>
 " Rotate mappings of ; , and :
 " ; to run a command (instead of :)
 nnoremap ; :
@@ -154,7 +179,7 @@ set list
 set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
 augroup FileTypes
   autocmd!
-  autocmd filetype html,xml set listchars-=tab:▸\ 
+  autocmd filetype html,xml set listchars-=tab:▸\
 augroup END
 
 " ========== COLORS ==========
@@ -195,7 +220,7 @@ let mapleader=" "
 
 " ========== EDITING ==========
 "                           Toggle line number
-nnoremap <leader>n          :set rnu! rnu?<CR>
+nnoremap <leader>n          :set nonu! nonu?<CR>
 "                           Toggle cursorline
 nnoremap <leader>c          :set cursorline! cursorline?<CR>
 "                           Edit .vimrc
@@ -252,19 +277,13 @@ nnoremap <leader>;          <C-w><C-p>
 "                           Zoom or unzoom window
 nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
-nnoremap <C-l>              :5winc ><CR>
-nnoremap S-C-L            :winc ><CR>
+nnoremap <C-l>              :5winc >\|AirlineRefresh<CR>
 "                           Shrink pane horizontally
-" infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-" tic $TERM.ti
-nnoremap <C-H>              :5winc <<CR>
-nnoremap S-C-H            :winc <<CR>
+nnoremap <C-H>              :5winc <\|AirlineRefresh<CR>
 "                           Grow pane vertically
-nnoremap <C-J>              :5winc +<CR>
-nnoremap S-C-J            :winc +<CR>
+nnoremap <C-J>              :5winc +\|AirlineRefresh<CR>
 "                           Shrink pane vertically
-nnoremap <C-K>              :5winc -<CR>
-nnoremap S-C-K            :winc -<CR>
+nnoremap <C-K>              :5winc -\|AirlineRefresh<CR>
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
@@ -337,12 +356,18 @@ function! s:bufopen(e)
   execute 'buffer' matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-nnoremap <silent><leader>b :call fzf#run({
+nnoremap <leader>b :call fzf#run({
 \  'source':  reverse(<sid>buflist()),
 \  'sink':    function('<sid>bufopen'),
 \  'options': '+m',
 \  'down':    len(<sid>buflist()) + 2
 \})<CR>
+
+command! FZFMru call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
 
 let g:signify_vcs_list = [ 'git' ]
 
@@ -357,3 +382,4 @@ autocmd! BufWritePost * Neomake
 let g:lt_location_list_toggle_map = '<leader>a'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 let g:lt_height = 5
+

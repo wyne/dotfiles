@@ -212,9 +212,6 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 nnoremap <leader>o          :FZF<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
-"                           Search working directory
-nnoremap <leader>f          :Ag 
-nnoremap <leader>t          :AgFile 
 "                           Reveal file in NerdTree
 nnoremap <leader>r          :NERDTreeFind<CR>
 "                           Open NERDTree File Browser
@@ -254,10 +251,10 @@ nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 
 "                           Toggle search highlighing
 nnoremap <silent><leader>i  :set hls!<CR>
-"                           Search working directory for word under cursor
-" nnoremap <C-g>              :Ag <cword><CR>
 "                           Search working directory
-" nnoremap <C-a>              :Ag 
+nnoremap <leader>f          :Ag 
+"                           Search working directory for word under cursor
+nnoremap <leader>t          :Ag <cword><CR>
 
 " ========== GIT ==========
 

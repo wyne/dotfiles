@@ -357,3 +357,10 @@ autocmd! BufWritePost * Neomake
 let g:lt_location_list_toggle_map = '<leader>a'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 let g:lt_height = 5
+
+
+function! GetFlickrAlbum(id)
+  :read https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=88b38fa938012279362204219265a900&photoset_id=72157663466341345&format=rest
+  :norm '[v']
+  :g/<photo id="/norm ^df"f"DI{% flickr_photo id: A %}
+endfunction

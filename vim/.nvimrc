@@ -1,9 +1,12 @@
 " ========== Fresh Start Steps ==========
 " 1. Install neovim
 "   https://github.com/neovim/homebrew-neovim/blob/master/README.md
-"   pip install --user neovim
 "
-" 2. Install patched fonts - Optional
+" 2. Install python support
+"   $ pip install --user neovim
+"   :UpdateRemotePlugins
+"
+" 3. Install patched fonts - Optional
 "   http://powerline.readthedocs.org/en/latest/installation/osx.html
 "   https://github.com/powerline/fonts.git
 "   ./install.sh
@@ -48,16 +51,12 @@ Plug 'easymotion/vim-easymotion'        " Fast movement
 Plug 'godlygeek/tabular'                " Alignment
 Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plug 'junegunn/goyo.vim'                " Markdown
-Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'mhinz/vim-signify'                " Git gutter
 Plug 'mustache/vim-mustache-handlebars' " Mustache
-Plug 'osyo-manga/vim-over'              " Search and replace preview
 Plug 'rking/ag.vim'                     " Searching
 Plug 'sjl/gundo.vim'                    " Undo Tree
 Plug 'slim-template/vim-slim'           " Slim syntax
-Plug 'solarnz/thrift.vim'               " Thrift syntax
 Plug 'terryma/vim-expand-region'        " Expand regions
-Plug 'terryma/vim-multiple-cursors'     " Sublime style repeat word select
 Plug 'tpope/vim-dispatch'               " Tmux integration
 Plug 'tpope/vim-unimpaired'             " Move text
 Plug 'vim-airline/vim-airline'          " Status bar
@@ -66,6 +65,7 @@ Plug 'wesQ3/vim-windowswap'             " Window swapping
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
 Plug 'yssl/QFEnter'                     " Choose window for quick fix open
+
 
 call plug#end()
 
@@ -388,3 +388,9 @@ let g:lt_height = 5
 " ========== DEOPLETE ==========
 
 let g:deoplete#enable_at_startup = 1
+
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif

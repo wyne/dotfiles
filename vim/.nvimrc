@@ -65,7 +65,7 @@ Plug 'wesQ3/vim-windowswap'             " Window swapping
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
 Plug 'yssl/QFEnter'                     " Choose window for quick fix open
-
+Plug 'vim-ruby/vim-ruby'                " Ruby
 
 call plug#end()
 

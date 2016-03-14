@@ -40,7 +40,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " other plugins
 
-Plug 'Chiel92/vim-autoformat'           " Code Formatting
+Plug 'kshenoy/vim-signature'            " Mark gutter
 Plug 'Shougo/deoplete.nvim'             " Autocomplete for nvim
 Plug 'Valloric/ListToggle'              " Toggle location list
 Plug 'benekastah/neomake'               " Syntax checking
@@ -281,11 +281,15 @@ nnoremap <leader>sc         :CloseSession<CR>
 
 "                           Update plugins to latest version
 nnoremap <leader>pi         :PlugInstall<CR>
+"                           Update plugins to latest version
+nnoremap <leader>pc         :PlugClean<CR>
+"                           Update plugins to latest version
+nnoremap <leader>pu         :PlugUpdate<CR>
 
 " ========== EASYMOTION ==========
 
 "                           Jump to anywhere with 2 characters
-nmap s                      <Plug>(easymotion-overwin-f2)
+nmap s                      <Plug>(easymotion-overwin-f)
 "                           EasyMotion search
 map  <leader><leader>/      <Plug>(easymotion-sn)
 omap <leader><leader>/      <Plug>(easymotion-tn)

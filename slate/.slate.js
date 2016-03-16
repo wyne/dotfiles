@@ -182,12 +182,12 @@ var twoMonitorsLargeLayout = slate.layout("twoMonitorsLarge", {
     "repeat" : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   },
   "Sunrise Calendar" : {
-    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   }
@@ -221,12 +221,12 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     "repeat" : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   },
   "Sunrise Calendar" : {
-    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   }

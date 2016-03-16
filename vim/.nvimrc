@@ -66,6 +66,7 @@ Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
 Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 Plug 'vim-ruby/vim-ruby'                " Ruby
+Plug 'jeetsukumaran/vim-buffergator'    " Buffer management
 
 call plug#end()
 
@@ -199,6 +200,10 @@ inoremap OO                 <Esc>O
 
 " ========== BUFFERS ==========
 
+"                           Prevent default buffergator mappings
+let g:buffergator_suppress_keymaps = 1
+"                           Buffer manager
+nnoremap <leader>B          :BuffergatorToggle<CR>
 "                           Next buffer
 nnoremap ≥                  :bn<CR>
 "                           Previous buffer
@@ -391,6 +396,7 @@ let g:lt_height = 5
 
 " ========== DEOPLETE ==========
 
+let g:deoplete#disable_auto_complete = 1
 let g:deoplete#enable_at_startup = 1
 
 if !exists('g:deoplete#omni#input_patterns')

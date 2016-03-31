@@ -192,11 +192,14 @@ inoremap jj                 <Esc>
 inoremap jf                 <Esc>
 "                           Copy to system clipboard with y in visual mode
 vnoremap y                  "+y
-"                           Movement commands in insert mode
+"                           Edit/move commands in insert mode
 inoremap II                 <Esc>I
 inoremap AA                 <Esc>A
 inoremap OO                 <Esc>O
-"                           Edit commands in insert mode
+"                           Toggle presentation mode
+nnoremap <leader>P          :SignifyToggle<CR>:SignatureToggleSigns<CR>:set nonu! nonu?<CR>
+"                           Yank current file path
+nnoremap <leader>F          :let @* = expand("%")<CR>
 
 " ========== BUFFERS ==========
 

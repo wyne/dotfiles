@@ -100,6 +100,8 @@ set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 set colorcolumn=80  " Column ruler at 80 characters
 set number
+set nofoldenable    " Disable folding
+set lazyredraw!     " Disable lazyredraw
 
 let NERDTreeShowHidden=1
 
@@ -367,7 +369,7 @@ let g:airline_mode_map = {
   \ }
 
 let g:airline_theme                                       = "gruvbox"
-let g:airline_powerline_fonts                             = 1
+let g:airline_powerline_fonts                             = 0
 let g:airline#extensions#whitespace#enabled               = 0
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
 let g:airline#extensions#tabline#enabled                  = 1
@@ -407,16 +409,3 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" ========== FOLDS ==========
-
-set foldmethod=syntax
-
-let javaScript_fold=1         " JavaScript
-let perl_fold=1               " Perl
-let php_folding=1             " PHP
-let r_syntax_folding=1        " R
-let ruby_fold=1               " Ruby
-let sh_fold_enabled=1         " sh
-let vimsyn_folding='af'       " Vim script
-let xml_syntax_folding=1      " XML

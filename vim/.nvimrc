@@ -100,6 +100,8 @@ set sidescroll=1    " scroll horizontally by 1 column
 set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
 set colorcolumn=80  " Column ruler at 80 characters
 set number
+set nofoldenable    " Disable folding
+set lazyredraw!     " Disable lazyredraw
 
 let NERDTreeShowHidden=1
 
@@ -192,11 +194,14 @@ inoremap jj                 <Esc>
 inoremap jf                 <Esc>
 "                           Copy to system clipboard with y in visual mode
 vnoremap y                  "+y
-"                           Movement commands in insert mode
+"                           Edit/move commands in insert mode
 inoremap II                 <Esc>I
 inoremap AA                 <Esc>A
 inoremap OO                 <Esc>O
-"                           Edit commands in insert mode
+"                           Toggle presentation mode
+nnoremap <leader>P          :SignifyToggle<CR>:SignatureToggleSigns<CR>:set nonu! nonu?<CR>
+"                           Yank current file path
+nnoremap <leader>F          :let @* = expand("%")<CR>
 
 " ========== BUFFERS ==========
 

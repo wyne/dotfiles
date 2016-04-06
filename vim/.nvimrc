@@ -2,7 +2,7 @@
 " 1. Install neovim
 "   https://github.com/neovim/homebrew-neovim/blob/master/README.md
 "
-" 2. Install python support
+" 2. install python support
 "   $ pip install --user neovim
 "   :UpdateRemotePlugins
 "
@@ -206,8 +206,11 @@ let g:buffergator_suppress_keymaps = 1
 nnoremap <leader>B          :BuffergatorToggle<CR>
 "                           Next buffer
 nnoremap ≥                  :bn<CR>
+nnoremap <M-≥>              :bn<CR>
 "                           Previous buffer
 nnoremap ≤                  :bN<CR>
+nnoremap <M-≤>              :bN<CR>
+
 "                           Force close current buffer and maintain window arrangement
 nnoremap <leader>x          :bp\|bd! #<CR>
 
@@ -300,8 +303,10 @@ omap <leader><leader>/      <Plug>(easymotion-tn)
 
 " <Option-k> Move up faster
 map ˚                       4k
+map <M-˚>                   4k
 " <Option-j> Move down faster
 map ∆                       4j
+map <M-∆>                   4j
 
 " Scroll down faster
 noremap <C-e>               2<C-e>
@@ -364,7 +369,7 @@ let g:airline_mode_map = {
   \ }
 
 let g:airline_theme                                       = "gruvbox"
-let g:airline_powerline_fonts                             = 1
+let g:airline_powerline_fonts                             = 0
 let g:airline#extensions#whitespace#enabled               = 0
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
 let g:airline#extensions#tabline#enabled                  = 1

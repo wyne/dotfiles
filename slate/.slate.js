@@ -33,6 +33,8 @@ function fullScreen(screen){
   }
 }
 
+// ==== HALVES
+
 // Left Half
 function leftHalf(screen){
   var s = fullScreen(screen);
@@ -63,10 +65,35 @@ function bottomHalf(screen){
   return s;
 }
 
+// ==== QUARTERS
+
+// Top Right Half
+function topRightHalf(screen){
+  var s = fullScreen(screen);
+  s.width = "screenSizeX/2-1.5*" + marginX;
+  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.x = "screenSizeX/2+.5*" + marginX;
+  s.y = "0";
+  return s;
+}
+
+// Bottom Right Half
+function bottomRightHalf(screen){
+  var s = fullScreen(screen);
+  s.width = "screenSizeX/2-1.5*" + marginX;
+  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.x = "screenSizeX/2+.5*" + marginX;
+  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
+  return s;
+}
+
+
 // OPERATIONS
 var firstFull = slate.operation("move", fullScreen(ScreenRefOne));
 var firstLeft = slate.operation("move", leftHalf(ScreenRefOne));
 var firstRight = slate.operation("move", rightHalf(ScreenRefOne));
+var firstTopRight = slate.operation("move", topRightHalf(ScreenRefOne));
+var firstBottomRight = slate.operation("move", bottomRightHalf(ScreenRefOne));
 
 var secondFull = slate.operation("move", fullScreen(ScreenRefTwo));
 var secondLeft = slate.operation("move", leftHalf(ScreenRefTwo));
@@ -151,45 +178,53 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
     "operations" : middleCenter,
     "ignore-fail" : true,
     "main-first" : true
+  },
+  "Plan" : {
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+    "ignore-fail" : true,
+    "main-first" : true
   }
 });
 
 var twoMonitorsLargeLayout = slate.layout("twoMonitorsLarge", {
   "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
-    "operations" : firstFull,
-    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
-                         // Sorting by title ensures that my iTerm windows always end up in the same place.
-    "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
+    "operations" : secondFull,
+    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
+    "repeat"     : true // If I have more than three iTerm windows, keep applying the three operations above.
+  },
+  "Sublime" : {
+    "operations"  : firstFull,
+    "ignore-fail" : true,
+    "main-first"  : true,
+    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "RubyMine" : {
-    "operations" : firstFull,
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+    "operations"  : firstFull,
+    "ignore-fail" : true,
+    "main-first"  : true,
+    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "Google Chrome" : {
     // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
     // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
     // suffix, *, [Personal Profile]
-    "operations" :[function(windowObject) {
+    "operations"  :[function(windowObject) {
       windowObject.doOperation(firstLeft);
     }],
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
+    "main-first"  : true,
+    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
+    "operations"  : firstTopRight,
     "ignore-fail" : true,
-    "main-first" : true
+    "main-first"  : true
   },
-  "Sunrise Calendar" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+  "Plan" : {
+    "operations"  : firstBottomRight,
     "ignore-fail" : true,
-    "main-first" : true
+    "main-first"  : true
   }
 });
 
@@ -221,11 +256,16 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     "repeat" : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations" : slate.operation("move", topHalf(ScreenRefTwo)),
+    "operations" : slate.operation("move", topRightHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
   },
   "Sunrise Calendar" : {
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+    "ignore-fail" : true,
+    "main-first" : true
+  },
+  "Plan" : {
     "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true
@@ -284,11 +324,27 @@ var resizeYdistance = function(win, direction) {
 }
 
 var resizeLeftGrid = function(win) {
-  if (win === undefined) return;
+  if (win === undefined) {
+    slate.log("Window undefined");
+    return;
+  }
+
+  var width = win.size().width;
+
   win.resize({
     "width": win.size().width - resizeXdistance(win, -1),
     "height": "windowSizeY",
   });
+  //
+  // Work around for windows that don't allow pixel precision resize; i.e. terminals
+  if (win.size().width == width) {
+    slate.log("Resize left failed. Trying larger increment.");
+
+    win.resize({
+      "width": win.size().width - resizeXdistance(win, 1) - gridSizeX(win),
+      "height": "windowSizeY",
+    });
+  }
 };
 
 var resizeRightGrid = function(win) {
@@ -419,8 +475,8 @@ slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("2:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
-slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLargeLayout }));
 slate.bind("3:ctrl", slate.operation("layout", { "name" : threeMonitorsLayout }));
+slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLargeLayout }));
 
 slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
 slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });

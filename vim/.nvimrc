@@ -67,6 +67,7 @@ Plug 'xolox/vim-session'                " Session management
 Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 Plug 'vim-ruby/vim-ruby'                " Ruby
 Plug 'jeetsukumaran/vim-buffergator'    " Buffer management
+Plug 'michaeljsmith/vim-indent-object'  " Indent text object
 
 call plug#end()
 
@@ -76,32 +77,32 @@ syntax on
 colorscheme gruvbox
 
 set background=dark
-set nowrap          " don't wrap lines
-set ruler           " show cursor line and column in status bar
+set nowrap                               " Don't wrap lines
+set ruler                                " Show cursor line and column in status bar
 set hidden
-set cursorline      " highlight current line
-set re=1            " fixes slow cursorline
-set expandtab       " use spaces intead of tabs
-set tabstop=2       " a tab is four spaces
-set smarttab        " insert tabs on the start of a line according to shiftwidth, not tabstop
-set autoindent      " always set autoindenting on
-set copyindent      " copy the previous indentation on autoindenting
-set shiftwidth=2    " number of spaces to use forautoindenting
-set shiftround      " use multiple of shiftwidth when indenting with '<' and '>'
-set showmatch       " set show matching parenthesis
-set ignorecase      " ignore case when searching
-set smartcase       " ignore case if search pattern is all lowercase
-set incsearch       " show search matches as you type
-set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set nocursorline                         " Disable highlight current line
+set re=1                                 " Fixes slow cursorline
+set expandtab                            " Use spaces intead of tabs
+set tabstop=2                            " A tab is four spaces
+set smarttab                             " Insert tabs on the start of a line according to shiftwidth, not tabstop
+set autoindent                           " Always set autoindenting on
+set copyindent                           " Copy the previous indentation on autoindenting
+set shiftwidth=2                         " Number of spaces to use forautoindenting
+set shiftround                           " Use multiple of shiftwidth when indenting with '<' and '>'
+set showmatch                            " Set show matching parenthesis
+set ignorecase                           " Ignore case when searching
+set smartcase                            " Ignore case if search pattern is all lowercase
+set incsearch                            " Show search matches as you type
+set backspace=indent,eol,start           " Allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
-set scrolloff=2     " start scrolling when 2 lines from edge
-set sidescroll=1    " scroll horizontally by 1 column
-set sidescrolloff=2 " start scrolling horizontally when 2 lines from edge
-set colorcolumn=80  " Column ruler at 80 characters
+set scrolloff=2                          " Start scrolling when 2 lines from edge
+set sidescroll=1                         " Scroll horizontally by 1 column
+set sidescrolloff=2                      " Start scrolling horizontally when 2 lines from edge
+set colorcolumn=100                      " Column ruler at 100 characters
 set number
-set nofoldenable    " Disable folding
-set lazyredraw!     " Disable lazyredraw
+set nofoldenable                         " Disable folding
+set nolazyredraw                         " Disable lazyredraw
 
 let NERDTreeShowHidden=1
 
@@ -129,6 +130,7 @@ augroup END
 " ========== COLORS ==========
 
 hi CursorLine cterm=none ctermbg=black ctermfg=none
+hi ColorColumn guibg=Grey10
 hi Pmenu ctermfg=white ctermbg=4
 hi PmenuSel ctermfg=white ctermbg=1
 hi VertSplit ctermbg=none ctermfg=black
@@ -176,6 +178,9 @@ vnoremap , ;
 " : to repeat T or F (instead of ,)
 nnoremap : ,
 vnoremap : ,
+
+nnoremap <leader>m          :redir! > ~/vimkeys.txt<CR>:silent map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
+nnoremap <leader>M          :redir! > ~/vimkeys.txt<CR>:silent verbose map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
 
 " ========== EDITING ==========
 
@@ -225,8 +230,10 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 nnoremap <leader>o          :FZF<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
-"                           Reveal file in NerdTree
+"                           Reveal file in NERDTree
 nnoremap <leader>r          :NERDTreeFind<CR>
+"                           Focus NERDTree
+nnoremap <leader>R          :NERDTreeFocus<CR>
 "                           Open NERDTree File Browser
 nnoremap <Bslash>           :NERDTreeToggle<CR>
 
@@ -374,7 +381,7 @@ let g:airline_mode_map = {
   \ }
 
 let g:airline_theme                                       = "gruvbox"
-let g:airline_powerline_fonts                             = 0
+let g:airline_powerline_fonts                             = 1
 let g:airline#extensions#whitespace#enabled               = 0
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
 let g:airline#extensions#tabline#enabled                  = 1

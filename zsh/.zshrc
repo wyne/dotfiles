@@ -23,9 +23,10 @@ plugins+=(zsh-completions zsh-syntax-highlighting)
 autoload -U compinit && compinit
 
 # ===== User configuration =====
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Justin/.fzf/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-export PATH="/Applications/RubyMine.app/Contents/MacOS/:$PATH"
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$PATH:/Applications/RubyMine.app/Contents/MacOS"
+export PATH="$PATH:$HOME/.fzf/bin"
+export PATH="$PATH:$HOME/bin"
 
 # ===== Oh my ZSH =====
 source $ZSH/oh-my-zsh.sh

@@ -68,6 +68,9 @@ Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 Plug 'vim-ruby/vim-ruby'                " Ruby
 Plug 'jeetsukumaran/vim-buffergator'    " Buffer management
 Plug 'michaeljsmith/vim-indent-object'  " Indent text object
+Plug 'radenling/vim-dispatch-neovim'    " Neovim dispatch
+Plug 'janko-m/vim-test'                 " Testing
+Plug 'kassio/neoterm'                   " Testing
 
 call plug#end()
 
@@ -163,6 +166,9 @@ set noswapfile
 autocmd InsertEnter * hi CursorLine cterm=NONE ctermbg=16
 autocmd InsertLeave * hi CursorLine cterm=NONE ctermbg=black
 
+" Change cursor shape per mode
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
 " ========== MAPPINGS ==========
 
 " Set <space> to leader key
@@ -204,9 +210,12 @@ inoremap II                 <Esc>I
 inoremap AA                 <Esc>A
 inoremap OO                 <Esc>O
 "                           Toggle presentation mode
-nnoremap <leader>P          :SignifyToggle<CR>:SignatureToggleSigns<CR>:set nonu! nonu?<CR>
+nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo SignatureToggleSigns<CR>:silent! windo set nonu! nonu?<CR>
 "                           Yank current file path
 nnoremap <leader>F          :let @* = expand("%")<CR>
+"                           Run current file as teset
+nnoremap <leader>t          :T rake test %:h/%:t<CR>
+let g:neoterm_position = "vertical"
 
 " ========== BUFFERS ==========
 
@@ -214,12 +223,6 @@ nnoremap <leader>F          :let @* = expand("%")<CR>
 let g:buffergator_suppress_keymaps = 1
 "                           Buffer manager
 nnoremap <leader>B          :BuffergatorToggle<CR>
-"                           Next buffer
-nnoremap ≥                  :bn<CR>
-nnoremap <M-≥>              :bn<CR>
-"                           Previous buffer
-nnoremap ≤                  :bN<CR>
-nnoremap <M-≤>              :bN<CR>
 
 "                           Force close current buffer and maintain window arrangement
 nnoremap <leader>x          :bp\|bd! #<CR>
@@ -273,8 +276,6 @@ nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <silent><leader>i  :set hls!<CR>
 "                           Search working directory
 nnoremap <leader>f          :Ag 
-"                           Search working directory for word under cursor
-nnoremap <leader>t          :Ag <cword><CR>
 
 " ========== GIT ==========
 
@@ -333,6 +334,7 @@ noremap <S-C-y>             5<C-y>
 " ========== FZF ===========
 
 let g:fzf_height = 10
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
 function! s:buflist()
   redir => ls

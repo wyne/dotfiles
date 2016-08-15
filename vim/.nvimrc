@@ -55,7 +55,6 @@ Plug 'mhinz/vim-signify'                " Git gutter
 Plug 'mustache/vim-mustache-handlebars' " Mustache
 Plug 'rking/ag.vim'                     " Searching
 Plug 'sjl/gundo.vim'                    " Undo Tree
-Plug 'slim-template/vim-slim'           " Slim syntax
 Plug 'terryma/vim-expand-region'        " Expand regions
 Plug 'tpope/vim-dispatch'               " Tmux integration
 Plug 'tpope/vim-unimpaired'             " Move text
@@ -71,6 +70,9 @@ Plug 'michaeljsmith/vim-indent-object'  " Indent text object
 Plug 'radenling/vim-dispatch-neovim'    " Neovim dispatch
 Plug 'janko-m/vim-test'                 " Testing
 Plug 'kassio/neoterm'                   " Testing
+Plug 'kchmck/vim-coffee-script'         " Coffeescript
+Plug 'junegunn/gv.vim'                  " Git commit browser
+Plug 'rizzatti/dash.vim'                " Dash
 
 call plug#end()
 
@@ -257,13 +259,15 @@ nnoremap <leader>;          <C-w><C-p>
 "                           Zoom or unzoom window
 nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
-nnoremap <C-l>              :5winc >\|AirlineRefresh<CR>
+nnoremap <C-l>              :5winc ><CR>
 "                           Shrink pane horizontally
-nnoremap <C-H>              :5winc <\|AirlineRefresh<CR>
+nnoremap <C-h>              :5winc <<CR>
 "                           Grow pane vertically
-nnoremap <C-J>              :5winc +\|AirlineRefresh<CR>
+nnoremap <C-j>              :5winc +<CR>
 "                           Shrink pane vertically
-nnoremap <C-K>              :5winc -\|AirlineRefresh<CR>
+nnoremap <C-k>              :5winc -<CR>
+"                           Refresh Airline (for after a winc command above)
+nnoremap <C-m>              :AirlineRefresh<CR>
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
@@ -276,6 +280,8 @@ nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <silent><leader>i  :set hls!<CR>
 "                           Search working directory
 nnoremap <leader>f          :Ag 
+"                           Search Dash for word under cursor
+nmap <silent> <leader>d     <Plug>DashSearch
 
 " ========== GIT ==========
 
@@ -288,6 +294,8 @@ nnoremap <leader>gc         :Gcommit<CR>
 
 "                           Open vim session (press tab for completion)
 nnoremap <leader>so         :OpenSession 
+"                           Open vim session (press tab for completion)
+nnoremap <leader>sO         :OpenSession! 
 "                           Save vim session (press tab for completion)
 nnoremap <leader>ss         :SaveSession 
 "                           Delete vim session
@@ -334,7 +342,7 @@ noremap <S-C-y>             5<C-y>
 " ========== FZF ===========
 
 let g:fzf_height = 10
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
 function! s:buflist()
   redir => ls

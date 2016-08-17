@@ -221,6 +221,11 @@ var twoMonitorsLargeLayout = slate.layout("twoMonitorsLarge", {
     "ignore-fail" : true,
     "main-first"  : true
   },
+  "Fantastical" : {
+    "operations"  : firstBottomRight,
+    "ignore-fail" : true,
+    "main-first"  : true
+  },
   "Plan" : {
     "operations"  : firstBottomRight,
     "ignore-fail" : true,
@@ -261,6 +266,11 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     "main-first" : true
   },
   "Sunrise Calendar" : {
+    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
+    "ignore-fail" : true,
+    "main-first" : true
+  },
+  "Fantastical" : {
     "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
     "ignore-fail" : true,
     "main-first" : true

@@ -73,6 +73,7 @@ Plug 'kassio/neoterm'                   " Testing
 Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'rizzatti/dash.vim'                " Dash
+Plug 'cloudhead/neovim-fuzzy'           " Fzy find
 
 call plug#end()
 
@@ -369,6 +370,10 @@ nnoremap <leader>e :call fzf#run({
   \  'down':    '40%'})<CR>
 
 let g:signify_vcs_list = [ 'git' ]
+
+" ========== FZY ===========
+
+nnoremap <C-p> :FuzzyOpen<CR>
 
 " ========== AIRLINE ==========
 

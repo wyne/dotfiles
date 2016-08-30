@@ -12,8 +12,10 @@ var ScreenRefTwo = "1";
 var ScreenRefThree = "2";
 
 // Create the various operations used in the layout
-var focusITerm = slate.operation("focus", { "app" : "iTerm" });
-var focusChrome = slate.operation("focus", { "app" : "Google Chrome" });
+var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
+var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
+var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
+var focusSlack    = slate.operation("focus", { "app" : "Slack" });
 
 // Margins
 var marginX = "0";
@@ -186,12 +188,14 @@ var threeMonitorsLayout = slate.layout("threeMonitors", {
   }
 });
 
-var twoMonitorsLargeLayout = slate.layout("twoMonitorsLarge", {
-  "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
+var twoMonitorsLayout = slate.layout("twoMonitors", {
+  // "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
   "iTerm2" : {
-    "operations" : secondFull,
-    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
-    "repeat"     : true // If I have more than three iTerm windows, keep applying the three operations above.
+    "operations"  : [ secondFull, firstFull ],
+    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
+    "main-first"  : true,
+    "repeat"      : true,
+    "sort-title"  : true // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
   },
   "Sublime" : {
     "operations"  : firstFull,
@@ -230,55 +234,6 @@ var twoMonitorsLargeLayout = slate.layout("twoMonitorsLarge", {
     "operations"  : firstBottomRight,
     "ignore-fail" : true,
     "main-first"  : true
-  }
-});
-
-var twoMonitorsLayout = slate.layout("twoMonitors", {
-  "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
-  "iTerm2" : {
-    "operations" : secondTop,
-    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
-                         // Sorting by title ensures that my iTerm windows always end up in the same place.
-    "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
-  },
-  "RubyMine" : {
-    "operations" : firstFull,
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "Google Chrome" : {
-    // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
-    // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
-    // suffix, *, [Personal Profile]
-    "operations" :[function(windowObject) {
-      windowObject.doOperation(firstFull);
-    }],
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "Slack" : {
-    "operations" : slate.operation("move", topRightHalf(ScreenRefTwo)),
-    "ignore-fail" : true,
-    "main-first" : true
-  },
-  "Sunrise Calendar" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
-    "ignore-fail" : true,
-    "main-first" : true
-  },
-  "Fantastical" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
-    "ignore-fail" : true,
-    "main-first" : true
-  },
-  "Plan" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
-    "ignore-fail" : true,
-    "main-first" : true
   }
 });
 
@@ -484,9 +439,10 @@ slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
-slate.bind("2:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
-slate.bind("3:ctrl", slate.operation("layout", { "name" : threeMonitorsLayout }));
-slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLargeLayout }));
+slate.bind("3:ctrl", slate.operation("sequence", {
+  "operations" : [ focusSlack, focusChrome, focusCalendar ]
+}));
+slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
 
 slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
 slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });
@@ -494,8 +450,7 @@ slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
 
 // default the layout so it activates when I plug in my two external monitors.
 slate.default("1", laptopLayout);
-slate.default(["1920x1200","1200x1920"], twoMonitorsLayout);
-slate.default(["2560x1600","1200x1920"], twoMonitorsLargeLayout);
+slate.default(["3008x1692","1200x1920"], twoMonitorsLayout);
 slate.default(["1920x1200","1280x800","1200x1920"], threeMonitorsLayout);
 
 var relaunch = slate.operation("relaunch");

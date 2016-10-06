@@ -74,12 +74,14 @@ Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'rizzatti/dash.vim'                " Dash
 Plug 'cloudhead/neovim-fuzzy'           " Fzy find
+Plug 'roman/golden-ratio'               " Window sizing
 
 call plug#end()
 
 " ========== GENERAL CONFIG ==========
 
 syntax on
+set termguicolors
 colorscheme gruvbox
 
 set background=dark
@@ -275,6 +277,9 @@ nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
 "nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
+" Golden Ratio (useful when using laptop screen only
+let g:golden_ratio_autocommand = 0 " Disable by default, enable with :GoldenRatioToggle
+
 " ========== SEARCH ==========
 
 "                           Toggle search highlighing
@@ -313,6 +318,10 @@ nnoremap <leader>pc         :PlugClean<CR>
 "                           Update plugins to latest version
 nnoremap <leader>pu         :PlugUpdate<CR>
 
+" ========== TERMINAL ==========
+
+tnoremap <Esc>              <C-\><C-n>
+
 " ========== EASYMOTION ==========
 
 "                           Jump to anywhere with 2 characters
@@ -343,8 +352,14 @@ noremap <S-C-y>             5<C-y>
 " ========== FZF ===========
 
 let g:fzf_height = 10
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'rightb vsplit' }
+
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
+" Open tags in current buffer
 function! s:buflist()
   redir => ls
   silent ls

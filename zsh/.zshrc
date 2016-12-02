@@ -25,6 +25,7 @@ autoload -U compinit && compinit
 # ===== User configuration =====
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:/Applications/RubyMine.app/Contents/MacOS"
+export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
 export PATH="$PATH:$HOME/.fzf/bin"
 export PATH="$PATH:$HOME/bin"
 
@@ -108,11 +109,12 @@ alias jj='fz'
 alias json='python -m json.tool'
 
 # iTerm 2 Shell Integration
-test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+# test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 export NVM_DIR="/Users/justin/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# export PATH="$NVM_DIR/versions/node/v6.3.0/bin:$PATH"
 
 export EDITOR=/usr/local/bin/nvim

@@ -75,6 +75,8 @@ Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'rizzatti/dash.vim'                " Dash
 Plug 'cloudhead/neovim-fuzzy'           " Fzy find
 Plug 'roman/golden-ratio'               " Window sizing
+Plug 'tpope/vim-speeddating'            " Date inc/dec
+Plug 'kien/rainbow_parentheses.vim'     " Rainbow parentheses
 
 call plug#end()
 
@@ -111,6 +113,12 @@ set colorcolumn=100                      " Column ruler at 100 characters
 set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
+
+" Rainbow parentheses colors
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 let NERDTreeShowHidden=1
 
@@ -320,7 +328,7 @@ nnoremap <leader>pu         :PlugUpdate<CR>
 
 " ========== TERMINAL ==========
 
-tnoremap <Esc>              <C-\><C-n>
+tnoremap <leader><Esc>      <C-\><C-n>
 
 " ========== EASYMOTION ==========
 
@@ -371,12 +379,69 @@ function! s:bufopen(e)
   execute 'buffer' matchstr(a:e, '^[ 0-9]*')
 endfunction
 
+function! s:align_lists(lists)
+  let maxes = {}
+  for list in a:lists
+    let i = 0
+    while i < len(list)
+      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
+      let i += 1
+    endwhile
+  endfor
+  for list in a:lists
+    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+  endfor
+  return a:lists
+endfunction
+
+function! s:btags_source()
+  let lines = map(split(system(printf(
+    \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
+    \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+  if v:shell_error
+    throw 'failed to extract tags'
+  endif
+  return map(s:align_lists(lines), 'join(v:val, "\t")')
+endfunction
+
+function! s:btags_sink(line)
+  execute split(a:line, "\t")[2]
+endfunction
+
+function! s:btags()
+  try
+    call fzf#run({
+    \ 'source':  s:btags_source(),
+    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+    \ 'down':    '40%',
+    \ 'sink':    function('s:btags_sink')})
+  catch
+    echohl WarningMsg
+    echom v:exception
+    echohl None
+  endtry
+endfunction
+
+command! BTags call s:btags()
+" end open tags in current buffer
+
+command! -bar Tags if !empty(tagfiles()) | call fzf#run({
+  \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+  \   'sink':   'tag',
+  \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
+
+
+command! -bar Tags if !empty(tagfiles()) | call fzf#run({
+  \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+  \   'sink':   'tag',
+  \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
+
 nnoremap <leader>b :call fzf#run({
   \  'source':  reverse(<sid>buflist()),
   \  'sink':    function('<sid>bufopen'),
   \  'options': '+m',
   \  'down':    len(<sid>buflist()) + 2
-  \})<CR>
+  \ })<CR>
 
 nnoremap <leader>e :call fzf#run({
   \  'source':  v:oldfiles,
@@ -421,9 +486,12 @@ let g:airline#extensions#tabline#show_buffers             = 1
 let g:airline#extensions#tabline#tab_nr_type              = 2    " splits and tab number
 let g:airline#extensions#tabline#switch_buffers_and_tabs  = 0
 let g:airline#extensions#tabline#formatter                = 'unique_tail_improved'
-let g:airline_section_b                                   = ''
+let g:airline_section_c                                   = '%t'
+let g:airline_section_b                                   = airline#section#create(['%h'])
 
-call airline#parts#define_accent('file', 'red')
+" call airline#parts#define_function('foo', '%t')
+" call airline#parts#define_accent('foo', 'red')
+" let g:airline_section_c                                   = airline#section#create_right(['foo'])
 
 " Go to the last cursor location when a file is opened, unless this is a
 " git commit (in which case it's annoying)

@@ -18,9 +18,9 @@ var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
 var focusSlack    = slate.operation("focus", { "app" : "Slack" });
 
 // Margins
-var marginX = "0";
+var marginX = "100";
 // var marginX = "screenSizeX/30";
-var marginY = "0";
+var marginY = "100";
 // var marginY = "screenSizeY/20";
 
 // Full screen
@@ -75,7 +75,6 @@ function topRightHalf(screen){
   s.width = "screenSizeX/2-1.5*" + marginX;
   s.height = "screenSizeY/2-1.5*" + marginY;
   s.x = "screenSizeX/2+.5*" + marginX;
-  s.y = "0";
   return s;
 }
 
@@ -440,7 +439,7 @@ slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", {
-  "operations" : [ focusSlack, focusChrome, focusCalendar ]
+  "operations" : [ focusChrome, focusCalendar, focusSlack]
 }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
 

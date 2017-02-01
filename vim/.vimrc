@@ -39,7 +39,8 @@ Plug 'tpope/vim-fugitive'               " Git commands
 Plug 'tpope/vim-surround'               " Vim-surround
 Plug 'tpope/vim-commentary'             " Vim-commentary
 Plug 'morhetz/gruvbox'                  " Color scheme
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'               " Ctrl P
 
 " other plugins
@@ -76,6 +77,9 @@ Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'rizzatti/dash.vim'                " Dash
 Plug 'cloudhead/neovim-fuzzy'           " Fzy find
 Plug 'roman/golden-ratio'               " Window sizing
+Plug 'mhinz/vim-grepper'                " Searcher
+Plug 'w0rp/ale'                         " Asynch syntax checking
+Plug 'mhinz/vim-startify'               " Start Screen
 
 call plug#end()
 
@@ -86,6 +90,14 @@ colorscheme gruvbox
 if has("termguicolors")
   set termguicolors
   set re=1                               " Fixes slow cursorline
+endif
+
+if has("gui_macvim")
+  set guioptions-=r
+  set guioptions-=R
+  set guioptions-=l
+  set guioptions-=L
+  set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h14
 endif
 
 set background=dark
@@ -116,6 +128,7 @@ set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
 
 let NERDTreeShowHidden=1
+let g:ruby_indent_block_style = 'do'
 
 " Set file types
 
@@ -352,6 +365,17 @@ noremap <S-C-e>             5<C-e>
 " Scroll up faster
 noremap <S-C-y>             5<C-y>
 
+" ========== Syntax Checking ===========
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '❗️'
+
 " ========== FZF ===========
 
 let g:fzf_height = 10
@@ -431,18 +455,18 @@ command! -bar Tags if !empty(tagfiles()) | call fzf#run({
   \   'sink':   'tag',
   \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
 
-nnoremap <leader>b :call fzf#run({
-  \  'source':  reverse(<sid>buflist()),
-  \  'sink':    function('<sid>bufopen'),
-  \  'options': '+m',
-  \  'down':    len(<sid>buflist()) + 2
-  \ })<CR>
+" nnoremap <leader>b :call fzf#run({
+"   \  'source':  reverse(<sid>buflist()),
+"   \  'sink':    function('<sid>bufopen'),
+"   \  'options': '+m',
+"   \  'down':    len(<sid>buflist()) + 2
+"   \ })<CR>
 
-nnoremap <leader>e :call fzf#run({
-  \  'source':  v:oldfiles,
-  \  'sink':    'e',
-  \  'options': '-m -x +s',
-  \  'down':    '40%'})<CR>
+" nnoremap <leader>e :call fzf#run({
+"   \  'source':  v:oldfiles,
+"   \  'sink':    'e',
+"   \  'options': '-m -x +s',
+"   \  'down':    '40%'})<CR>
 
 let g:signify_vcs_list = [ 'git' ]
 
@@ -455,6 +479,15 @@ let g:signify_vcs_list = [ 'git' ]
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
+
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'b': 100,
+    \ 'x': 60,
+    \ 'y': 120,
+    \ 'z': 45,
+    \ 'warning': 80,
+    \ 'error': 80,
+    \ }
 
 let g:airline_mode_map = {
   \ '__' : '-',
@@ -481,12 +514,7 @@ let g:airline#extensions#tabline#show_buffers             = 1
 let g:airline#extensions#tabline#tab_nr_type              = 2    " splits and tab number
 let g:airline#extensions#tabline#switch_buffers_and_tabs  = 0
 let g:airline#extensions#tabline#formatter                = 'unique_tail_improved'
-let g:airline_section_c                                   = '%t'
-let g:airline_section_b                                   = airline#section#create(['%h'])
-
-" call airline#parts#define_function('foo', '%t')
-" call airline#parts#define_accent('foo', 'red')
-" let g:airline_section_c                                   = airline#section#create_right(['foo'])
+" let g:airline_section_c                                   = '%t'
 
 " Go to the last cursor location when a file is opened, unless this is a
 " git commit (in which case it's annoying)

@@ -31,8 +31,10 @@ endif
 call plug#begin('~/.config/nvim/bundle')
 
 " core plugins
+if !has('nvim')
+  Plug 'tpope/vim-sensible'               " Sensible defaults
+endif
 
-Plug 'tpope/vim-sensible'               " Sensible defaults
 Plug 'flazz/vim-colorschemes'           " Set of color schemes
 Plug 'scrooloose/nerdtree'              " Directory browsing
 Plug 'tpope/vim-fugitive'               " Git commands

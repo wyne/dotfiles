@@ -4,35 +4,50 @@ export ZSH=/Users/Justin/.oh-my-zsh
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 #ZSH_THEME="agnoster"
-ZSH_THEME="pure"
-
-# Enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
+ZSH_THEME="robbyrussell"
 COMPLETION_WAITING_DOTS="true"
 
 # Disable marking untracked files under VCS as dirty. This makes repository status
 # check for large repositories much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+export NVM_LAZY_LOAD=false
+
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(bundler osx rake ruby)
-plugins+=(zsh-completions zsh-syntax-highlighting)
+plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
 autoload -U compinit && compinit
 
-# ===== User configuration =====
+# ========== User configuration ==========
+
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:/Applications/RubyMine.app/Contents/MacOS"
 export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
 export PATH="$PATH:$HOME/.fzf/bin"
 export PATH="$PATH:$HOME/bin"
 
-# ===== Oh my ZSH =====
+# ========== Version Managers ==========
+
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# RVM
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# NVM
+export NVM_DIR="/Users/justin/.nvm"
+alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'  # This loads nvm
+load_node
+
+# ========== Oh my ZSH ==========
+
 source $ZSH/oh-my-zsh.sh
 
-# ===== Aliases =====
+# =========== Aliases ==========
+
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias ll="ls -la"
@@ -41,7 +56,8 @@ alias npm-exec='PATH=$(npm bin):$PATH'
 alias gas='git add app/assets/'
 alias clock='~/workspace/tty-clock/tty-clock -tc'
 
-# Git
+# ========== Git ==========
+
 alias g='git'
 alias ga='git add -p'
 alias gaa='git add -i'
@@ -75,7 +91,7 @@ function gc() { # gc commit message
   git commit -m "$args"
 }
 
-# ========== FASD
+# ========== FASD ==========
 eval "$(fasd --init auto)"
 
 # Defaults
@@ -90,7 +106,7 @@ eval "$(fasd --init auto)"
 alias v='f -e nvim'
 #vv interactive search defined in fzf
 
-# ========== FZF
+# ========== FZF ==========
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.custom-bindings.fzf ] && source ~/.custom-bindings.fzf
 
@@ -108,13 +124,8 @@ alias jj='fz'
 # Pretty print json
 alias json='python -m json.tool'
 
-# iTerm 2 Shell Integration
-# test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-export NVM_DIR="/Users/justin/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-# export PATH="$NVM_DIR/versions/node/v6.3.0/bin:$PATH"
-
+# Vim
 export EDITOR=/usr/local/bin/nvim
+
+# iTerm 2 Shell Integration
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh

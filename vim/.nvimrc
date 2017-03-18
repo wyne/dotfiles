@@ -74,11 +74,8 @@ Plug 'janko-m/vim-test'                 " Testing
 Plug 'kassio/neoterm'                   " Testing
 Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'junegunn/gv.vim'                  " Git commit browser
-Plug 'rizzatti/dash.vim'                " Dash
-Plug 'cloudhead/neovim-fuzzy'           " Fzy find
 Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
-Plug 'kien/rainbow_parentheses.vim'     " Rainbow parentheses
 
 call plug#end()
 
@@ -115,12 +112,6 @@ set colorcolumn=100                      " Column ruler at 100 characters
 set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
-
-" Rainbow parentheses colors
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 let NERDTreeShowHidden=1
 

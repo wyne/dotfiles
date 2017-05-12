@@ -69,24 +69,27 @@ Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 Plug 'vim-ruby/vim-ruby'                " Ruby
 Plug 'jeetsukumaran/vim-buffergator'    " Buffer management
 Plug 'michaeljsmith/vim-indent-object'  " Indent text object
-Plug 'radenling/vim-dispatch-neovim'    " Neovim dispatch
-Plug 'janko-m/vim-test'                 " Testing
-Plug 'kassio/neoterm'                   " Testing
+" Plug 'radenling/vim-dispatch-neovim'    " Neovim dispatch
+" Plug 'janko-m/vim-test'                 " Testing
+" Plug 'kassio/neoterm'                   " Testing
 Plug 'kchmck/vim-coffee-script'         " Coffeescript
-Plug 'junegunn/gv.vim'                  " Git commit browser
-Plug 'rizzatti/dash.vim'                " Dash
-Plug 'cloudhead/neovim-fuzzy'           " Fzy find
+" Plug 'junegunn/gv.vim'                  " Git commit browser
+" Plug 'rizzatti/dash.vim'                " Dash
+" Plug 'cloudhead/neovim-fuzzy'           " Fzy find
 Plug 'roman/golden-ratio'               " Window sizing
 Plug 'mhinz/vim-grepper'                " Searcher
 Plug 'w0rp/ale'                         " Asynch syntax checking
 Plug 'mhinz/vim-startify'               " Start Screen
+Plug 'Shuogo/denite'               " Start Screen
 
 call plug#end()
 
 " ========== GENERAL CONFIG ==========
 
 syntax on
+
 colorscheme gruvbox
+
 if has("termguicolors")
   set termguicolors
   set re=1                               " Fixes slow cursorline

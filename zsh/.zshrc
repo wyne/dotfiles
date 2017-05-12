@@ -1,4 +1,5 @@
 # Path to your oh-my-zsh installation.
+export TERM="xterm-256color"
 export ZSH=/Users/Justin/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -32,7 +33,8 @@ export PATH="$PATH:$HOME/bin"
 # PyEnv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+alias load_pyenv="$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 # RVM
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
@@ -40,7 +42,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # NVM
 export NVM_DIR="/Users/justin/.nvm"
 alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'  # This loads nvm
-load_node
+# load_node
 
 # ========== Oh my ZSH ==========
 

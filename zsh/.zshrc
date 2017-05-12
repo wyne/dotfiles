@@ -16,9 +16,10 @@ export NVM_LAZY_LOAD=false
 
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(bundler osx rake ruby)
-plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
-autoload -U compinit && compinit
+# plugins=(bundler osx rake ruby)
+# plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
+plugins+=(zsh-completions zsh-syntax-highlighting)
+# autoload -U compinit && compinit
 
 # ========== User configuration ==========
 

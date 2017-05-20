@@ -1,4 +1,5 @@
 # Path to your oh-my-zsh installation.
+export TERM="xterm-256color"
 export ZSH=/Users/Justin/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -15,9 +16,10 @@ export NVM_LAZY_LOAD=false
 
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(bundler osx rake ruby)
-plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
-autoload -U compinit && compinit
+# plugins=(bundler osx rake ruby)
+# plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
+plugins+=(zsh-completions zsh-syntax-highlighting)
+# autoload -U compinit && compinit
 
 # ========== User configuration ==========
 
@@ -32,7 +34,8 @@ export PATH="$PATH:$HOME/bin"
 # PyEnv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+alias load_pyenv="$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 # RVM
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
@@ -40,7 +43,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # NVM
 export NVM_DIR="/Users/justin/.nvm"
 alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'  # This loads nvm
-load_node
+# load_node
 
 # ========== Oh my ZSH ==========
 

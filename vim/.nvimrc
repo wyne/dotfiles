@@ -26,9 +26,19 @@ if empty(glob('~/.config/nvim/tmp/swap'))
   silent !mkdir -p ~/.config/nvim/tmp/swap ~/.config/nvim/tmp/backup ~/.config/nvim/tmp/undo
 endif
 
+" python
+if has('nvim')
+  let g:python_host_prog = '/usr/local/opt/pyenv/versions/neovim2/bin/python'
+  let g:python3_host_prog = '/usr/local/opt/pyenv/versions/neovim3/bin/python'
+endif
+
 " plugins
 
-call plug#begin('~/.config/nvim/bundle')
+if has('nvim')
+  call plug#begin('~/.config/nvim/bundle')
+else
+  call plug#begin('~/.config/vim/bundle')
+endif
 
 " core plugins
 if !has('nvim')
@@ -38,6 +48,7 @@ endif
 Plug 'flazz/vim-colorschemes'           " Set of color schemes
 Plug 'scrooloose/nerdtree'              " Directory browsing
 Plug 'tpope/vim-fugitive'               " Git commands
+Plug 'tpope/vim-rhubarb'                " Github support for fugitive
 Plug 'tpope/vim-surround'               " Vim-surround
 Plug 'tpope/vim-commentary'             " Vim-commentary
 Plug 'morhetz/gruvbox'                  " Color scheme
@@ -45,6 +56,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
 " other plugins
 
+Plug 'kien/ctrlp.vim'                   " Fuzzy file search
 Plug 'kshenoy/vim-signature'            " Mark gutter
 Plug 'Shougo/deoplete.nvim'             " Autocomplete for nvim
 Plug 'Valloric/ListToggle'              " Toggle location list
@@ -78,6 +90,7 @@ Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
 Plug 'vimwiki/vimwiki'                  " Wiki
+Plug 'Townk/vim-autoclose'              " Auto close parens
 
 call plug#end()
 
@@ -114,6 +127,11 @@ set colorcolumn=100                      " Column ruler at 100 characters
 set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
+
+if has("gui_macvim")
+  set guifont=KnackNerdFontC-Regular:h16
+  set guioptions-=rlRL
+endif
 
 let NERDTreeShowHidden=1
 
@@ -222,8 +240,8 @@ nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo Signa
 "                           Yank current file path
 nnoremap <leader>F          :let @* = expand("%")<CR>
 "                           Run current file as teset
-nnoremap <leader>t          :T rake test %:h/%:t<CR>
-let g:neoterm_position = "vertical"
+nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
+let g:neoterm_position = "horizontal"
 
 " ========== BUFFERS ==========
 
@@ -241,6 +259,8 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 nnoremap <leader>o          :FZF<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
+"                           Save current file (sudo hack)
+nnoremap <leader>W          :w !sudo tee > /dev/null %<CR>
 "                           Reveal file in NERDTree
 nnoremap <leader>r          :NERDTreeFind<CR>
 "                           Focus NERDTree
@@ -323,7 +343,9 @@ nnoremap <leader>pu         :PlugUpdate<CR>
 
 " ========== TERMINAL ==========
 
-tnoremap <leader><Esc>      <C-\><C-n>
+if has('nvim')
+  tnoremap <leader><Esc>      <C-\><C-n>
+endif
 
 " ========== EASYMOTION ==========
 
@@ -467,9 +489,14 @@ nnoremap <leader>e :call fzf#run({
 
 let g:signify_vcs_list = [ 'git' ]
 
-" ========== FZY ===========
+" " ========== CtrlP ===========
 
-nnoremap <C-p> :FuzzyOpen<CR>
+" let g:ctrlp_working_path_mode = 'ra'
+
+" nnoremap <leader>b :CtrlPBuffer<CR>
+" nnoremap <leader>c :CtrlPChange<CR>
+" nnoremap <leader>e :CtrlPMRUFiles<CR>
+
 
 " ========== AIRLINE ==========
 

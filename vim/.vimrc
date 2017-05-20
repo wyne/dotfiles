@@ -80,6 +80,7 @@ Plug 'roman/golden-ratio'               " Window sizing
 Plug 'mhinz/vim-grepper'                " Searcher
 Plug 'w0rp/ale'                         " Asynch syntax checking
 Plug 'mhinz/vim-startify'               " Start Screen
+Plug 'gregsexton/gitv'                  " Gitk for vim
 
 call plug#end()
 

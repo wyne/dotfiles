@@ -76,6 +76,8 @@ Plug 'kchmck/vim-coffee-script'         " Coffeescript
 Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
+Plug 'gregsexton/gitv'                  " Gitk for vim
+Plug 'vimwiki/vimwiki'                  " Wiki
 
 call plug#end()
 

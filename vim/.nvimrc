@@ -89,6 +89,7 @@ Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
+Plug 'vimwiki/vimwiki'                  " Wiki
 Plug 'Townk/vim-autoclose'              " Auto close parens
 Plug 'vimwiki/vimwiki'                  " Wiki for vim
 

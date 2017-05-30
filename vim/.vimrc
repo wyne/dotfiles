@@ -368,6 +368,14 @@ noremap <S-C-e>             5<C-e>
 " Scroll up faster
 noremap <S-C-y>             5<C-y>
 
+" ========== CtrlP ===========
+
+let g:ctrlp_working_path_mode = 'ra'
+
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>c :CtrlPChange<CR>
+nnoremap <leader>e :CtrlPMRUFiles<CR>
+
 " ========== Syntax Checking ===========
 
 let g:ale_echo_msg_error_str = 'E'

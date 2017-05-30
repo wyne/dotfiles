@@ -90,6 +90,7 @@ Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
 Plug 'Townk/vim-autoclose'              " Auto close parens
+Plug 'vimwiki/vimwiki'                  " Wiki for vim
 
 call plug#end()
 
@@ -128,7 +129,7 @@ set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
 
 if has("gui_macvim")
-  set guifont=KnackNerdFontC-Regular:h16
+  set guifont=SauceCodePowerline-Regular:h16
   set guioptions-=rlRL
 endif
 
@@ -339,6 +340,10 @@ nnoremap <leader>pi         :PlugInstall<CR>
 nnoremap <leader>pc         :PlugClean<CR>
 "                           Update plugins to latest version
 nnoremap <leader>pu         :PlugUpdate<CR>
+
+" ========== VIMWIKI ==========
+
+map <Leader>tt              <Plug>VimwikiToggleListItem
 
 " ========== TERMINAL ==========
 

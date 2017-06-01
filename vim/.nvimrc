@@ -89,9 +89,9 @@ Plug 'junegunn/gv.vim'                  " Git commit browser
 Plug 'roman/golden-ratio'               " Window sizing
 Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
-Plug 'vimwiki/vimwiki'                  " Wiki
 Plug 'Townk/vim-autoclose'              " Auto close parens
 Plug 'vimwiki/vimwiki'                  " Wiki for vim
+Plug 'itchyny/calendar.vim'             " Calendar
 
 call plug#end()
 
@@ -345,6 +345,11 @@ nnoremap <leader>pu         :PlugUpdate<CR>
 " ========== VIMWIKI ==========
 
 map <Leader>tt              <Plug>VimwikiToggleListItem
+
+" ========== CALENDAR ==========
+
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
 
 " ========== TERMINAL ==========
 

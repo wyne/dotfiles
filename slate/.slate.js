@@ -5,17 +5,6 @@ slate.configAll({
   "secondsBetweenRepeat": 0.05
 });
 
-// Set up screen reference variables to avoid typos :)
-var ScreenRefOne = "0";
-var ScreenRefTwo = "1";
-var ScreenRefThree = "2";
-
-// Create the various operations used in the layout
-var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
-var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
-var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
-var focusSlack    = slate.operation("focus", { "app" : "Slack" });
-
 // ===== Margins =====
 var marginX = "0";
 var marginY = "0";
@@ -99,32 +88,35 @@ function down_right(screen){
   return s;
 }
 
-var secondFull = slate.operation("move", move_full(ScreenRefTwo));
-var secondLeft = slate.operation("move", move_left(ScreenRefTwo));
-var secondRight = slate.operation("move", move_right(ScreenRefTwo));
-var secondTop = slate.operation("move", move_up(ScreenRefTwo));
-
 // ===== LAYOUTS =====
+
+// Screen References
+var screen_one = "0";
+
+// Create the various operations used in the layout
+var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
+var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
+var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
+var focusSlack    = slate.operation("focus", { "app" : "Slack" });
 
 var laptopLayout = slate.layout("laptopLayout", {});
 
-var twoMonitorsLayout = slate.layout("twoMonitors", {
-  // "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
+var hires_layout = slate.layout("twoMonitors", {
   "iTerm2" : {
-    "operations"  : [ secondFull, slate.operation("move", move_full(ScreenRefOne)) ],
+    "operations"  : slate.operation("move", move_full(screen_one)),
     "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
     "main-first"  : true,
     "repeat"      : true,
     "sort-title"  : true // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
   },
   "Sublime" : {
-    "operations"  : slate.operation("move", move_full(ScreenRefOne)),
+    "operations"  : slate.operation("move", move_full(screen_one)),
     "ignore-fail" : true,
     "main-first"  : true,
     "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "RubyMine" : {
-    "operations"  : slate.operation("move", move_full(ScreenRefOne)),
+    "operations"  : slate.operation("move", move_full(screen_one)),
     "ignore-fail" : true,
     "main-first"  : true,
     "repeat"      : true // Keep repeating the function above for all windows in Chrome.
@@ -134,24 +126,24 @@ var twoMonitorsLayout = slate.layout("twoMonitors", {
     // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
     // suffix, *, [Personal Profile]
     "operations"  :[function(windowObject) {
-      windowObject.doOperation(slate.operation("move", move_left(ScreenRefOne)));
+      windowObject.doOperation(slate.operation("move", move_left(screen_one)));
     }],
     "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
     "main-first"  : true,
     "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations"  : slate.operation("move", up_right(ScreenRefOne)),
+    "operations"  : slate.operation("move", up_right(screen_one)),
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Fantastical" : {
-    "operations"  : slate.operation("move", down_right(ScreenRefOne)),
+    "operations"  : slate.operation("move", down_right(screen_one)),
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Plan" : {
-    "operations"  : slate.operation("move", down_right(ScreenRefOne)),
+    "operations"  : slate.operation("move", down_right(screen_one)),
     "ignore-fail" : true,
     "main-first"  : true
   }
@@ -221,7 +213,7 @@ var resizeLeftGrid = function(win) {
     "width": win.size().width - resizeXdistance(win, -1),
     "height": "windowSizeY",
   });
-  //
+
   // Work around for windows that don't allow pixel precision resize; i.e. terminals
   if (win.size().width == width) {
     slate.log("Resize left failed. Trying larger increment.");
@@ -367,11 +359,11 @@ slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("mov
 var relaunch = slate.operation("relaunch");
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusChrome, focusCalendar, focusSlack] }));
-slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
+slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
 
 slate.bind("9:ctrl", toggle_margins);
 slate.bind("0:ctrl", relaunch);
 
 // Defaults
 slate.default("1", laptopLayout);
-slate.default(["3008x1692","1200x1920"], twoMonitorsLayout);
+slate.default(["3008x1692"], hires_layout);

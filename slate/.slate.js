@@ -6,6 +6,7 @@ slate.configAll({
 });
 
 // ===== Margins =====
+
 var marginX = "0";
 var marginY = "0";
 function get_margin_x() { return marginX; }
@@ -21,6 +22,7 @@ function toggle_margins() {
 }
 
 // ===== MOVE OPERATIONS =====
+
 function move_full(screen){
   var _screen = screen==null?0:screen;
   return {
@@ -104,19 +106,14 @@ var laptopLayout = slate.layout("laptopLayout", {});
 var hires_layout = slate.layout("twoMonitors", {
   "iTerm2" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_full(screen_one))); },
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
+    "ignore-fail" : true,
     "main-first"  : true,
-    "repeat"      : true,
-    "sort-title"  : true // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
+    "sort-title"  : true
   },
   "Google Chrome" : {
-    // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
-    // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
-    // suffix, *, [Personal Profile]
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
+    "ignore-fail" : true,
+    "main-first"  : true
   },
   "Slack" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_up_right(screen_one))); },
@@ -187,7 +184,7 @@ var resizeYdistance = function(win, direction) {
   }
 }
 
-var resizeLeftGrid = function(win) {
+var resize_left = function(win) {
   if (win === undefined) {
     slate.log("Window undefined");
     return;
@@ -211,7 +208,7 @@ var resizeLeftGrid = function(win) {
   }
 };
 
-var resizeRightGrid = function(win) {
+var resize_right = function(win) {
   var width = win.size().width;
 
   win.resize({
@@ -230,14 +227,14 @@ var resizeRightGrid = function(win) {
   }
 };
 
-var resizeUpGrid = function(win) {
+var resize_up = function(win) {
   win.resize({
     "height": win.size().height - resizeYdistance(win, -1),
     "width": "windowSizeX"
   });
 };
 
-var resizeDownGrid = function(win) {
+var resize_down = function(win) {
   var height = win.size().height;
 
   win.resize({
@@ -287,7 +284,7 @@ var nudgeYdistance = function(win, direction) {
   }
 }
 
-var nudgeRightGrid = function(win) {
+var nudge_right = function(win) {
   if (win === undefined) return;
   win.move({
     "x": win.topLeft().x + nudgeXdistance(win),
@@ -295,7 +292,7 @@ var nudgeRightGrid = function(win) {
   });
 };
 
-var nudgeLeftGrid = function(win) {
+var nudge_left = function(win) {
   if (win === undefined) return;
   win.move({
     "x": win.topLeft().x - nudgeXdistance(win),
@@ -303,7 +300,7 @@ var nudgeLeftGrid = function(win) {
   });
 };
 
-var nudgeUpGrid = function(win) {
+var nudge_up = function(win) {
   if (win === undefined) return;
   win.move({
     "y": win.topLeft().y - nudgeYdistance(win, -1),
@@ -311,7 +308,7 @@ var nudgeUpGrid = function(win) {
   });
 };
 
-var nudgeDownGrid = function(win) {
+var nudge_down = function(win) {
   if (win === undefined) return;
   win.move({
     "y": win.topLeft().y + nudgeYdistance(win, 1),
@@ -322,18 +319,19 @@ var nudgeDownGrid = function(win) {
 // ===== BINDINGS ====
 
 // Resize
-slate.bind("k:cmd,ctrl", resizeUpGrid, true);
-slate.bind("l:cmd,ctrl", resizeRightGrid, true);
-slate.bind("j:cmd,ctrl", resizeDownGrid, true);
-slate.bind("h:cmd,ctrl", resizeLeftGrid, true);
+slate.bind("k:cmd,ctrl", resize_up, true);
+slate.bind("l:cmd,ctrl", resize_right, true);
+slate.bind("j:cmd,ctrl", resize_down, true);
+slate.bind("h:cmd,ctrl", resize_left, true);
 
 // Nudge
-slate.bind("l:ctrl,alt", nudgeRightGrid, true);
-slate.bind("j:ctrl,alt", nudgeDownGrid, true);
-slate.bind("k:ctrl,alt", nudgeUpGrid, true);
-slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
+slate.bind("l:ctrl,alt", nudge_right, true);
+slate.bind("j:ctrl,alt", nudge_down, true);
+slate.bind("k:ctrl,alt", nudge_up, true);
+slate.bind("h:ctrl,alt", nudge_left, true);
 
 // Move (Like Divvy)
+slate.bind("i:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_full(null))) });
 slate.bind("h:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_left(null))) });
 slate.bind("l:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_right(null))) });
 slate.bind("y:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up_left(null))) });

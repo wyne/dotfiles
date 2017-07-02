@@ -12,8 +12,8 @@ function get_margin_x() { return marginX; }
 function get_margin_y() { return marginY; }
 function toggle_margins() {
   if (marginX == "0") {
-    marginX = "100";
-    marginY = "100";
+    marginX = "(screenSizeX/20)";
+    marginY = "(screenSizeY/20)";
   } else {
     marginX = "0";
     marginY = "0";
@@ -62,26 +62,26 @@ function move_down(screen){
 
 // Quarters
 
-function up_left(screen){
+function move_up_left(screen){
   var s = move_left(screen);
   s.height = "screenSizeY/2-1.5*" + marginY;
   return s;
 }
 
-function up_right(screen){
+function move_up_right(screen){
   var s = move_right(screen);
   s.height = "screenSizeY/2-1.5*" + marginY;
   return s;
 }
 
-function down_left(screen){
+function move_down_left(screen){
   var s = move_left(screen);
   s.height = "screenSizeY/2-1.5*" + marginY;
   s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
   return s;
 }
 
-function down_right(screen){
+function move_down_right(screen){
   var s = move_right(screen);
   s.height = "screenSizeY/2-1.5*" + marginY;
   s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
@@ -103,47 +103,33 @@ var laptopLayout = slate.layout("laptopLayout", {});
 
 var hires_layout = slate.layout("twoMonitors", {
   "iTerm2" : {
-    "operations"  : slate.operation("move", move_full(screen_one)),
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_full(screen_one))); },
     "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
     "main-first"  : true,
     "repeat"      : true,
     "sort-title"  : true // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
   },
-  "Sublime" : {
-    "operations"  : slate.operation("move", move_full(screen_one)),
-    "ignore-fail" : true,
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "RubyMine" : {
-    "operations"  : slate.operation("move", move_full(screen_one)),
-    "ignore-fail" : true,
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
-  },
   "Google Chrome" : {
     // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
     // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
     // suffix, *, [Personal Profile]
-    "operations"  :[function(windowObject) {
-      windowObject.doOperation(slate.operation("move", move_left(screen_one)));
-    }],
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
     "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
     "main-first"  : true,
     "repeat"      : true // Keep repeating the function above for all windows in Chrome.
   },
   "Slack" : {
-    "operations"  : slate.operation("move", up_right(screen_one)),
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_up_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Fantastical" : {
-    "operations"  : slate.operation("move", down_right(screen_one)),
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Plan" : {
-    "operations"  : slate.operation("move", down_right(screen_one)),
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   }
@@ -350,10 +336,10 @@ slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 // Move (Like Divvy)
 slate.bind("h:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_left(null))) });
 slate.bind("l:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_right(null))) });
-slate.bind("y:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", up_left(null))) });
-slate.bind("o:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", up_right(null))) });
-slate.bind("n:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", down_left(null))) });
-slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", down_right(null))) });
+slate.bind("y:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up_left(null))) });
+slate.bind("o:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up_right(null))) });
+slate.bind("n:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_left(null))) });
+slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_right(null))) });
 
 // Layouts
 var relaunch = slate.operation("relaunch");

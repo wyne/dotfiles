@@ -128,6 +128,7 @@ set colorcolumn=100                      " Column ruler at 100 characters
 set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
+set mouse=a
 
 if has("gui_macvim")
   set guifont=SauceCodePowerline-Regular:h16

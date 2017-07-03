@@ -14,6 +14,7 @@ var ScreenRefThree = "2";
 // Create the various operations used in the layout
 var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
 var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
+var focusSafari   = slate.operation("focus", { "app" : "Safari" });
 var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
 var focusSlack    = slate.operation("focus", { "app" : "Slack" });
 
@@ -439,7 +440,7 @@ slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
 // bind the layout to activate when I press Control and the Enter key on the number pad.
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", {
-  "operations" : [ focusChrome, focusCalendar, focusSlack]
+  "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack]
 }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
 

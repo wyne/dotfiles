@@ -104,12 +104,17 @@ var laptopLayout = slate.layout("laptopLayout", {});
 
 var hires_layout = slate.layout("twoMonitors", {
   "iTerm2" : {
-    "operations"  : function(win) { win.doOperation(slate.operation("move", move_full(screen_one))); },
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true,
     "sort-title"  : true
   },
   "Google Chrome" : {
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
+    "ignore-fail" : true,
+    "main-first"  : true
+  },
+  "Safari" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
@@ -349,7 +354,7 @@ slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("mov
 // Layouts
 var relaunch = slate.operation("relaunch");
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
-slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusChrome, focusCalendar, focusSlack] }));
+slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack] }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
 
 slate.bind("8:ctrl", Grid.toggle);

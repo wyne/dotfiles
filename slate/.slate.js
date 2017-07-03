@@ -1,36 +1,34 @@
 slate.configAll({
   "orderScreensLeftToRight": true,
   "repeatOnHoldOps": "resize,nudge,move",
-  "secondsBeforeRepeat": 0.2,
+  "secondsBeforeRepeat": 0.1,
   "secondsBetweenRepeat": 0.05
 });
 
 // ===== Margins =====
 
-var marginX = "0";
-var marginY = "0";
-function get_margin_x() { return marginX; }
-function get_margin_y() { return marginY; }
-function toggle_margins() {
-  if (marginX == "0") {
-    marginX = "(screenSizeX/20)";
-    marginY = "(screenSizeY/20)";
-  } else {
-    marginX = "0";
-    marginY = "0";
-  }
-}
+var Margins = new function() {
+  var _enabled = true;
+
+  this.enabled = function() { return _enabled; }
+
+  this.toggle = function() { _enabled = !_enabled; }
+
+  this.x = function() { return _enabled ? "(screenSizeX/20)" : "0"; }
+
+  this.y = function() { return _enabled ? "(screenSizeY/20)" : "0"; }
+}();
 
 // ===== MOVE OPERATIONS =====
 
 function move_full(screen){
-  var _screen = screen==null?0:screen;
+  var _screen = screen == null ? 0 : screen;
   return {
     "screen" : screen,
-    "width"  : "screenSizeX-2*" + get_margin_x(),
-    "height" : "screenSizeY-2*" + get_margin_y(),
-    "x"      : "screenOriginX+" + get_margin_x(),
-    "y"      : "screenOriginY+" + get_margin_y()
+    "width"  : "screenSizeX-2*" + Margins.x(),
+    "height" : "screenSizeY-2*" + Margins.y(),
+    "x"      : "screenOriginX+" + Margins.x(),
+    "y"      : "screenOriginY+" + Margins.y()
   }
 }
 
@@ -38,27 +36,27 @@ function move_full(screen){
 
 function move_left(screen){
   var s = move_full(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
+  s.width = "screenSizeX/2-1.5*" + Margins.x();
   return s;
 }
 
 function move_right(screen){
   var s = move_full(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
-  s.x = "screenSizeX/2+.5*" + marginX;
+  s.width = "screenSizeX/2-1.5*" + Margins.x();
+  s.x = "screenSizeX/2+.5*" + Margins.x();
   return s;
 }
 
 function move_up(screen){
   var s = move_full(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
   return s;
 }
 
 function move_down(screen){
   var s = move_full(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
   return s;
 }
 
@@ -66,27 +64,27 @@ function move_down(screen){
 
 function move_up_left(screen){
   var s = move_left(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
   return s;
 }
 
 function move_up_right(screen){
   var s = move_right(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
   return s;
 }
 
 function move_down_left(screen){
   var s = move_left(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
   return s;
 }
 
 function move_down_right(screen){
   var s = move_right(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
   return s;
 }
 
@@ -137,24 +135,30 @@ var hires_layout = slate.layout("twoMonitors", {
 // Grid Settings
 
 var MENUBAR_OFFSET = 23;
-var gridSizePercentX = 20;
-var gridSizePercentY = 20;
 
-// Determine horizontal grid size of a window
-var gridSizeX = function(win){
-  return win.screen().rect().width / gridSizePercentX;
-}
+var Grid = new function() {
+  var _large = false;
 
-// Determine vertical grid size of a window
-var gridSizeY = function(win){
-  r = Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / gridSizePercentY);
-  return r;
-}
+  var xPercent = function() { return _large ? 20 : 40; }
+  var yPercent = function() { return _large ? 20 : 40; }
+
+  this.large = function() { return _large; }
+
+  this.toggle = function() { _large = !_large; }
+
+  this.x = function(win){
+    return win.screen().rect().width / xPercent();
+  }
+
+  this.y = function(win){
+    return Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / Grid.yPercent());
+  }
+}();
 
 // Grid Resizing
 
 var resizeXdistance = function(win, direction) {
-  var grid = gridSizeX(win);
+  var grid = Grid.x(win);
 
   // Calculate offset from grid
   var left = win.rect().x;
@@ -170,7 +174,7 @@ var resizeXdistance = function(win, direction) {
 
 var resizeYdistance = function(win, direction) {
   // Determine grid size of current window
-  var grid = gridSizeY(win);
+  var grid = Grid.y(win);
 
   // Calculate offset from grid
   var top = win.rect().y;
@@ -202,7 +206,7 @@ var resize_left = function(win) {
     slate.log("Resize left failed. Trying larger increment.");
 
     win.resize({
-      "width": win.size().width - resizeXdistance(win, 1) - gridSizeX(win),
+      "width": win.size().width - resizeXdistance(win, 1) - Grid.x(win),
       "height": "windowSizeY",
     });
   }
@@ -221,7 +225,7 @@ var resize_right = function(win) {
     slate.log("Resize right failed. Trying larger increment.");
 
     win.resize({
-      "width": win.size().width + resizeXdistance(win, 1) + gridSizeX(win),
+      "width": win.size().width + resizeXdistance(win, 1) + Grid.x(win),
       "height": "windowSizeY",
     });
   }
@@ -247,12 +251,12 @@ var resize_down = function(win) {
     slate.log("Resize right failed. Trying larger increment.");
 
     win.resize({
-      "height": win.size().height + resizeYdistance(win, 1) + gridSizeY(win),
+      "height": win.size().height + resizeYdistance(win, 1) + Grid.y(win),
       "width": "windowSizeX"
     });
   }
 
-  slate.log("offset=" + ( (win.rect().y + win.rect().height - MENUBAR_OFFSET) % gridSizeY(win) ) );
+  slate.log("offset=" + ( (win.rect().y + win.rect().height - MENUBAR_OFFSET) % Grid.y(win) ) );
 };
 
 // Grid Nudging
@@ -260,7 +264,7 @@ var resize_down = function(win) {
 var nudgeXdistance = function(win, direction) {
   var rect = win.rect();
   var topLeftX = rect.x;
-  var grid = gridSizeX(win);
+  var grid = Grid.x(win);
 
   var offset = topLeftX % grid;
 
@@ -272,7 +276,7 @@ var nudgeXdistance = function(win, direction) {
 }
 
 var nudgeYdistance = function(win, direction) {
-  var grid = gridSizeY(win);
+  var grid = Grid.y(win);
 
   var top = win.rect().y;
   var offset = (top - MENUBAR_OFFSET) % grid;
@@ -345,7 +349,8 @@ slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusChrome, focusCalendar, focusSlack] }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
 
-slate.bind("9:ctrl", toggle_margins);
+slate.bind("8:ctrl", Grid.toggle);
+slate.bind("9:ctrl", Margins.toggle);
 slate.bind("0:ctrl", relaunch);
 
 // Defaults

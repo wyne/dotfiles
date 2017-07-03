@@ -1,8 +1,8 @@
 slate.configAll({
   "orderScreensLeftToRight": true,
   "repeatOnHoldOps": "resize,nudge,move",
-  "secondsBeforeRepeat": 0.1,
-  "secondsBetweenRepeat": 0.05
+  "secondsBeforeRepeat": 0.2,
+  "secondsBetweenRepeat": 0.02
 });
 
 // ===== Margins =====
@@ -151,7 +151,7 @@ var Grid = new function() {
   }
 
   this.y = function(win){
-    return Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / Grid.yPercent());
+    return Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / yPercent());
   }
 }();
 
@@ -335,6 +335,8 @@ slate.bind("k:ctrl,alt", nudge_up, true);
 slate.bind("h:ctrl,alt", nudge_left, true);
 
 // Move (Like Divvy)
+slate.bind("j:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down(null))) });
+slate.bind("k:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up(null))) });
 slate.bind("i:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_full(null))) });
 slate.bind("h:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_left(null))) });
 slate.bind("l:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_right(null))) });

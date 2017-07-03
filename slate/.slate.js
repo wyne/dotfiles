@@ -1,15 +1,97 @@
-// order screens left to right so they are easier to reference
 slate.configAll({
   "orderScreensLeftToRight": true,
   "repeatOnHoldOps": "resize,nudge,move",
   "secondsBeforeRepeat": 0.2,
-  "secondsBetweenRepeat": 0.05
+  "secondsBetweenRepeat": 0.02
 });
 
-// Set up screen reference variables to avoid typos :)
-var ScreenRefOne = "0";
-var ScreenRefTwo = "1";
-var ScreenRefThree = "2";
+// ===== Margins =====
+
+var Margins = new function() {
+  var _enabled = true;
+
+  this.enabled = function() { return _enabled; }
+
+  this.toggle = function() { _enabled = !_enabled; }
+
+  this.x = function() { return _enabled ? "(screenSizeX/20)" : "0"; }
+
+  this.y = function() { return _enabled ? "(screenSizeY/20)" : "0"; }
+}();
+
+// ===== MOVE OPERATIONS =====
+
+function move_full(screen){
+  var _screen = screen == null ? 0 : screen;
+  return {
+    "screen" : screen,
+    "width"  : "screenSizeX-2*" + Margins.x(),
+    "height" : "screenSizeY-2*" + Margins.y(),
+    "x"      : "screenOriginX+" + Margins.x(),
+    "y"      : "screenOriginY+" + Margins.y()
+  }
+}
+
+// Halves
+
+function move_left(screen){
+  var s = move_full(screen);
+  s.width = "screenSizeX/2-1.5*" + Margins.x();
+  return s;
+}
+
+function move_right(screen){
+  var s = move_full(screen);
+  s.width = "screenSizeX/2-1.5*" + Margins.x();
+  s.x = "screenSizeX/2+.5*" + Margins.x();
+  return s;
+}
+
+function move_up(screen){
+  var s = move_full(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  return s;
+}
+
+function move_down(screen){
+  var s = move_full(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
+  return s;
+}
+
+// Quarters
+
+function move_up_left(screen){
+  var s = move_left(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  return s;
+}
+
+function move_up_right(screen){
+  var s = move_right(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  return s;
+}
+
+function move_down_left(screen){
+  var s = move_left(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
+  return s;
+}
+
+function move_down_right(screen){
+  var s = move_right(screen);
+  s.height = "screenSizeY/2-1.5*" + Margins.y();
+  s.y = "screenOriginY+screenSizeY/2+.5*" + Margins.y();
+  return s;
+}
+
+// ===== LAYOUTS =====
+
+// Screen References
+var screen_one = "0";
 
 // Create the various operations used in the layout
 var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
@@ -18,247 +100,66 @@ var focusSafari   = slate.operation("focus", { "app" : "Safari" });
 var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
 var focusSlack    = slate.operation("focus", { "app" : "Slack" });
 
-// Margins
-var marginX = "100";
-// var marginX = "screenSizeX/30";
-var marginY = "100";
-// var marginY = "screenSizeY/20";
+var laptopLayout = slate.layout("laptopLayout", {});
 
-// Full screen
-function fullScreen(screen){
-  var _screen = screen==null?0:screen;
-  return {
-    "screen" : screen,
-    "width" : "screenSizeX-2*" + marginX,
-    "height" : "screenSizeY-2*" + marginY,
-    "x" : "screenOriginX+" + marginX,
-    "y" : "screenOriginY+" + marginY
-  }
-}
-
-// ==== HALVES
-
-// Left Half
-function leftHalf(screen){
-  var s = fullScreen(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
-  return s;
-}
-
-// Right Half
-function rightHalf(screen){
-  var s = fullScreen(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
-  s.x = "screenSizeX/2+.5*" + marginX;
-  return s;
-}
-
-// Top Half
-function topHalf(screen){
-  var s = fullScreen(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  return s;
-}
-
-// Bottom Half
-function bottomHalf(screen){
-  var s = fullScreen(screen);
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
-  return s;
-}
-
-// ==== QUARTERS
-
-// Top Right Half
-function topRightHalf(screen){
-  var s = fullScreen(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.x = "screenSizeX/2+.5*" + marginX;
-  return s;
-}
-
-// Bottom Right Half
-function bottomRightHalf(screen){
-  var s = fullScreen(screen);
-  s.width = "screenSizeX/2-1.5*" + marginX;
-  s.height = "screenSizeY/2-1.5*" + marginY;
-  s.x = "screenSizeX/2+.5*" + marginX;
-  s.y = "screenOriginY+screenSizeY/2+.5*" + marginY;
-  return s;
-}
-
-
-// OPERATIONS
-var firstFull = slate.operation("move", fullScreen(ScreenRefOne));
-var firstLeft = slate.operation("move", leftHalf(ScreenRefOne));
-var firstRight = slate.operation("move", rightHalf(ScreenRefOne));
-var firstTopRight = slate.operation("move", topRightHalf(ScreenRefOne));
-var firstBottomRight = slate.operation("move", bottomRightHalf(ScreenRefOne));
-
-var secondFull = slate.operation("move", fullScreen(ScreenRefTwo));
-var secondLeft = slate.operation("move", leftHalf(ScreenRefTwo));
-var secondRight = slate.operation("move", rightHalf(ScreenRefTwo));
-var secondTop = slate.operation("move", topHalf(ScreenRefTwo));
-
-var thirdFull = slate.operation("move", fullScreen(ScreenRefThree));
-var thirdLeft = slate.operation("move", leftHalf(ScreenRefThree));
-var thirdRight = slate.operation("move", rightHalf(ScreenRefThree));
-
-// LEFT SCREEN
-var leftMain = slate.operation("move", fullScreen(ScreenRefOne));
-
-// MIDDLE SCREEN
-var middleMain = slate.operation("move", {
-  "screen" : ScreenRefTwo,
-  "width" : "screenSizeX",
-  "height" : "screenSizeY",
-  "x" : "screenOriginX",
-  "y" : "screenOriginY"
-});
-
-var middleCenter = slate.operation("move", {
-  "screen" : ScreenRefTwo,
-  "width" : "screenSizeX*5/6",
-  "height" : "screenSizeY*5/6",
-  "x" : "screenOriginX+screenSizeX/12",
-  "y" : "screenOriginY+screenSizeY/12"
-});
-
-// RIGHT SCREEN
-var rightMain = slate.operation("move", {
-  "screen" : ScreenRefThree,
-  "width" : "screenSizeX",
-  "height" : "screenSizeY",
-  "x" : "screenOriginX",
-  "y" : "screenOriginY"
-});
-
-var laptopLayout = slate.layout("laptopLayout", {
-});
-
-// Create the layout itself
-var threeMonitorsLayout = slate.layout("threeMonitors", {
-  "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
+var hires_layout = slate.layout("twoMonitors", {
   "iTerm2" : {
-    "operations" : rightMain,
-    "sort-title" : true, // I have my iTerm window titles prefixed with the window number e.g. "1. bash".
-                         // Sorting by title ensures that my iTerm windows always end up in the same place.
-    "repeat" : true // If I have more than three iTerm windows, keep applying the three operations above.
-  },
-  "IntelliJ IDEA" : {
-    "operations" : middleMain,
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_full(screen_one))); },
+    "ignore-fail" : true,
+    "main-first"  : true,
+    "sort-title"  : true
   },
   "Google Chrome" : {
-    // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
-    // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
-    // suffix, *, [Personal Profile]
-    "operations" :[function(windowObject) {
-      var title = windowObject.title();
-      if (title !== undefined && title.match(/\[Personal\ Profile\]$/)) {
-        windowObject.doOperation(leftMain);
-      } else {
-        windowObject.doOperation(middleMain);
-      }
-    }],
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the
-                          // layout if Chrome is being stupid.
-    "main-first" : true,
-    "repeat" : true // Keep repeating the function above for all windows in Chrome.
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
+    "ignore-fail" : true,
+    "main-first"  : true
   },
   "Slack" : {
-    "operations" : middleCenter,
-    "ignore-fail" : true,
-    "main-first" : true
-  },
-  "Sunrise Calendar" : {
-    "operations" : middleCenter,
-    "ignore-fail" : true,
-    "main-first" : true
-  },
-  "Plan" : {
-    "operations" : slate.operation("move", bottomHalf(ScreenRefTwo)),
-    "ignore-fail" : true,
-    "main-first" : true
-  }
-});
-
-var twoMonitorsLayout = slate.layout("twoMonitors", {
-  // "_after_" : {"operations" : [focusITerm, focusChrome] }, // after the layout is activated, focus iTerm
-  "iTerm2" : {
-    "operations"  : [ secondFull, firstFull ],
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
-    "main-first"  : true,
-    "repeat"      : true,
-    "sort-title"  : true // I have my iTerm window titles prefixed with the window number e.g. "1. bash".  Sorting by title ensures that my iTerm windows always end up in the same place.
-  },
-  "Sublime" : {
-    "operations"  : firstFull,
-    "ignore-fail" : true,
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "RubyMine" : {
-    "operations"  : firstFull,
-    "ignore-fail" : true,
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "Google Chrome" : {
-    // Use Tab Title Tweaker Chrome extension to suffix all tabs in one chrome profile
-    // https://chrome.google.com/webstore/detail/tab-title-tweaker/ofmanndkbkkcjolgenmgioploikhkcaa
-    // suffix, *, [Personal Profile]
-    "operations"  :[function(windowObject) {
-      windowObject.doOperation(firstLeft);
-    }],
-    "ignore-fail" : true, // Chrome has issues sometimes so I add ignore-fail so that Slate doesn't stop the layout if Chrome is being stupid.
-    "main-first"  : true,
-    "repeat"      : true // Keep repeating the function above for all windows in Chrome.
-  },
-  "Slack" : {
-    "operations"  : firstTopRight,
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_up_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Fantastical" : {
-    "operations"  : firstBottomRight,
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   },
   "Plan" : {
-    "operations"  : firstBottomRight,
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
     "ignore-fail" : true,
     "main-first"  : true
   }
 });
 
+// ===== GRID =====
+
 // Grid Settings
 
 var MENUBAR_OFFSET = 23;
-var gridSizePercentX = 20;
-var gridSizePercentY = 20;
 
-// Determine horizontal grid size of a window
-var gridSizeX = function(win){
-  return win.screen().rect().width / gridSizePercentX;
-}
+var Grid = new function() {
+  var _large = false;
 
-// Determine vertical grid size of a window
-var gridSizeY = function(win){
-  r = Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / gridSizePercentY);
-  return r;
-}
+  var xPercent = function() { return _large ? 20 : 40; }
+  var yPercent = function() { return _large ? 20 : 40; }
 
+  this.large = function() { return _large; }
+
+  this.toggle = function() { _large = !_large; }
+
+  this.x = function(win){
+    return win.screen().rect().width / xPercent();
+  }
+
+  this.y = function(win){
+    return Math.floor( (win.screen().rect().height - MENUBAR_OFFSET) / yPercent());
+  }
+}();
 
 // Grid Resizing
 
 var resizeXdistance = function(win, direction) {
-  var grid = gridSizeX(win);
+  var grid = Grid.x(win);
 
   // Calculate offset from grid
   var left = win.rect().x;
@@ -274,7 +175,7 @@ var resizeXdistance = function(win, direction) {
 
 var resizeYdistance = function(win, direction) {
   // Determine grid size of current window
-  var grid = gridSizeY(win);
+  var grid = Grid.y(win);
 
   // Calculate offset from grid
   var top = win.rect().y;
@@ -288,7 +189,7 @@ var resizeYdistance = function(win, direction) {
   }
 }
 
-var resizeLeftGrid = function(win) {
+var resize_left = function(win) {
   if (win === undefined) {
     slate.log("Window undefined");
     return;
@@ -300,19 +201,19 @@ var resizeLeftGrid = function(win) {
     "width": win.size().width - resizeXdistance(win, -1),
     "height": "windowSizeY",
   });
-  //
+
   // Work around for windows that don't allow pixel precision resize; i.e. terminals
   if (win.size().width == width) {
     slate.log("Resize left failed. Trying larger increment.");
 
     win.resize({
-      "width": win.size().width - resizeXdistance(win, 1) - gridSizeX(win),
+      "width": win.size().width - resizeXdistance(win, 1) - Grid.x(win),
       "height": "windowSizeY",
     });
   }
 };
 
-var resizeRightGrid = function(win) {
+var resize_right = function(win) {
   var width = win.size().width;
 
   win.resize({
@@ -325,20 +226,20 @@ var resizeRightGrid = function(win) {
     slate.log("Resize right failed. Trying larger increment.");
 
     win.resize({
-      "width": win.size().width + resizeXdistance(win, 1) + gridSizeX(win),
+      "width": win.size().width + resizeXdistance(win, 1) + Grid.x(win),
       "height": "windowSizeY",
     });
   }
 };
 
-var resizeUpGrid = function(win) {
+var resize_up = function(win) {
   win.resize({
     "height": win.size().height - resizeYdistance(win, -1),
     "width": "windowSizeX"
   });
 };
 
-var resizeDownGrid = function(win) {
+var resize_down = function(win) {
   var height = win.size().height;
 
   win.resize({
@@ -351,12 +252,12 @@ var resizeDownGrid = function(win) {
     slate.log("Resize right failed. Trying larger increment.");
 
     win.resize({
-      "height": win.size().height + resizeYdistance(win, 1) + gridSizeY(win),
+      "height": win.size().height + resizeYdistance(win, 1) + Grid.y(win),
       "width": "windowSizeX"
     });
   }
 
-  slate.log("offset=" + ( (win.rect().y + win.rect().height - MENUBAR_OFFSET) % gridSizeY(win) ) );
+  slate.log("offset=" + ( (win.rect().y + win.rect().height - MENUBAR_OFFSET) % Grid.y(win) ) );
 };
 
 // Grid Nudging
@@ -364,7 +265,7 @@ var resizeDownGrid = function(win) {
 var nudgeXdistance = function(win, direction) {
   var rect = win.rect();
   var topLeftX = rect.x;
-  var grid = gridSizeX(win);
+  var grid = Grid.x(win);
 
   var offset = topLeftX % grid;
 
@@ -376,17 +277,10 @@ var nudgeXdistance = function(win, direction) {
 }
 
 var nudgeYdistance = function(win, direction) {
-//<<<<<<< HEAD
-//  var rect = win.rect();
-//  var topLeftY = rect.y - MENUBAR_OFFSET;
-//  var grid = gridSizeY(win);
-//  var offset = topLeftY % grid;
-//=======
-  var grid = gridSizeY(win);
+  var grid = Grid.y(win);
 
   var top = win.rect().y;
   var offset = (top - MENUBAR_OFFSET) % grid;
-//>>>>>>> 20d156bb1136054319eac0b53a7370bee4beceb7
 
   if (direction > 0){
     return grid - offset;
@@ -395,7 +289,7 @@ var nudgeYdistance = function(win, direction) {
   }
 }
 
-var nudgeRightGrid = function(win) {
+var nudge_right = function(win) {
   if (win === undefined) return;
   win.move({
     "x": win.topLeft().x + nudgeXdistance(win),
@@ -403,7 +297,7 @@ var nudgeRightGrid = function(win) {
   });
 };
 
-var nudgeLeftGrid = function(win) {
+var nudge_left = function(win) {
   if (win === undefined) return;
   win.move({
     "x": win.topLeft().x - nudgeXdistance(win),
@@ -411,7 +305,7 @@ var nudgeLeftGrid = function(win) {
   });
 };
 
-var nudgeUpGrid = function(win) {
+var nudge_up = function(win) {
   if (win === undefined) return;
   win.move({
     "y": win.topLeft().y - nudgeYdistance(win, -1),
@@ -419,7 +313,7 @@ var nudgeUpGrid = function(win) {
   });
 };
 
-var nudgeDownGrid = function(win) {
+var nudge_down = function(win) {
   if (win === undefined) return;
   win.move({
     "y": win.topLeft().y + nudgeYdistance(win, 1),
@@ -427,31 +321,41 @@ var nudgeDownGrid = function(win) {
   });
 };
 
-slate.bind("k:cmd,ctrl", resizeUpGrid, true);
-slate.bind("l:cmd,ctrl", resizeRightGrid, true);
-slate.bind("j:cmd,ctrl", resizeDownGrid, true);
-slate.bind("h:cmd,ctrl", resizeLeftGrid, true);
+// ===== BINDINGS ====
 
-slate.bind("l:ctrl,alt", nudgeRightGrid, true);
-slate.bind("j:ctrl,alt", nudgeDownGrid, true);
-slate.bind("k:ctrl,alt", nudgeUpGrid, true);
-slate.bind("h:ctrl,alt", nudgeLeftGrid, true);
+// Resize
+slate.bind("k:cmd,ctrl", resize_up, true);
+slate.bind("l:cmd,ctrl", resize_right, true);
+slate.bind("j:cmd,ctrl", resize_down, true);
+slate.bind("h:cmd,ctrl", resize_left, true);
 
-// bind the layout to activate when I press Control and the Enter key on the number pad.
-slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
-slate.bind("3:ctrl", slate.operation("sequence", {
-  "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack]
-}));
-slate.bind("4:ctrl", slate.operation("layout", { "name" : twoMonitorsLayout }));
+// Nudge
+slate.bind("l:ctrl,alt", nudge_right, true);
+slate.bind("j:ctrl,alt", nudge_down, true);
+slate.bind("k:ctrl,alt", nudge_up, true);
+slate.bind("h:ctrl,alt", nudge_left, true);
 
-slate.bind("up:ctrl,cmd,alt", function(win){ win.doOperation(firstFull) });
-slate.bind("left:ctrl,cmd,alt", function(win){ win.doOperation(firstLeft) });
-slate.bind("right:ctrl,cmd,alt", function(win){ win.doOperation(firstRight) });
+// Move (Like Divvy)
+slate.bind("j:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down(null))) });
+slate.bind("k:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up(null))) });
+slate.bind("i:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_full(null))) });
+slate.bind("h:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_left(null))) });
+slate.bind("l:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_right(null))) });
+slate.bind("y:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up_left(null))) });
+slate.bind("o:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_up_right(null))) });
+slate.bind("n:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_left(null))) });
+slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_right(null))) });
 
-// default the layout so it activates when I plug in my two external monitors.
-slate.default("1", laptopLayout);
-slate.default(["3008x1692","1200x1920"], twoMonitorsLayout);
-slate.default(["1920x1200","1280x800","1200x1920"], threeMonitorsLayout);
-
+// Layouts
 var relaunch = slate.operation("relaunch");
+slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
+slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusChrome, focusCalendar, focusSlack] }));
+slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
+
+slate.bind("8:ctrl", Grid.toggle);
+slate.bind("9:ctrl", Margins.toggle);
 slate.bind("0:ctrl", relaunch);
+
+// Defaults
+slate.default("1", laptopLayout);
+slate.default(["3008x1692"], hires_layout);

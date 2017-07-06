@@ -94,11 +94,14 @@ function move_down_right(screen){
 var screen_one = "0";
 
 // Create the various operations used in the layout
-var focusITerm    = slate.operation("focus", { "app" : "iTerm" });
-var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
-var focusSafari   = slate.operation("focus", { "app" : "Safari" });
 var focusCalendar = slate.operation("focus", { "app" : "Fantastical" });
+var focusChrome   = slate.operation("focus", { "app" : "Google Chrome" });
+var focusITerm    = slate.operation("focus", { "app" : "iTerm2" });
+var focusMessages = slate.operation("focus", { "app" : "Messages" });
+var focusPlan     = slate.operation("focus", { "app" : "Plan" });
+var focusSafari   = slate.operation("focus", { "app" : "Safari" });
 var focusSlack    = slate.operation("focus", { "app" : "Slack" });
+var focusVim      = slate.operation("focus", { "app" : "VimR" });
 
 var laptopLayout = slate.layout("laptopLayout", {});
 
@@ -326,6 +329,22 @@ var nudge_down = function(win) {
   });
 };
 
+var shake = function(win) {
+  var dir = -1;
+
+  for ( i=0; i<30; i++ ) {
+    if ( i % 5 == 0 ) { dir = -1 * dir; }
+    (function(d){
+      setTimeout(function(){
+        win.move({
+          "x": win.topLeft().x + (d * 10),
+          "y": "windowTopLeftY"
+        })
+      }, (20 * i));
+    })(dir);
+  }
+}
+
 // ===== BINDINGS ====
 
 // Resize
@@ -351,11 +370,20 @@ slate.bind("o:k,cmd,shift", function(win) { win.doOperation(slate.operation("mov
 slate.bind("n:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_left(null))) });
 slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_right(null))) });
 
+slate.bind("a:space,cmd", focusSafari);
+slate.bind("f:space,cmd", focusCalendar);
+slate.bind("m:space,cmd", focusMessages);
+slate.bind("p:space,cmd", focusPlan);
+slate.bind("s:space,cmd", focusSlack);
+slate.bind("t:space,cmd", focusITerm);
+slate.bind("v:space,cmd", focusVim);
+
 // Layouts
 var relaunch = slate.operation("relaunch");
 slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack] }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
+slate.bind("5:ctrl", shake);
 
 slate.bind("8:ctrl", Grid.toggle);
 slate.bind("9:ctrl", Margins.toggle);

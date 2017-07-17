@@ -32,10 +32,9 @@ export PATH="$PATH:$HOME/bin"
 # ========== Version Managers ==========
 
 # PyEnv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-alias load_pyenv="$(pyenv init -)"
-# eval "$(pyenv init -)"
+export PATH="/Users/justin/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # RVM
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

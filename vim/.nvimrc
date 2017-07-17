@@ -27,9 +27,10 @@ if empty(glob('~/.config/nvim/tmp/swap'))
 endif
 
 " python
+" https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
 if has('nvim')
-  let g:python_host_prog = '/usr/local/opt/pyenv/versions/neovim2/bin/python'
-  let g:python3_host_prog = '/usr/local/opt/pyenv/versions/neovim3/bin/python'
+  let g:python_host_prog = glob('~/.pyenv/versions/neovim2/bin/python')
+  let g:python3_host_prog = glob('~/.pyenv/versions/neovim3/bin/python')
 endif
 
 " plugins

@@ -41,7 +41,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 # NVM
 export NVM_DIR="/Users/justin/.nvm"
-alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'  # This loads nvm
+alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && spring stop'  # This loads nvm
 # load_node
 
 # ========== Oh my ZSH ==========
@@ -57,6 +57,9 @@ alias vi="nvim"
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias gas='git add app/assets/'
 alias clock='~/workspace/tty-clock/tty-clock -tc'
+agenda() {
+  watch -ctn 60 python2 /usr/local/bin/gcalcli agenda --calendar $1 --detail_location
+}
 
 # ========== Git ==========
 

@@ -28,8 +28,8 @@ endif
 
 " python
 if has('nvim')
-  let g:python_host_prog = '/usr/local/opt/pyenv/versions/neovim2/bin/python'
-  let g:python3_host_prog = '/usr/local/opt/pyenv/versions/neovim3/bin/python'
+  let g:python_host_prog = '/Users/Justin/.pyenv/versions/neovim2/bin/python'
+  let g:python3_host_prog = '/Users/Justin/.pyenv/versions/neovim3/bin/python'
 endif
 
 " plugins

@@ -31,11 +31,10 @@ export PATH="$PATH:$HOME/bin"
 
 # ========== Version Managers ==========
 
-# PyEnv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-alias load_pyenv="$(pyenv init -)"
-# eval "$(pyenv init -)"
+# PyEnv via pyenv-installer: https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+export PATH="/Users/Justin/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # RVM
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

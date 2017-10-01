@@ -105,37 +105,28 @@ var focusVim      = slate.operation("focus", { "app" : "VimR" });
 
 var laptopLayout = slate.layout("laptopLayout", {});
 
-var hires_layout = slate.layout("twoMonitors", {
-  "iTerm2" : {
-    "operations"  : function(win) { win.doOperation(slate.operation("move", move_right(screen_one))); },
-    "ignore-fail" : true,
-    "main-first"  : true,
-    "sort-title"  : true
-  },
+var hires_layout = slate.layout("hi-res", {
   "Google Chrome" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
     "ignore-fail" : true,
-    "main-first"  : true
+    "repeat"      : true
   },
   "Safari" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
     "ignore-fail" : true,
-    "main-first"  : true
+    "repeat"      : true
   },
   "Slack" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_up_right(screen_one))); },
-    "ignore-fail" : true,
-    "main-first"  : true
+    "ignore-fail" : true
   },
   "Fantastical" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
-    "ignore-fail" : true,
-    "main-first"  : true
+    "ignore-fail" : true
   },
   "Plan" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
-    "ignore-fail" : true,
-    "main-first"  : true
+    "ignore-fail" : true
   }
 });
 
@@ -152,6 +143,10 @@ var Grid = new function() {
   var yPercent = function() { return _large ? 20 : 40; }
 
   this.large = function() { return _large; }
+
+  this.setLarge = function() { _large = true; }
+
+  this.setSmall = function() { _large = false; }
 
   this.toggle = function() { _large = !_large; }
 
@@ -370,17 +365,16 @@ slate.bind("o:k,cmd,shift", function(win) { win.doOperation(slate.operation("mov
 slate.bind("n:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_left(null))) });
 slate.bind(".:k,cmd,shift", function(win) { win.doOperation(slate.operation("move", move_down_right(null))) });
 
-slate.bind("a:space,cmd", focusSafari);
-slate.bind("f:space,cmd", focusCalendar);
-slate.bind("m:space,cmd", focusMessages);
-slate.bind("p:space,cmd", focusPlan);
-slate.bind("s:space,cmd", focusSlack);
-slate.bind("t:space,cmd", focusITerm);
-slate.bind("v:space,cmd", focusVim);
+slate.bind("a:space,cmd,shift", focusSafari);
+slate.bind("f:space,cmd,shift", focusCalendar);
+slate.bind("m:space,cmd,shift", focusMessages);
+slate.bind("p:space,cmd,shift", focusPlan);
+slate.bind("s:space,cmd,shift", focusSlack);
+slate.bind("t:space,cmd,shift", focusITerm);
+slate.bind("v:space,cmd,shift", focusVim);
 
 // Layouts
 var relaunch = slate.operation("relaunch");
-slate.bind("1:ctrl", slate.operation("layout", { "name" : laptopLayout }));
 slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack] }));
 slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
 slate.bind("5:ctrl", shake);
@@ -390,5 +384,6 @@ slate.bind("9:ctrl", Margins.toggle);
 slate.bind("0:ctrl", relaunch);
 
 // Defaults
-slate.default("1", laptopLayout);
-slate.default(["3008x1692"], hires_layout);
+slate.default(["3840x2160"], Grid.setSmall);
+slate.default(["3840x2160"], hires_layout);
+slate.default(["1440x900"], Grid.setLarge);

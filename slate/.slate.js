@@ -127,6 +127,18 @@ var hires_layout = slate.layout("hi-res", {
   "Plan" : {
     "operations"  : function(win) { win.doOperation(slate.operation("move", move_down_right(screen_one))); },
     "ignore-fail" : true
+  },
+  "VimR" : {
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_right(screen_one))); },
+    "ignore-fail" : true
+  },
+  "Spotify" : {
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
+    "ignore-fail" : true
+  },
+  "iTerm2" : {
+    "operations"  : function(win) { win.doOperation(slate.operation("move", move_left(screen_one))); },
+    "ignore-fail" : true
   }
 });
 

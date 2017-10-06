@@ -93,6 +93,9 @@ Plug 'gregsexton/gitv'                  " Gitk for vim
 Plug 'Townk/vim-autoclose'              " Auto close parens
 Plug 'vimwiki/vimwiki'                  " Wiki for vim
 Plug 'itchyny/calendar.vim'             " Calendar
+Plug 'vim-scripts/dbext.vim'            " Database plugin
+Plug 'joshdick/onedark.vim'             " One Dark themes
+Plug 'amadeus/vim-mjml'                 " mjml support
 
 call plug#end()
 
@@ -100,7 +103,6 @@ call plug#end()
 
 syntax on
 set termguicolors
-colorscheme gruvbox
 
 set background=dark
 set nowrap                               " Don't wrap lines
@@ -108,7 +110,6 @@ set ruler                                " Show cursor line and column in status
 set hidden
 set nocursorline                         " Disable highlight current line
 set re=1                                 " Fixes slow cursorline
-set expandtab                            " Use spaces intead of tabs
 set tabstop=2                            " A tab is four spaces
 set smarttab                             " Insert tabs on the start of a line according to shiftwidth, not tabstop
 set autoindent                           " Always set autoindenting on
@@ -122,6 +123,7 @@ set incsearch                            " Show search matches as you type
 set backspace=indent,eol,start           " Allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
+set paste
 set scrolloff=2                          " Start scrolling when 2 lines from edge
 set sidescroll=1                         " Scroll horizontally by 1 column
 set sidescrolloff=2                      " Start scrolling horizontally when 2 lines from edge
@@ -130,6 +132,7 @@ set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
 set mouse=a
+set expandtab                            " Use spaces intead of tabs
 
 if has("gui_macvim")
   set guifont=SauceCodePowerline-Regular:h16
@@ -161,11 +164,11 @@ augroup END
 
 " ========== COLORS ==========
 
-hi CursorLine cterm=none ctermbg=black ctermfg=none
-hi ColorColumn guibg=Grey10
-hi Pmenu ctermfg=white ctermbg=4
-hi PmenuSel ctermfg=white ctermbg=1
-hi VertSplit ctermbg=none ctermfg=black
+" hi CursorLine cterm=none ctermbg=black ctermfg=none
+" hi ColorColumn guibg=Grey10
+" hi Pmenu ctermfg=white ctermbg=4
+" hi PmenuSel ctermfg=white ctermbg=1
+" hi VertSplit ctermbg=none ctermfg=black
 set fillchars=vert:\ 
 
 " ========== SESSION MANAGEMENT ==========
@@ -213,6 +216,9 @@ vnoremap , ;
 " : to repeat T or F (instead of ,)
 nnoremap : ,
 vnoremap : ,
+
+" vimr workaround - https://github.com/qvacua/vimr/issues/492
+nnoremap <C-6> <C-^>
 
 nnoremap <leader>m          :redir! > ~/vimkeys.txt<CR>:silent map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
 nnoremap <leader>M          :redir! > ~/vimkeys.txt<CR>:silent verbose map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
@@ -530,7 +536,7 @@ let g:airline_mode_map = {
   \ '' : 'S',
   \ }
 
-let g:airline_theme                                       = "gruvbox"
+let g:airline_theme                                       = "onedark"
 let g:airline_powerline_fonts                             = 1
 let g:airline#extensions#whitespace#enabled               = 0
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
@@ -542,7 +548,7 @@ let g:airline#extensions#tabline#tab_nr_type              = 2    " splits and ta
 let g:airline#extensions#tabline#switch_buffers_and_tabs  = 0
 let g:airline#extensions#tabline#formatter                = 'unique_tail_improved'
 let g:airline_section_c                                   = '%t'
-let g:airline_section_b                                   = airline#section#create(['%h'])
+" let g:airline_section_b                                   = airline#section#create(['%h'])
 
 " call airline#parts#define_function('foo', '%t')
 " call airline#parts#define_accent('foo', 'red')

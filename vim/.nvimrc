@@ -53,11 +53,11 @@ Plug 'tpope/vim-rhubarb'                " Github support for fugitive
 Plug 'tpope/vim-surround'               " Vim-surround
 Plug 'tpope/vim-commentary'             " Vim-commentary
 Plug 'morhetz/gruvbox'                  " Color scheme
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " other plugins
 
-Plug 'kien/ctrlp.vim'                   " Fuzzy file search
 Plug 'kshenoy/vim-signature'            " Mark gutter
 Plug 'Shougo/deoplete.nvim'             " Autocomplete for nvim
 Plug 'Valloric/ListToggle'              " Toggle location list
@@ -68,7 +68,6 @@ Plug 'henrik/vim-indexed-search'        " Show N of M matches during search
 Plug 'junegunn/goyo.vim'                " Markdown
 Plug 'mhinz/vim-signify'                " Git gutter
 Plug 'mustache/vim-mustache-handlebars' " Mustache
-Plug 'rking/ag.vim'                     " Searching
 Plug 'sjl/gundo.vim'                    " Undo Tree
 Plug 'terryma/vim-expand-region'        " Expand regions
 Plug 'tpope/vim-dispatch'               " Tmux integration
@@ -220,9 +219,6 @@ vnoremap : ,
 " vimr workaround - https://github.com/qvacua/vimr/issues/492
 nnoremap <C-6> <C-^>
 
-nnoremap <leader>m          :redir! > ~/vimkeys.txt<CR>:silent map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
-nnoremap <leader>M          :redir! > ~/vimkeys.txt<CR>:silent verbose map<CR>:redir END<CR>:e ~/vimkeys.txt<CR>
-
 " ========== EDITING ==========
 
 "                           Toggle line number
@@ -235,15 +231,8 @@ nnoremap <leader>v          :e $MYVIMRC<CR>
 nnoremap <leader>V          :so $MYVIMRC<CR>
 "                           Open Gundo (Undo Tree)
 nnoremap <leader>u          :GundoToggle<CR>
-"                           jj or jf is Esc in insert mode
-inoremap jj                 <Esc>
-inoremap jf                 <Esc>
 "                           Copy to system clipboard with y in visual mode
 vnoremap y                  "+y
-"                           Edit/move commands in insert mode
-inoremap II                 <Esc>I
-inoremap AA                 <Esc>A
-inoremap OO                 <Esc>O
 "                           Toggle presentation mode
 nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo SignatureToggleSigns<CR>:silent! windo set nonu! nonu?<CR>
 "                           Yank current file path
@@ -264,8 +253,6 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 
 " ========== FILES ==========
 
-"                           Search by file name
-nnoremap <leader>o          :FZF<CR>
 "                           Save current file
 nnoremap <leader>w          :w<CR>
 "                           Save current file (sudo hack)
@@ -317,9 +304,7 @@ let g:golden_ratio_autocommand = 0 " Disable by default, enable with :GoldenRati
 "                           Toggle search highlighing
 nnoremap <silent><leader>i  :set hls!<CR>
 "                           Search working directory
-nnoremap <leader>f          :Ag 
-"                           Search Dash for word under cursor
-nmap <silent> <leader>d     <Plug>DashSearch
+nnoremap <leader>ff         :Ag 
 
 " ========== GIT ==========
 
@@ -416,105 +401,41 @@ vnoremap <expr> cQ ":\<C-u>call SetupCR()\<CR>" . "gv" . substitute(g:mc, '/', '
 " ========== FZF ===========
 
 let g:fzf_height = 10
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'rightb vsplit' }
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
-" Open tags in current buffer
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-function! s:align_lists(lists)
-  let maxes = {}
-  for list in a:lists
-    let i = 0
-    while i < len(list)
-      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
-      let i += 1
-    endwhile
-  endfor
-  for list in a:lists
-    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
-  endfor
-  return a:lists
-endfunction
-
-function! s:btags_source()
-  let lines = map(split(system(printf(
-    \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
-    \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
-  if v:shell_error
-    throw 'failed to extract tags'
-  endif
-  return map(s:align_lists(lines), 'join(v:val, "\t")')
-endfunction
-
-function! s:btags_sink(line)
-  execute split(a:line, "\t")[2]
-endfunction
-
-function! s:btags()
-  try
-    call fzf#run({
-    \ 'source':  s:btags_source(),
-    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-    \ 'down':    '40%',
-    \ 'sink':    function('s:btags_sink')})
-  catch
-    echohl WarningMsg
-    echom v:exception
-    echohl None
-  endtry
-endfunction
-
-command! BTags call s:btags()
-" end open tags in current buffer
-
-command! -bar Tags if !empty(tagfiles()) | call fzf#run({
-  \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-  \   'sink':   'tag',
-  \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
-
-
-command! -bar Tags if !empty(tagfiles()) | call fzf#run({
-  \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-  \   'sink':   'tag',
-  \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
-
-nnoremap <leader>b :call fzf#run({
-  \  'source':  reverse(<sid>buflist()),
-  \  'sink':    function('<sid>bufopen'),
-  \  'options': '+m',
-  \  'down':    len(<sid>buflist()) + 2
-  \ })<CR>
-
-nnoremap <leader>e :call fzf#run({
-  \  'source':  v:oldfiles,
-  \  'sink':    'e',
-  \  'options': '-m -x +s',
-  \  'down':    '40%'})<CR>
+"                           Search open buffers
+nnoremap <leader>fb         :Buffers<CR>
+"                           Search buffer commits
+nnoremap <leader>fc         :BCommits<CR>
+"                           Search commits
+nnoremap <leader>fC         :Commits<CR>
+"                           Search changed files
+nnoremap <leader>fd         :GFiles?<CR>
+"                           Search v:oldfiles and open buffers
+nnoremap <leader>fe         :History<CR>
+"                           Search all tags
+nnoremap <leader>fe         :History<CR>
+"                           Search lines in current buffer
+nnoremap <leader>fl         :BLines<CR>
+"                           Search lines in loaded buffers
+nnoremap <leader>fL         :Lines<CR>
+"                           Search marks
+nnoremap <leader>fm         :Marks<CR>
+"                           Search marks
+nnoremap <leader>fM         :Maps<CR>
+"                           Search git files
+nnoremap <leader>fo         :GFiles<CR>
+"                           Search all files
+nnoremap <leader>fO         :Files<CR>
+"                           Search buffer tags
+nnoremap <leader>ft         :BTags<CR>
+"                           Search all tags
+nnoremap <leader>fT         :Tags<CR>
+"                           Search windows
+nnoremap <leader>fw         :Windows<CR>
 
 let g:signify_vcs_list = [ 'git' ]
-
-" " ========== CtrlP ===========
-
-" let g:ctrlp_working_path_mode = 'ra'
-
-" nnoremap <leader>b :CtrlPBuffer<CR>
-" nnoremap <leader>c :CtrlPChange<CR>
-" nnoremap <leader>e :CtrlPMRUFiles<CR>
-
 
 " ========== AIRLINE ==========
 
@@ -580,3 +501,5 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+colorscheme onedark

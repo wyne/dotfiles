@@ -122,7 +122,6 @@ set incsearch                            " Show search matches as you type
 set backspace=indent,eol,start           " Allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
-set paste
 set scrolloff=2                          " Start scrolling when 2 lines from edge
 set sidescroll=1                         " Scroll horizontally by 1 column
 set sidescrolloff=2                      " Start scrolling horizontally when 2 lines from edge

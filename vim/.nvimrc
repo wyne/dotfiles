@@ -240,6 +240,13 @@ nnoremap <leader>F          :let @* = expand("%")<CR>
 nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
 let g:neoterm_position = "horizontal"
 
+" Go to the last cursor location when a file is opened, unless this is a
+" git commit (in which case it's annoying)
+au BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
+      \ execute("normal `\"") |
+  \ endif
+
 " ========== BUFFERS ==========
 
 "                           Prevent default buffergator mappings
@@ -399,7 +406,22 @@ vnoremap <expr> cQ ":\<C-u>call SetupCR()\<CR>" . "gv" . substitute(g:mc, '/', '
 
 " ========== FZF ===========
 
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_buffers_jump = 1
 let g:fzf_height = 10
+
+" CTRL-A CTRL-Q to select all and build quickfix list
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
@@ -433,6 +455,12 @@ nnoremap <leader>ft         :BTags<CR>
 nnoremap <leader>fT         :Tags<CR>
 "                           Search windows
 nnoremap <leader>fw         :Windows<CR>
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
 
 let g:signify_vcs_list = [ 'git' ]
 
@@ -468,18 +496,6 @@ let g:airline#extensions#tabline#tab_nr_type              = 2    " splits and ta
 let g:airline#extensions#tabline#switch_buffers_and_tabs  = 0
 let g:airline#extensions#tabline#formatter                = 'unique_tail_improved'
 let g:airline_section_c                                   = '%t'
-" let g:airline_section_b                                   = airline#section#create(['%h'])
-
-" call airline#parts#define_function('foo', '%t')
-" call airline#parts#define_accent('foo', 'red')
-" let g:airline_section_c                                   = airline#section#create_right(['foo'])
-
-" Go to the last cursor location when a file is opened, unless this is a
-" git commit (in which case it's annoying)
-au BufReadPost *
-  \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
-      \ execute("normal `\"") |
-  \ endif
 
 " ========== NEOMAKE ==========
 

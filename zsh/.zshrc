@@ -22,12 +22,14 @@ plugins+=(zsh-completions zsh-syntax-highlighting)
 # autoload -U compinit && compinit
 
 # ========== User configuration ==========
+export GOPATH=$HOME/go
 
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:/Applications/RubyMine.app/Contents/MacOS"
 export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
 export PATH="$PATH:$HOME/.fzf/bin"
 export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$GOPATH/bin"
 
 # ========== Version Managers ==========
 

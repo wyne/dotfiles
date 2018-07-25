@@ -77,7 +77,6 @@ Plug 'wellle/targets.vim'               " Additional text objects
 Plug 'wesQ3/vim-windowswap'             " Window swapping
 Plug 'xolox/vim-misc'                   " Requirement for session management
 Plug 'xolox/vim-session'                " Session management
-Plug 'yssl/QFEnter'                     " Choose window for quick fix open
 Plug 'vim-ruby/vim-ruby'                " Ruby
 Plug 'jeetsukumaran/vim-buffergator'    " Buffer management
 Plug 'michaeljsmith/vim-indent-object'  " Indent text object
@@ -91,10 +90,10 @@ Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
 Plug 'Townk/vim-autoclose'              " Auto close parens
 Plug 'vimwiki/vimwiki'                  " Wiki for vim
-Plug 'itchyny/calendar.vim'             " Calendar
 Plug 'vim-scripts/dbext.vim'            " Database plugin
 Plug 'joshdick/onedark.vim'             " One Dark themes
 Plug 'amadeus/vim-mjml'                 " mjml support
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " Go Lang Support
 
 call plug#end()
 
@@ -122,7 +121,6 @@ set incsearch                            " Show search matches as you type
 set backspace=indent,eol,start           " Allow backspacing over everything in insert mode
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set pastetoggle=<f2>
-set paste
 set scrolloff=2                          " Start scrolling when 2 lines from edge
 set sidescroll=1                         " Scroll horizontally by 1 column
 set sidescrolloff=2                      " Start scrolling horizontally when 2 lines from edge
@@ -156,19 +154,12 @@ endfunction
 " Show trailing whitespaces
 set list
 set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
+set fillchars=vert:\ 
+
 augroup FileTypes
   autocmd!
   autocmd filetype html,xml set listchars-=tab:▸\
 augroup END
-
-" ========== COLORS ==========
-
-" hi CursorLine cterm=none ctermbg=black ctermfg=none
-" hi ColorColumn guibg=Grey10
-" hi Pmenu ctermfg=white ctermbg=4
-" hi PmenuSel ctermfg=white ctermbg=1
-" hi VertSplit ctermbg=none ctermfg=black
-set fillchars=vert:\ 
 
 " ========== SESSION MANAGEMENT ==========
 
@@ -192,10 +183,6 @@ set writebackup
 set noswapfile
 
 " ========== CURSOR ==========
-
-" Change cursor line darker on insert
-autocmd InsertEnter * hi CursorLine cterm=NONE ctermbg=16
-autocmd InsertLeave * hi CursorLine cterm=NONE ctermbg=black
 
 " Change cursor shape per mode
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
@@ -239,12 +226,22 @@ nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo Signa
 nnoremap <leader>F          :let @* = expand("%")<CR>
 "                           Run current file as teset
 nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
+
 let g:neoterm_position = "horizontal"
+
+" Go to the last cursor location when a file is opened, unless this is a
+" git commit (in which case it's annoying)
+au BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
+      \ execute("normal `\"") |
+  \ endif
+
 
 " ========== BUFFERS ==========
 
 "                           Prevent default buffergator mappings
 let g:buffergator_suppress_keymaps = 1
+
 "                           Buffer manager
 nnoremap <leader>B          :BuffergatorToggle<CR>
 
@@ -253,31 +250,15 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 
 " ========== FILES ==========
 
-"                           Save current file
-nnoremap <leader>w          :w<CR>
 "                           Save current file (sudo hack)
 nnoremap <leader>W          :w !sudo tee > /dev/null %<CR>
 "                           Reveal file in NERDTree
 nnoremap <leader>r          :NERDTreeFind<CR>
 "                           Focus NERDTree
-nnoremap <leader>R          :NERDTreeFocus<CR>
-"                           Open NERDTree File Browser
-nnoremap <Bslash>           :NERDTreeToggle<CR>
+nnoremap <Bslash>           :e .<CR>
 
 " ========== WINDOWS ==========
 
-"                           Quit while maintaining window arrangement for session
-nnoremap <leader>Q          :qa<CR>
-"                           Left window
-nnoremap <leader>h          <C-w>h
-"                           Right window
-nnoremap <leader>l          <C-w>l
-"                           Up window
-nnoremap <leader>k          <C-w>k
-"                           Down window
-nnoremap <leader>j          <C-w>j
-"                           Previous window
-nnoremap <leader>;          <C-w><C-p>
 "                           Zoom or unzoom window
 nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
@@ -288,13 +269,11 @@ nnoremap <C-h>              :5winc <<CR>
 nnoremap <C-j>              :5winc +<CR>
 "                           Shrink pane vertically
 nnoremap <C-k>              :5winc -<CR>
-"                           Refresh Airline (for after a winc command above)
-nnoremap <C-m>              :AirlineRefresh<CR>
+
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <silent><leader>pw :call WindowSwap#DoWindowSwap()<CR>
-"nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 " Golden Ratio (useful when using laptop screen only
 let g:golden_ratio_autocommand = 0 " Disable by default, enable with :GoldenRatioToggle
@@ -339,17 +318,6 @@ nnoremap <leader>pu         :PlugUpdate<CR>
 
 map <Leader>tt              <Plug>VimwikiToggleListItem
 
-" ========== CALENDAR ==========
-
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-
-" ========== TERMINAL ==========
-
-if has('nvim')
-  tnoremap <leader><Esc>      <C-\><C-n>
-endif
-
 " ========== EASYMOTION ==========
 
 "                           Jump to anywhere with 2 characters
@@ -359,13 +327,6 @@ map  <leader><leader>/      <Plug>(easymotion-sn)
 omap <leader><leader>/      <Plug>(easymotion-tn)
 
 " ========== MOVEMENT ==========
-
-" <Option-k> Move up faster
-map ˚                       4k
-map <M-˚>                   4k
-" <Option-j> Move down faster
-map ∆                       4j
-map <M-∆>                   4j
 
 " Scroll down faster
 noremap <C-e>               2<C-e>
@@ -401,6 +362,7 @@ vnoremap <expr> cQ ":\<C-u>call SetupCR()\<CR>" . "gv" . substitute(g:mc, '/', '
 " ========== FZF ===========
 
 let g:fzf_height = 10
+let g:fzf_layout = { 'window': 'enew' }
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
@@ -439,57 +401,18 @@ let g:signify_vcs_list = [ 'git' ]
 
 " ========== AIRLINE ==========
 
-if !exists("g:airline_symbols")
-  let g:airline_symbols = {}
-endif
-
-let g:airline_mode_map = {
-  \ '__' : '-',
-  \ 'n'  : 'N',
-  \ 'i'  : 'I',
-  \ 'R'  : 'R',
-  \ 'c'  : 'C',
-  \ 'v'  : 'V',
-  \ 'V'  : 'V',
-  \ '' : 'V',
-  \ 's'  : 'S',
-  \ 'S'  : 'S',
-  \ '' : 'S',
-  \ }
-
-let g:airline_theme                                       = "onedark"
 let g:airline_powerline_fonts                             = 1
-let g:airline#extensions#whitespace#enabled               = 0
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
 let g:airline#extensions#tabline#enabled                  = 1
-let g:airline#extensions#tabline#fnamemod                 = ':t' " filename only
 let g:airline#extensions#tabline#show_close_button        = 0
-let g:airline#extensions#tabline#show_buffers             = 1
 let g:airline#extensions#tabline#tab_nr_type              = 2    " splits and tab number
-let g:airline#extensions#tabline#switch_buffers_and_tabs  = 0
 let g:airline#extensions#tabline#formatter                = 'unique_tail_improved'
 let g:airline_section_c                                   = '%t'
-" let g:airline_section_b                                   = airline#section#create(['%h'])
-
-" call airline#parts#define_function('foo', '%t')
-" call airline#parts#define_accent('foo', 'red')
-" let g:airline_section_c                                   = airline#section#create_right(['foo'])
-
-" Go to the last cursor location when a file is opened, unless this is a
-" git commit (in which case it's annoying)
-au BufReadPost *
-  \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
-      \ execute("normal `\"") |
-  \ endif
 
 " ========== NEOMAKE ==========
 
 let g:neomake_javascript_enabled_makers = ['jscs']
 autocmd! BufWritePost * Neomake
-
-let g:lt_location_list_toggle_map = '<leader>a'
-let g:lt_quickfix_list_toggle_map = '<leader>q'
-let g:lt_height = 5
 
 " ========== DEOPLETE ==========
 
@@ -501,5 +424,7 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" ========== COLORS ==========
 
 colorscheme onedark

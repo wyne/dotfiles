@@ -387,13 +387,13 @@ slate.bind("v:space,cmd,shift", focusVim);
 
 // Layouts
 var relaunch = slate.operation("relaunch");
-slate.bind("3:ctrl", slate.operation("sequence", { "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack] }));
-slate.bind("4:ctrl", slate.operation("layout", { "name" : hires_layout }));
-slate.bind("5:ctrl", shake);
+slate.bind("3:ctrl,alt", slate.operation("sequence", { "operations" : [ focusSafari, focusChrome, focusCalendar, focusSlack] }));
+slate.bind("4:ctrl,alt", slate.operation("layout", { "name" : hires_layout }));
+slate.bind("5:ctrl,alt", shake);
 
-slate.bind("8:ctrl", Grid.toggle);
-slate.bind("9:ctrl", Margins.toggle);
-slate.bind("0:ctrl", relaunch);
+slate.bind("8:ctrl,alt", Grid.toggle);
+slate.bind("9:ctrl,alt", Margins.toggle);
+slate.bind("0:ctrl,alt", relaunch);
 
 // Defaults
 slate.default(["3840x2160"], Grid.setSmall);

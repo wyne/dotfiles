@@ -52,7 +52,6 @@ Plug 'tpope/vim-fugitive'               " Git commands
 Plug 'tpope/vim-rhubarb'                " Github support for fugitive
 Plug 'tpope/vim-surround'               " Vim-surround
 Plug 'tpope/vim-commentary'             " Vim-commentary
-Plug 'morhetz/gruvbox'                  " Color scheme
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -236,8 +235,6 @@ nnoremap <leader>F          :let @* = expand("%")<CR>
 "                           Run current file as teset
 nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
 
-let g:neoterm_position = "horizontal"
-
 " Go to the last cursor location when a file is opened, unless this is a
 " git commit (in which case it's annoying)
 au BufReadPost *
@@ -263,7 +260,9 @@ nnoremap <leader>W          :w !sudo tee > /dev/null %<CR>
 "                           Reveal file in NERDTree
 nnoremap <leader>r          :NERDTreeFind<CR>
 "                           Focus NERDTree
-nnoremap <Bslash>           :e .<CR>
+nnoremap <leader>R          :NERDTreeFocus<CR>
+"                           Open NERDTree File Browser
+nnoremap <Bslash>           :NERDTreeToggle<CR>
 
 " ========== WINDOWS ==========
 
@@ -335,6 +334,13 @@ map  <leader><leader>/      <Plug>(easymotion-sn)
 omap <leader><leader>/      <Plug>(easymotion-tn)
 
 " ========== MOVEMENT ==========
+
+" <Option-k> Move up faster
+map ˚                       4k
+map <M-˚>                   4k
+" <Option-j> Move down faster
+map ∆                       4j
+map <M-∆>                   4j
 
 " Scroll down faster
 noremap <C-e>               2<C-e>
@@ -472,7 +478,5 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" ========== COLORS ==========
 
 colorscheme onedark

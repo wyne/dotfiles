@@ -161,6 +161,15 @@ augroup FileTypes
   autocmd filetype html,xml set listchars-=tab:▸\
 augroup END
 
+" ========== COLORS ==========
+
+" hi CursorLine cterm=none ctermbg=black ctermfg=none
+" hi ColorColumn guibg=Grey10
+" hi Pmenu ctermfg=white ctermbg=4
+" hi PmenuSel ctermfg=white ctermbg=1
+" hi VertSplit ctermbg=none ctermfg=black
+set fillchars=vert:\ 
+
 " ========== SESSION MANAGEMENT ==========
 
 let g:session_directory = "~/.config/nvim/session"
@@ -235,7 +244,6 @@ au BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
       \ execute("normal `\"") |
   \ endif
-
 
 " ========== BUFFERS ==========
 
@@ -361,8 +369,23 @@ vnoremap <expr> cQ ":\<C-u>call SetupCR()\<CR>" . "gv" . substitute(g:mc, '/', '
 
 " ========== FZF ===========
 
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_buffers_jump = 1
 let g:fzf_height = 10
 let g:fzf_layout = { 'window': 'enew' }
+
+" CTRL-A CTRL-Q to select all and build quickfix list
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
@@ -397,10 +420,35 @@ nnoremap <leader>fT         :Tags<CR>
 "                           Search windows
 nnoremap <leader>fw         :Windows<CR>
 
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
 let g:signify_vcs_list = [ 'git' ]
 
 " ========== AIRLINE ==========
 
+if !exists("g:airline_symbols")
+  let g:airline_symbols = {}
+endif
+
+let g:airline_mode_map = {
+  \ '__' : '-',
+  \ 'n'  : 'N',
+  \ 'i'  : 'I',
+  \ 'R'  : 'R',
+  \ 'c'  : 'C',
+  \ 'v'  : 'V',
+  \ 'V'  : 'V',
+  \ '' : 'V',
+  \ 's'  : 'S',
+  \ 'S'  : 'S',
+  \ '' : 'S',
+  \ }
+
+let g:airline_theme                                       = "onedark"
 let g:airline_powerline_fonts                             = 1
 let g:airline#extensions#hunks#non_zero_only              = 1    " git gutter
 let g:airline#extensions#tabline#enabled                  = 1

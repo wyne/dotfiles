@@ -93,6 +93,8 @@ Plug 'vim-scripts/dbext.vim'            " Database plugin
 Plug 'joshdick/onedark.vim'             " One Dark themes
 Plug 'amadeus/vim-mjml'                 " mjml support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " Go Lang Support
+Plug 'Xuyuanp/nerdtree-git-plugin'      " Nerdtree git
+Plug 'junegunn/vim-emoji'               " Emoji support
 
 call plug#end()
 
@@ -234,6 +236,7 @@ nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo Signa
 nnoremap <leader>F          :let @* = expand("%")<CR>
 "                           Run current file as teset
 nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
+let g:neoterm_default_mod = 'botright'
 
 " Go to the last cursor location when a file is opened, unless this is a
 " git commit (in which case it's annoying)
@@ -269,14 +272,19 @@ nnoremap <Bslash>           :NERDTreeToggle<CR>
 "                           Zoom or unzoom window
 nnoremap <silent><leader>z  :tab split<CR>
 "                           Grow pane horizontally
-nnoremap <C-l>              :5winc ><CR>
+nnoremap <M-l>              :5winc ><CR>
+nnoremap ¬                  :5winc ><CR>
 "                           Shrink pane horizontally
-nnoremap <C-h>              :5winc <<CR>
+nnoremap <M-h>              :5winc <<CR>
+nnoremap ˙                  :5winc <<CR>
 "                           Grow pane vertically
-nnoremap <C-j>              :5winc +<CR>
+nnoremap <M-j>              :5winc +<CR>
+nnoremap ∆                  :5winc +<CR>
 "                           Shrink pane vertically
-nnoremap <C-k>              :5winc -<CR>
-
+nnoremap <M-k>              :5winc -<CR>
+nnoremap ˚                  :5winc -<CR>
+"                           Refresh Airline (for after a winc command above)
+nnoremap <C-m>              :AirlineRefresh<CR>
 "                           Window swapping
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent><leader>yw :call WindowSwap#MarkWindowSwap()<CR>
@@ -335,22 +343,10 @@ omap <leader><leader>/      <Plug>(easymotion-tn)
 
 " ========== MOVEMENT ==========
 
-" <Option-k> Move up faster
-map ˚                       4k
-map <M-˚>                   4k
-" <Option-j> Move down faster
-map ∆                       4j
-map <M-∆>                   4j
-
 " Scroll down faster
 noremap <C-e>               2<C-e>
 " Scroll up faster
 noremap <C-y>               2<C-y>
-
-" Scroll down faster
-noremap <S-C-e>             5<C-e>
-" Scroll up faster
-noremap <S-C-y>             5<C-y>
 
 " ========== Multiple Cursor Replacement ========
 " http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
@@ -391,8 +387,9 @@ let g:fzf_action = {
   \ 'ctrl-q': function('s:build_quickfix_list'),
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+  \ 'ctrl-v': 'belowright vsplit' }
 
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
 "                           Search open buffers

@@ -43,9 +43,12 @@ eval "$(pyenv virtualenv-init -)"
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 # NVM
-export NVM_DIR="/Users/justin/.nvm"
-alias load_node='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && spring stop'  # This loads nvm
-# load_node
+export NVM_DIR="$HOME/.nvm"
+load_node() {
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion" # This load nvm bash_completion
+  spring stop
+}
 
 # ========== Oh my ZSH ==========
 

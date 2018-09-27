@@ -91,12 +91,12 @@ Plug 'tpope/vim-speeddating'            " Date inc/dec
 Plug 'gregsexton/gitv'                  " Gitk for vim
 Plug 'Townk/vim-autoclose'              " Auto close parens
 Plug 'vimwiki/vimwiki'                  " Wiki for vim
-Plug 'itchyny/calendar.vim'             " Calendar
 Plug 'vim-scripts/dbext.vim'            " Database plugin
 Plug 'joshdick/onedark.vim'             " One Dark themes
 Plug 'amadeus/vim-mjml'                 " mjml support
 Plug 'Xuyuanp/nerdtree-git-plugin'      " Nerdtree git
 Plug 'junegunn/vim-emoji'               " Emoji support
+Plug 'hwartig/vim-seeing-is-believing'  " Inline script results
 
 call plug#end()
 
@@ -147,6 +147,7 @@ au BufRead,BufNewFile *.mustache setfiletype mustache
 au BufRead,BufNewFile *.thrift set syntax=thrift
 au BufRead,BufNewFile *.aurora set syntax=ruby
 au BufRead,BufNewFile *.json.jbuilder set syntax=ruby
+au BufRead,BufNewFile Dangerfile set syntax=ruby
 
 " Functions
 
@@ -261,8 +262,6 @@ nnoremap <leader>x          :bp\|bd! #<CR>
 
 " ========== FILES ==========
 
-"                           Save current file
-nnoremap <leader>w          :w<CR>
 "                           Save current file (sudo hack)
 nnoremap <leader>W          :w !sudo tee > /dev/null %<CR>
 "                           Reveal file in NERDTree
@@ -274,16 +273,6 @@ nnoremap <Bslash>           :NERDTreeToggle<CR>
 
 " ========== WINDOWS ==========
 
-"                           Quit while maintaining window arrangement for session
-nnoremap <leader>Q          :qa<CR>
-"                           Left window
-nnoremap <leader>h          <C-w>h
-"                           Right window
-nnoremap <leader>l          <C-w>l
-"                           Up window
-nnoremap <leader>k          <C-w>k
-"                           Down window
-nnoremap <leader>j          <C-w>j
 "                           Previous window
 nnoremap <leader>;          <C-w><C-p>
 "                           Zoom or unzoom window
@@ -324,6 +313,10 @@ nnoremap <leader>ff         :Ag
 nnoremap <leader>gs         :Gstatus<CR>
 "                           Git commit
 nnoremap <leader>gc         :Gcommit<CR>
+"                           Git checkout local branch
+nnoremap <leader>gr         :GCheckout<CR>
+"                           Git checkout branch
+nnoremap <leader>gR         :GCheckoutAll<CR>
 
 " ========== SESSIONS ==========
 
@@ -350,11 +343,6 @@ nnoremap <leader>pu         :PlugUpdate<CR>
 " ========== VIMWIKI ==========
 
 map <Leader>tt              <Plug>VimwikiToggleListItem
-
-" ========== CALENDAR ==========
-
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
 
 " ========== TERMINAL ==========
 
@@ -399,6 +387,8 @@ vnoremap <expr> cq ":\<C-u>call SetupCR()\<CR>" . "gv" . g:mc . "``qz"
 vnoremap <expr> cQ ":\<C-u>call SetupCR()\<CR>" . "gv" . substitute(g:mc, '/', '?', 'g') . "``qz"
 
 " ========== FZF ===========
+command! -bang Commits call fzf#vim#commits({'window': '-tabnew'}, <bang>0)
+command! -bang BCommits call fzf#vim#buffer_commits({'window': '-tabnew'}, <bang>0)
 
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_buffers_jump = 1
@@ -417,7 +407,39 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'belowright vsplit' }
 
-let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+" git
+function! s:open_branch_fzf(line)
+  let l:parser = split(a:line)
+  let l:branch = l:parser[0]
+  if l:branch ==? '*'
+    let l:branch = l:parser[1]
+  endif
+  let l:newbranch = system('echo "' . l:branch . '" | sed "s/.* //" | sed "s#remotes/[^/]*/##"')
+  execute '!git checkout ' . l:newbranch
+endfunction
+
+command! -bang -nargs=0 GCheckout
+  \ call fzf#vim#grep(
+  \   'git branch -v', 0,
+  \   {
+  \     'sink': function('s:open_branch_fzf'),
+  \     'window': '-tabnew'
+  \   },
+  \   <bang>0
+  \ )
+
+command! -bang -nargs=0 GCheckoutAll
+  \ call fzf#vim#grep(
+  \   'git branch -av', 0,
+  \   {
+  \     'sink': function('s:open_branch_fzf'),
+  \     'window': '-tabnew'
+  \   },
+  \   <bang>0
+  \ )
+
+"all
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all,up:preview-up,down:preview-down'
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --skip-vcs-ignores --ignore .git -l -g ""'
 
 "                           Search open buffers
@@ -426,11 +448,9 @@ nnoremap <leader>fb         :Buffers<CR>
 nnoremap <leader>fc         :BCommits<CR>
 "                           Search commits
 nnoremap <leader>fC         :Commits<CR>
-"                           Search changed files
+"                           Search files in git diff
 nnoremap <leader>fd         :GFiles?<CR>
 "                           Search v:oldfiles and open buffers
-nnoremap <leader>fe         :History<CR>
-"                           Search all tags
 nnoremap <leader>fe         :History<CR>
 "                           Search lines in current buffer
 nnoremap <leader>fl         :BLines<CR>
@@ -438,7 +458,7 @@ nnoremap <leader>fl         :BLines<CR>
 nnoremap <leader>fL         :Lines<CR>
 "                           Search marks
 nnoremap <leader>fm         :Marks<CR>
-"                           Search marks
+"                           Search key mappings
 nnoremap <leader>fM         :Maps<CR>
 "                           Search git files
 nnoremap <leader>fo         :GFiles<CR>

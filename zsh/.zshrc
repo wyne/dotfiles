@@ -19,7 +19,9 @@ export NVM_LAZY_LOAD=false
 # plugins=(bundler osx rake ruby)
 # plugins+=(pyenv zsh-completions zsh-syntax-highlighting zsh-nvm)
 plugins+=(zsh-completions zsh-syntax-highlighting)
-# autoload -U compinit && compinit
+
+fpath=(~/.zsh/completion $fpath)
+autoload -U compinit && compinit
 
 # ========== User configuration ==========
 
@@ -52,7 +54,8 @@ source $ZSH/oh-my-zsh.sh
 
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
-alias ll="ls -la"
+alias ls="exa"
+alias ll="exa -la"
 alias vi="nvim"
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias gas='git add app/assets/'
@@ -134,3 +137,7 @@ export EDITOR=/usr/local/bin/nvim
 
 # iTerm 2 Shell Integration
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+
+export PATH="$HOME/.yarn/bin:$PATH"
+
+# ( cd ~/scripts/ops-markov && python markov.py 2> /dev/null )

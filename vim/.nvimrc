@@ -127,7 +127,7 @@ set pastetoggle=<f2>
 set scrolloff=2                          " Start scrolling when 2 lines from edge
 set sidescroll=1                         " Scroll horizontally by 1 column
 set sidescrolloff=2                      " Start scrolling horizontally when 2 lines from edge
-set colorcolumn=100                      " Column ruler at 100 characters
+set colorcolumn=80                      " Column ruler at 100 characters
 set number
 set nofoldenable                         " Disable folding
 set nolazyredraw                         " Disable lazyredraw
@@ -240,8 +240,9 @@ nnoremap <leader>p          :silent! windo SignifyToggle<CR>:silent! windo Signa
 "                           Yank current file path
 nnoremap <leader>F          :let @* = expand("%")<CR>
 "                           Run current file as teset
-nnoremap <leader>t          :T bin/rake test %:h/%:t<CR>
+nnoremap <leader>t          :T bin/rake test   %<CR>
 let g:neoterm_default_mod = 'botright'
+let g:neoterm_use_relative_path = 1
 
 " Go to the last cursor location when a file is opened, unless this is a
 " git commit (in which case it's annoying)
@@ -533,3 +534,67 @@ endif
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 colorscheme onedark
+
+" ===== Seeing Is Believing =====
+" Assumes you have a Ruby with SiB available in the PATH
+" If it doesn't work, you may need to `gem install seeing_is_believing`
+
+function! WithoutChangingCursor(fn)
+  let cursor_pos     = getpos('.')
+  let wintop_pos     = getpos('w0')
+  let old_lazyredraw = &lazyredraw
+  let old_scrolloff  = &scrolloff
+  set lazyredraw
+
+  call a:fn()
+
+  call setpos('.', wintop_pos)
+  call setpos('.', cursor_pos)
+  redraw
+  let &lazyredraw = old_lazyredraw
+  let scrolloff   = old_scrolloff
+endfun
+
+function! SibAnnotateAll(scope)
+  call WithoutChangingCursor(function('execute', [a:scope . "!seeing_is_believing --timeout 12 --line-length 500 --number-of-captures 300 --alignment-strategy chunk"]))
+endfun
+
+function! SibAnnotateMarked(scope)
+  call WithoutChangingCursor(function('execute', [a:scope . "!seeing_is_believing --xmpfilter-style --timeout 12 --line-length 500 --number-of-captures 300 --alignment-strategy chunk"]))
+endfun
+
+function! SibCleanAnnotations(scope)
+  call WithoutChangingCursor(function('execute', [a:scope . "!seeing_is_believing --clean"]))
+endfun
+
+function! SibToggleMark()
+  let pos  = getpos('.')
+  let line = getline(".")
+  if line =~ '^\s*$'
+    let line = '# => '
+  elseif line =~ '# =>'
+    let line = substitute(line, ' *# =>.*', '', '')
+  else
+    let line .= '  # => '
+  end
+  call setline('.', line)
+  call setpos('.', pos)
+endfun
+
+" Enable seeing-is-believing mappings only for Ruby
+nnoremap <leader>Ka :call SibAnnotateAll("%")<CR>;
+nnoremap <leader>Kc :call SibCleanAnnotations("%")<CR>;
+" augroup seeingIsBelieving
+"   autocmd FileType ruby nmap <buffer> <leader>k :call SibAnnotateAll("%")<CR>;
+"   autocmd FileType ruby nmap <buffer> <leader>n :call SibAnnotateMarked("%")<CR>;
+"   autocmd FileType ruby nmap <buffer> <leader>v :call SibCleanAnnotations("%")<CR>;
+"   autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
+"   autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
+
+"   autocmd FileType ruby vmap <buffer> <Leader>b :call SibAnnotateAll("'<,'>")<CR>;
+"   autocmd FileType ruby vmap <buffer> <Leader>n :call SibAnnotateMarked("'<,'>")<CR>;
+"   autocmd FileType ruby vmap <buffer> <Leader>v :call SibCleanAnnotations("'<,'>")<CR>;
+" augroup END
+"
+
+let g:ruby_host_prog = 'rvm system do neovim-ruby-host'
